@@ -80,6 +80,11 @@ class LotteryController extends Controller
         }
     }
 
+    public function quayThu()
+    {
+        return view('quay-thu');
+    }
+
     public function statistics()
     {
         try {

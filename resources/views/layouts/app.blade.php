@@ -44,6 +44,7 @@
                     <a href="/lich-su/north" class="nav-link font-semibold {{ request()->is('lich-su*') ? 'text-red-500' : '' }} text-xs uppercase">LỊCH SỬ</a>
                     <a href="/thong-ke" class="nav-link font-semibold {{ request()->is('thong-ke*') ? 'text-red-500' : '' }} text-xs uppercase">THỐNG KÊ</a>
                     <a href="/soi-cau" class="nav-link font-semibold {{ request()->is('soi-cau*') ? 'text-red-500' : '' }} text-xs uppercase">SOI CẦU</a>
+                    <a href="/quay-thu" class="nav-link font-semibold {{ request()->is('quay-thu*') ? 'text-red-500' : '' }} text-xs uppercase"><i class="fas fa-dice mr-1"></i> QUAY THỬ</a>
                     <a href="#" class="nav-link font-semibold text-yellow-500 text-xs uppercase"><i class="fas fa-crown mr-1"></i> VIP</a>
                 </div>
 
@@ -72,6 +73,9 @@
                 </a>
                 <a href="/soi-cau" class="block px-4 py-4 text-sm font-bold {{ request()->is('soi-cau*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
                     <i class="fas fa-robot w-6"></i> Soi Cầu AI
+                </a>
+                <a href="/quay-thu" class="block px-4 py-4 text-sm font-bold {{ request()->is('quay-thu*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
+                    <i class="fas fa-dice w-6"></i> Quay Thử XSO
                 </a>
                 <div class="pt-4 px-4">
                     <button class="w-full gradient-brand text-white py-4 rounded-2xl font-black text-sm uppercase shadow-lg shadow-red-600/20">THAM GIA NGAY 🧧</button>
