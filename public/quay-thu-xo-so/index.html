@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quay Thử Xổ Số Miền Bắc - QuayThumb</title>
+    <meta name="description"
+        content="Trang quay thử xổ số miền Bắc hôm nay. Mô phỏng kết quả xổ số miền Bắc theo ngày trong tuần." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f0f0f0;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ─── */
+        .site-header {
+            background: #fff;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .site-logo {
+            font-size: 26px;
+            font-weight: 900;
+            color: #bb0000;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        .site-datetime {
+            font-size: 13px;
+            color: #666;
+        }
+
+        /* ─── NAVBAR ─── */
+        .site-nav {
+            background: #bb0000;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .site-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 12px 18px;
+            display: block;
+            transition: background 0.15s;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .site-nav a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-search {
+            margin-left: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+        }
+
+        .nav-search svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        /* ─── LAYOUT ─── */
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        /* ─── CARD ─── */
+        .card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #bb0000;
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── CONTROLS ─── */
+        .controls {
+            padding: 18px 16px 10px;
+            text-align: center;
+        }
+
+        #btnQuay {
+            background: #bb0000;
+            color: #fff;
+            border: none;
+            padding: 10px 36px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 3px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        #btnQuay:hover:not(:disabled) {
+            background: #990000;
+        }
+
+        #btnQuay:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+        }
+
+        /* ─── DAY TABS ─── */
+        .day-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            padding: 12px 16px 14px;
+        }
+
+        .day-tab {
+            border: 1px solid #ccc;
+            background: #fff;
+            padding: 5px 14px;
+            font-size: 13px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s;
+            color: #333;
+        }
+
+        .day-tab:hover {
+            border-color: #bb0000;
+            color: #bb0000;
+        }
+
+        .day-tab.active {
+            background: #bb0000;
+            color: #fff;
+            border-color: #bb0000;
+        }
+
+        /* ─── RESULTS TABLE ─── */
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .result-table td {
+            border: 1px solid #e0e0e0;
+            padding: 7px 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .prize-label {
+            background: #f5f5f5;
+            font-weight: 600;
+            color: #444;
+            width: 52px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .result-row-alt {
+            background: #eef4fb;
+        }
+
+        .result-row-white {
+            background: #fff;
+        }
+
+        /* Number cells */
+        .num-cell {
+            font-weight: 700;
+            font-size: 18px;
+            color: #222;
+            letter-spacing: 1px;
+            min-width: 70px;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .db-cell .num-cell {
+            font-size: 24px;
+            color: #bb0000;
+        }
+
+        /* ─── SPINNER ─── */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #28a745;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ─── NUMBER ROLL ANIMATION ─── */
+        @keyframes rollIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .num-revealed {
+            animation: rollIn 0.25s ease-out;
+        }
+
+        /* ─── VIEW OPTIONS ─── */
+        .view-options {
+            display: flex;
+            gap: 18px;
+            padding: 12px 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .view-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .view-options input[type="radio"] {
+            accent-color: #1a6fbb;
+            cursor: pointer;
+        }
+
+        /* ─── LÔ TÔ TABLE ─── */
+        .loto-section {
+            margin-top: 0;
+        }
+
+        .loto-head-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .loto-head-table th {
+            background: #fef9e7;
+            border: 1px solid #e0e0e0;
+            padding: 7px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .loto-section-title {
+            background: #fef9e7;
+            text-align: center;
+            font-weight: 700;
+            color: #555;
+            padding: 7px;
+            border: 1px solid #e0e0e0;
+            font-size: 13px;
+        }
+
+        .loto-grid-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .loto-grid-table td {
+            border: 1px solid #e0e0e0;
+            padding: 6px 8px;
+            font-size: 13px;
+            text-align: center;
+            vertical-align: top;
+        }
+
+        .loto-prefix {
+            font-weight: 700;
+            background: #f5f5f5;
+            color: #444;
+            width: 30px;
+        }
+
+        .loto-numbers {
+            text-align: left;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .loto-numbers span {
+            display: inline-block;
+            margin: 1px 3px;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar-box {
+            margin-bottom: 16px;
+        }
+
+        .sidebar-box .card-header {
+            font-size: 13px;
+        }
+
+        .sidebar-box ul {
+            list-style: none;
+            padding: 10px 14px;
+        }
+
+        .sidebar-box ul li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar-box ul li a {
+            color: #1a6fbb;
+            text-decoration: none;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .sidebar-box ul li::before {
+            content: "• ";
+            color: #555;
+        }
+
+        .sidebar-box ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .num-cell {
+                font-size: 15px;
+                min-width: 52px;
+            }
+
+            .db-cell .num-cell {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="site-header">
+        <a href="#" class="site-logo">QUAYTHUMB</a>
+        <div class="site-datetime" id="datetime"></div>
+    </header>
+
+    <!-- ═══ NAVBAR ═══ -->
+    <nav class="site-nav">
+        <a href="#">Quay Thử MB Theo Thứ ▾</a>
+        <a href="#">Quay Thử MB Theo Tỉnh ▾</a>
+        <div class="nav-search">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 6.17 6.17a7.5 7.5 0 0 0 10.48 10.48z" stroke="white"
+                    stroke-width="2.2" fill="none" stroke-linecap="round" />
+            </svg>
+        </div>
+    </nav>
+
+    <!-- ═══ PAGE WRAPPER ═══ -->
+    <div class="page-wrapper">
+
+        <!-- MAIN -->
+        <main class="main-content">
+            <div class="card">
+                <div class="card-header">Quay Thử Xổ Số Miền Bắc Hôm Nay</div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <button id="btnQuay" onclick="startSpin()">Bắt Đầu Quay</button>
+                </div>
+
+                <!-- Day tabs -->
+                <div class="day-tabs">
+                    <div class="day-tab active" onclick="selectDay(this,'mb')">Miền Bắc</div>
+                    <div class="day-tab" onclick="selectDay(this,'t2')">Thứ 2</div>
+                    <div class="day-tab" onclick="selectDay(this,'t3')">Thứ 3</div>
+                    <div class="day-tab" onclick="selectDay(this,'t4')">Thứ 4</div>
+                    <div class="day-tab" onclick="selectDay(this,'t5')">Thứ 5</div>
+                    <div class="day-tab" onclick="selectDay(this,'t6')">Thứ 6</div>
+                    <div class="day-tab" onclick="selectDay(this,'t7')">Thứ 7</div>
+                    <div class="day-tab" onclick="selectDay(this,'cn')">Chủ Nhật</div>
+                </div>
+
+                <!-- Result table -->
+                <table class="result-table" id="resultTable">
+                    <tbody>
+                        <!-- ĐB: 1 số 5 chữ số -->
+                        <tr class="result-row-white db-row">
+                            <td class="prize-label">ĐB</td>
+                            <td class="db-cell" colspan="6">
+                                <span class="cell-content" data-prize="db">
+                                    <span class="spinner"></span>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- G1: 1 số 5 chữ số -->
+                        <tr class="result-row-alt">
+                            <td class="prize-label">G1</td>
+                            <td colspan="6">
+                                <span class="cell-content" data-prize="g1">
+                                    <span class="spinner"></span>
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- G2: 2 số 5 chữ số -->
+                        <tr class="result-row-white">
+                            <td class="prize-label">G2</td>
+                            <td colspan="3">
+                                <span class="cell-content" data-prize="g2a"><span class="spinner"></span></span>
+                            </td>
+                            <td colspan="3">
+                                <span class="cell-content" data-prize="g2b"><span class="spinner"></span></span>
+                            </td>
+                        </tr>
+                        <!-- G3: 6 số 5 chữ số (2 rows × 3) -->
+                        <tr class="result-row-alt">
+                            <td class="prize-label" rowspan="2">G3</td>
+                            <td><span class="cell-content" data-prize="g3a"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g3b"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g3c"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g3d"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g3e"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g3f"><span class="spinner"></span></span></td>
+                        </tr>
+                        <tr class="result-row-alt"><!-- G3 row 2 continuation (no label - rowspan above) --></tr>
+                        <!-- G4: 4 số 4 chữ số -->
+                        <tr class="result-row-white">
+                            <td class="prize-label">G4</td>
+                            <td><span class="cell-content" data-prize="g4a"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g4b"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g4c"><span class="spinner"></span></span></td>
+                            <td colspan="3"><span class="cell-content" data-prize="g4d"><span
+                                        class="spinner"></span></span></td>
+                        </tr>
+                        <!-- G5: 6 số 4 chữ số (2 rows × 3) -->
+                        <tr class="result-row-alt">
+                            <td class="prize-label" rowspan="2">G5</td>
+                            <td><span class="cell-content" data-prize="g5a"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g5b"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g5c"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g5d"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g5e"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g5f"><span class="spinner"></span></span></td>
+                        </tr>
+                        <tr class="result-row-alt"><!-- G5 row 2 continuation (no label - rowspan above) --></tr>
+                        <!-- G6: 3 số 3 chữ số -->
+                        <tr class="result-row-white">
+                            <td class="prize-label">G6</td>
+                            <td colspan="2"><span class="cell-content" data-prize="g6a"><span
+                                        class="spinner"></span></span></td>
+                            <td colspan="2"><span class="cell-content" data-prize="g6b"><span
+                                        class="spinner"></span></span></td>
+                            <td colspan="2"><span class="cell-content" data-prize="g6c"><span
+                                        class="spinner"></span></span></td>
+                        </tr>
+                        <!-- G7: 4 số 2 chữ số -->
+                        <tr class="result-row-alt">
+                            <td class="prize-label">G7</td>
+                            <td><span class="cell-content" data-prize="g7a"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g7b"><span class="spinner"></span></span></td>
+                            <td><span class="cell-content" data-prize="g7c"><span class="spinner"></span></span></td>
+                            <td colspan="3"><span class="cell-content" data-prize="g7d"><span
+                                        class="spinner"></span></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- View options -->
+                <div class="view-options">
+                    <label><input type="radio" name="viewMode" value="full" checked
+                            onchange="applyViewMode(this.value)" /> Đầy đủ</label>
+                    <label><input type="radio" name="viewMode" value="2" onchange="applyViewMode(this.value)" /> 2
+                        số</label>
+                    <label><input type="radio" name="viewMode" value="3" onchange="applyViewMode(this.value)" /> 3
+                        số</label>
+                </div>
+
+                <!-- Lô tô section -->
+                <div class="loto-section" id="lotoSection">
+                    <!-- Prefix row 0-9 -->
+                    <table class="loto-head-table">
+                        <tr>
+                            <th>0</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>7</th>
+                            <th>8</th>
+                            <th>9</th>
+                        </tr>
+                    </table>
+                    <div class="loto-section-title">Lô tô</div>
+                    <table class="loto-grid-table" id="lotoTable">
+                        <tbody id="lotoBody"></tbody>
+                    </table>
+                </div>
+
+            </div><!-- /card -->
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-box card">
+                <div class="card-header">Quay Thử XSMB Theo Thứ</div>
+                <ul>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 2</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 3</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 4</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 5</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 6</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Thứ 7</a></li>
+                    <li><a href="#">Quay Thử Miền Bắc Chủ Nhật</a></li>
+                </ul>
+            </div>
+            <div class="sidebar-box card">
+                <div class="card-header">Quay Thử XSMB Theo Tỉnh</div>
+                <ul>
+                    <li><a href="#">Quay Thử Xổ Số Hà Nội</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Bắc Ninh</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Thái Bình</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Hải Phòng</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Nam Định</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Quảng Ninh</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Hải Dương</a></li>
+                    <li><a href="#">Quay Thử Xổ Số Tuyên Quang</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════
+           DATETIME
+        ═══════════════════════════════════════════ */
+        function updateDatetime() {
+            const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            const ss = String(now.getSeconds()).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mo = String(now.getMonth() + 1).padStart(2, '0');
+            const yyyy = now.getFullYear();
+            const dayName = days[now.getDay()];
+            document.getElementById('datetime').textContent = `${hh}:${mm}:${ss} ${dayName}, ${dd}/${mo}/${yyyy}`;
+        }
+        updateDatetime();
+        setInterval(updateDatetime, 1000);
+
+        /* ═══════════════════════════════════════════
+           DAY TAB
+        ═══════════════════════════════════════════ */
+        function selectDay(el, key) {
+            document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        /* ═══════════════════════════════════════════
+           RANDOM GENERATORS
+        ═══════════════════════════════════════════ */
+        function rnd(digits) {
+            const max = Math.pow(10, digits);
+            const min = Math.pow(10, digits - 1);
+            return String(Math.floor(Math.random() * (max - min)) + min);
+        }
+        // Pad for G7, G6
+        function rndPad(digits) {
+            return String(Math.floor(Math.random() * Math.pow(10, digits))).padStart(digits, '0');
+        }
+
+        /* ═══════════════════════════════════════════
+           PRIZE CONFIG
+           Each entry: { prize, digits, label }
+        ═══════════════════════════════════════════ */
+        const PRIZES = [
+            // reveal G7 first (like original site), but show from top visually
+            { prize: 'g7a', digits: 2 }, { prize: 'g7b', digits: 2 },
+            { prize: 'g7c', digits: 2 }, { prize: 'g7d', digits: 2 },
+            { prize: 'g6a', digits: 3 }, { prize: 'g6b', digits: 3 }, { prize: 'g6c', digits: 3 },
+            { prize: 'g5a', digits: 4 }, { prize: 'g5b', digits: 4 }, { prize: 'g5c', digits: 4 },
+            { prize: 'g5d', digits: 4 }, { prize: 'g5e', digits: 4 }, { prize: 'g5f', digits: 4 },
+            { prize: 'g4a', digits: 4 }, { prize: 'g4b', digits: 4 }, { prize: 'g4c', digits: 4 }, { prize: 'g4d', digits: 4 },
+            { prize: 'g3a', digits: 5 }, { prize: 'g3b', digits: 5 }, { prize: 'g3c', digits: 5 },
+            { prize: 'g3d', digits: 5 }, { prize: 'g3e', digits: 5 }, { prize: 'g3f', digits: 5 },
+            { prize: 'g2a', digits: 5 }, { prize: 'g2b', digits: 5 },
+            { prize: 'g1', digits: 5 },
+            { prize: 'db', digits: 5 },
+        ];
+
+        // Store results globally
+        let results = {};
+        let currentViewMode = 'full';
+        let isSpinning = false;
+        let spinTimers = [];
+
+        /* ═══════════════════════════════════════════
+           RESET ALL CELLS TO SPINNER
+        ═══════════════════════════════════════════ */
+        function resetAll() {
+            document.querySelectorAll('.cell-content').forEach(el => {
+                el.innerHTML = '<span class="spinner"></span>';
+                el.dataset.value = '';
+            });
+            results = {};
+            // clear loto
+            document.getElementById('lotoBody').innerHTML = '';
+        }
+
+        /* ═══════════════════════════════════════════
+           REVEAL A SINGLE CELL
+        ═══════════════════════════════════════════ */
+        function revealCell(prizeKey, digits) {
+            const val = rndPad(digits);
+            results[prizeKey] = val;
+            const el = document.querySelector(`.cell-content[data-prize="${prizeKey}"]`);
+            if (!el) return;
+            el.dataset.value = val;
+            const displayVal = getDisplayVal(val);
+            el.innerHTML = `<span class="num-cell num-revealed">${displayVal}</span>`;
+        }
+
+        /* ═══════════════════════════════════════════
+           VIEW MODE
+        ═══════════════════════════════════════════ */
+        function getDisplayVal(val) {
+            if (!val) return '';
+            if (currentViewMode === '2') return val.slice(-2);
+            if (currentViewMode === '3') return val.slice(-3);
+            return val;
+        }
+
+        function applyViewMode(mode) {
+            currentViewMode = mode;
+            document.querySelectorAll('.cell-content').forEach(el => {
+                const val = el.dataset.value;
+                if (val) {
+                    const numEl = el.querySelector('.num-cell');
+                    if (numEl) numEl.textContent = getDisplayVal(val);
+                }
+            });
+            updateLoto();
+        }
+
+        /* ═══════════════════════════════════════════
+           LÔ TÔ - last 2 digits of all results
+        ═══════════════════════════════════════════ */
+        function updateLoto() {
+            const tbody = document.getElementById('lotoBody');
+            if (Object.keys(results).length === 0) { tbody.innerHTML = ''; return; }
+
+            // collect all 2-digit tails
+            const allTails = Object.values(results).map(v => v.slice(-2));
+
+            // group by first digit (đầu)
+            const groups = {};
+            for (let i = 0; i <= 9; i++) groups[i] = [];
+            allTails.forEach(t => {
+                const head = parseInt(t[0], 10);
+                groups[head].push(t);
+            });
+
+            // build two-column layout: left = đầu 0-4, right = đầu 5-9
+            const maxRows = Math.max(...[0, 1, 2, 3, 4].map(i => groups[i].length), ...[5, 6, 7, 8, 9].map(i => groups[i].length));
+
+            let html = '';
+            for (let r = 0; r < Math.max(10, maxRows + 1); r++) {
+                html += '<tr>';
+                // left: đầu 0-4
+                for (let d = 0; d <= 4; d++) {
+                    if (r === 0) {
+                        // header row
+                        html += `<td class="loto-prefix">${d}</td><td class="loto-numbers">${groups[d].map(n => `<span>${n}</span>`).join('')}</td>`;
+                        break; // render full row differently
+                    }
+                }
+                html += '</tr>';
+            }
+
+            // Rebuild properly: one row per đầu, two columns side by side
+            html = '';
+            for (let d = 0; d <= 4; d++) {
+                const d2 = d + 5;
+                html += '<tr>';
+                html += `<td class="loto-prefix">${d}</td>`;
+                html += `<td class="loto-numbers">${groups[d].map(n => `<span>${n}</span>`).join(' ')}</td>`;
+                html += `<td class="loto-prefix">${d2}</td>`;
+                html += `<td class="loto-numbers">${groups[d2].map(n => `<span>${n}</span>`).join(' ')}</td>`;
+                html += '</tr>';
+            }
+
+            tbody.innerHTML = html;
+        }
+
+        /* ═══════════════════════════════════════════
+           MAIN SPIN
+        ═══════════════════════════════════════════ */
+        function startSpin() {
+            if (isSpinning) return;
+
+            // Clear previous timers
+            spinTimers.forEach(clearTimeout);
+            spinTimers = [];
+
+            // Reset
+            resetAll();
+            isSpinning = true;
+
+            const btn = document.getElementById('btnQuay');
+            btn.textContent = 'ĐANG QUAY...';
+            btn.disabled = true;
+
+            // Reveal each prize with a delay
+            const DELAY = 220; // ms between each number reveal
+            PRIZES.forEach((p, i) => {
+                const t = setTimeout(() => {
+                    revealCell(p.prize, p.digits);
+                    updateLoto();
+
+                    if (i === PRIZES.length - 1) {
+                        // Done
+                        isSpinning = false;
+                        btn.textContent = 'QUAY LẠI';
+                        btn.disabled = false;
+                    }
+                }, (i + 1) * DELAY);
+                spinTimers.push(t);
+            });
+        }
+    </script>
+</body>
+
+</html>
