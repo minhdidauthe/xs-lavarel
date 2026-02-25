@@ -1,0 +1,66 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: xs-laravel-app
+    restart: always
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: xs_lottery
+      DB_USERNAME: sail
+      DB_PASSWORD: password
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+      - redis
+    networks:
+      - default
+      - xs-new-network
+
+  db:
+    image: mysql:8.0
+    container_name: xs-laravel-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: xs_lottery
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - default
+
+  redis:
+    image: redis:alpine
+    container_name: xs-laravel-redis
+    restart: always
+    networks:
+      - default
+
+  nginx:
+    image: nginx:alpine
+    container_name: xs-laravel-nginx
+    restart: always
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - default
+
+networks:
+  default:
+  xs-new-network:
+    external: true
+    name: xs-new_default
+
+volumes:
+  mysql_data:
