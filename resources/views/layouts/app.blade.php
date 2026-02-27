@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/light-theme.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap');
         body { font-family: 'Lexend', sans-serif; }
@@ -51,6 +53,9 @@
 
                 <!-- Right Side Tools -->
                 <div class="flex items-center gap-2">
+                    <button id="theme-toggle" onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center text-white text-lg focus:outline-none hover:text-yellow-400 transition" title="Chuyển theme">
+                        <i class="fas fa-sun"></i>
+                    </button>
                     <button class="hidden sm:block bg-white/5 text-white px-5 py-2 rounded-full text-xs font-bold transition border border-white/10 uppercase">Login</button>
                     <!-- Mobile Toggle Button -->
                     <button id="menu-toggle" class="md:hidden w-10 h-10 flex items-center justify-center text-white text-xl focus:outline-none">
@@ -61,7 +66,7 @@
         </div>
 
         <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-x-0 top-20 bg-[#0A0A0B] border-b border-white/10 md:hidden z-40">
+        <div id="mobile-menu" class="fixed inset-x-0 top-20 border-b border-white/10 md:hidden z-40" style="background: var(--bg-mobile-menu, #0A0A0B)">
             <div class="px-4 pt-2 pb-6 space-y-1 shadow-2xl">
                 <a href="/" class="block px-4 py-4 text-sm font-bold {{ request()->is('/') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
                     <i class="fas fa-home w-6"></i> Trang Chủ
@@ -121,6 +126,29 @@
                 document.body.style.overflow = '';
             });
         });
+
+        // Theme Toggle
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('theme-toggle');
+            if (!btn) return;
+            const icon = btn.querySelector('i');
+            if (theme === 'light') {
+                icon.className = 'fas fa-moon';
+            } else {
+                icon.className = 'fas fa-sun';
+            }
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+        }
+
+        // Set icon on page load
+        updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
     </script>
     @yield('scripts')
 </body>

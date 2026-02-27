@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME OVERRIDES — soicau7777
+   Activated when <html data-theme="light">
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Body & Root ── */
+[data-theme="light"] body {
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+}
+
+/* ── Text Colors ── */
+[data-theme="light"] .text-white {
+    color: #1e293b !important;
+}
+[data-theme="light"] .text-gray-200 {
+    color: #475569 !important;
+}
+[data-theme="light"] .text-gray-300 {
+    color: #475569 !important;
+}
+[data-theme="light"] .text-gray-400 {
+    color: #64748b !important;
+}
+[data-theme="light"] .text-gray-500 {
+    color: #64748b !important;
+}
+[data-theme="light"] .text-gray-600 {
+    color: #94a3b8 !important;
+}
+
+/* Keep gradient text, branded colors, and accent colors as-is */
+[data-theme="light"] .gradient-brand .text-white,
+[data-theme="light"] .gradient-brand .text-\[10px\],
+[data-theme="light"] .ball-red,
+[data-theme="light"] .ball-gold,
+[data-theme="light"] .gradient-brand {
+    color: inherit !important;
+}
+/* Gradient brand children must stay white */
+[data-theme="light"] .gradient-brand,
+[data-theme="light"] .gradient-brand * {
+    color: #fff !important;
+}
+
+/* ── Background Colors ── */
+[data-theme="light"] .bg-\[\#050505\] {
+    background-color: #f8fafc !important;
+}
+[data-theme="light"] .bg-\[\#0C0C0D\] {
+    background-color: #ffffff !important;
+}
+[data-theme="light"] .bg-black\/80 {
+    background-color: #f1f5f9 !important;
+}
+
+/* Opacity-based white backgrounds → solid light grays */
+[data-theme="light"] .bg-white\/5 {
+    background-color: #f1f5f9 !important;
+}
+[data-theme="light"] .bg-white\/10 {
+    background-color: #e2e8f0 !important;
+}
+[data-theme="light"] .bg-white\/\[0\.015\] {
+    background-color: #f8fafc !important;
+}
+[data-theme="light"] .bg-white\/\[0\.03\] {
+    background-color: #f1f5f9 !important;
+}
+
+/* Tinted backgrounds */
+[data-theme="light"] .bg-red-500\/5 {
+    background-color: #fef2f2 !important;
+}
+[data-theme="light"] .bg-red-500\/10 {
+    background-color: #fee2e2 !important;
+}
+[data-theme="light"] .bg-blue-500\/10 {
+    background-color: #eff6ff !important;
+}
+[data-theme="light"] .bg-green-500\/10 {
+    background-color: #f0fdf4 !important;
+}
+[data-theme="light"] .bg-yellow-500\/5 {
+    background-color: #fefce8 !important;
+}
+[data-theme="light"] .bg-yellow-500\/10 {
+    background-color: #fef9c3 !important;
+}
+[data-theme="light"] .bg-yellow-500\/20 {
+    background-color: #fef08a !important;
+}
+[data-theme="light"] .bg-purple-500\/20 {
+    background-color: #f5f3ff !important;
+}
+[data-theme="light"] .bg-red-600\/10 {
+    background-color: #fef2f2 !important;
+}
+[data-theme="light"] .bg-orange-500\/20 {
+    background-color: #fff7ed !important;
+}
+
+/* Hero gradient */
+[data-theme="light"] .from-red-950\/20 {
+    --tw-gradient-from: #fee2e2 !important;
+}
+[data-theme="light"] .bg-gradient-to-b.from-red-950\/20 {
+    background: linear-gradient(to bottom, #fee2e2, transparent) !important;
+}
+[data-theme="light"] .bg-gradient-to-br.from-red-600\/10 {
+    background: linear-gradient(to bottom right, #fef2f2, transparent) !important;
+}
+[data-theme="light"] .bg-gradient-to-br.from-red-600\/20 {
+    background: linear-gradient(to bottom right, #fecaca, #fed7aa) !important;
+}
+[data-theme="light"] .bg-gradient-to-br.from-white\/5 {
+    background: linear-gradient(to bottom right, #f1f5f9, #f8fafc) !important;
+}
+
+/* ── Borders ── */
+[data-theme="light"] .border-white\/5 {
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .border-white\/10 {
+    border-color: #cbd5e1 !important;
+}
+[data-theme="light"] .border-white\/5.border-b,
+[data-theme="light"] .border-b.border-white\/5 {
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .border-yellow-500\/10 {
+    border-color: #fde68a !important;
+}
+[data-theme="light"] .border-yellow-500\/20 {
+    border-color: #fde68a !important;
+}
+[data-theme="light"] .border-yellow-500\/30 {
+    border-color: #fcd34d !important;
+}
+
+/* ── Custom Classes (glass-nav, glass-card) ── */
+[data-theme="light"] .glass-nav {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom-color: #e2e8f0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+[data-theme="light"] .glass-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* ── Navigation ── */
+[data-theme="light"] .nav-link {
+    color: #475569;
+}
+[data-theme="light"] .nav-link:hover {
+    color: #dc2626 !important;
+}
+[data-theme="light"] .nav-link.text-red-500 {
+    color: #dc2626 !important;
+}
+
+/* ── Mobile Menu ── */
+[data-theme="light"] #mobile-menu {
+    background: #ffffff !important;
+    border-bottom-color: #e2e8f0 !important;
+}
+[data-theme="light"] #mobile-menu a.text-gray-300 {
+    color: #475569 !important;
+}
+[data-theme="light"] #mobile-menu a.text-red-500 {
+    color: #dc2626 !important;
+}
+[data-theme="light"] #mobile-menu a:hover,
+[data-theme="light"] #mobile-menu a.bg-red-500\/5 {
+    background-color: #fef2f2 !important;
+}
+
+/* ── Footer ── */
+[data-theme="light"] footer {
+    background-color: #f1f5f9 !important;
+    border-top-color: #e2e8f0 !important;
+}
+[data-theme="light"] footer .text-gray-600 {
+    color: #94a3b8 !important;
+}
+
+/* ── Tables (lottery results) ── */
+[data-theme="light"] table .text-white {
+    color: #1e293b !important;
+}
+[data-theme="light"] table .border-r.border-white\/5 {
+    border-right-color: #e2e8f0 !important;
+}
+
+/* ── Quay Thu page custom styles ── */
+[data-theme="light"] .qt-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .result-table td {
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .prize-label {
+    background: #f1f5f9 !important;
+    color: #64748b !important;
+}
+[data-theme="light"] .result-row-alt {
+    background: #f8fafc !important;
+}
+[data-theme="light"] .num-cell {
+    color: #1e293b !important;
+}
+[data-theme="light"] .day-tab {
+    border-color: #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: #64748b !important;
+}
+[data-theme="light"] .day-tab:hover {
+    border-color: #ef4444 !important;
+    color: #ef4444 !important;
+}
+
+/* ── Chat stub (welcome sidebar) ── */
+[data-theme="light"] .bg-gray-700 {
+    background-color: #cbd5e1 !important;
+}
+
+/* ── Blog views ── */
+[data-theme="light"] .prose p {
+    color: #475569 !important;
+}
+[data-theme="light"] .prose h2,
+[data-theme="light"] .prose h3 {
+    color: #1e293b !important;
+}
+[data-theme="light"] .prose a {
+    color: #dc2626 !important;
+}
+[data-theme="light"] .prose code {
+    background: #f1f5f9 !important;
+    color: #dc2626 !important;
+}
+[data-theme="light"] .prose pre {
+    background: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .prose pre code {
+    color: #334155 !important;
+}
+[data-theme="light"] .prose table th {
+    background: #f1f5f9 !important;
+    color: #1e293b !important;
+}
+[data-theme="light"] .prose table th,
+[data-theme="light"] .prose table td {
+    border-color: #e2e8f0 !important;
+}
+[data-theme="light"] .prose blockquote {
+    color: #64748b !important;
+}
+
+/* ── Blog comment form ── */
+[data-theme="light"] input.bg-white\/5,
+[data-theme="light"] textarea.bg-white\/5 {
+    background-color: #f8fafc !important;
+    border-color: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+[data-theme="light"] input.bg-white\/5::placeholder,
+[data-theme="light"] textarea.bg-white\/5::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* ── Shortcode partials (kqxs, soi-cau, thong-ke, lo-gan) ── */
+[data-theme="light"] .shortcode-kqxs,
+[data-theme="light"] .shortcode-soicau {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+/* ── Chart.js (statistics page) — handled via JS ── */
+
+/* ── Login button in nav ── */
+[data-theme="light"] button.bg-white\/5 {
+    background-color: #f1f5f9 !important;
+    border-color: #e2e8f0 !important;
+    color: #475569 !important;
+}
+[data-theme="light"] button.bg-white\/5:hover {
+    background-color: #e2e8f0 !important;
+}
+
+/* ── Theme toggle button ── */
+[data-theme="light"] #theme-toggle {
+    color: #f59e0b !important;
+}
+
+/* ── Hover states ── */
+[data-theme="light"] .hover\:bg-white\/5:hover {
+    background-color: #f1f5f9 !important;
+}
+[data-theme="light"] .hover\:bg-white\/10:hover {
+    background-color: #e2e8f0 !important;
+}
+[data-theme="light"] .hover\:text-white:hover {
+    color: #1e293b !important;
+}
+
+/* ── Shadow overrides ── */
+[data-theme="light"] .shadow-2xl {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ── Animate pulse (keep green dot visible) ── */
+[data-theme="light"] .bg-green-400,
+[data-theme="light"] .bg-blue-400,
+[data-theme="light"] .bg-red-400 {
+    /* Keep as-is, these are accent dots */
+}
+
+/* ── Transition for smooth theme switch ── */
+body,
+.glass-nav,
+.glass-card,
+.qt-card,
+#mobile-menu,
+footer {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
