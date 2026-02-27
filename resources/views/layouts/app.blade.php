@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<script>(function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t)})()</script>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -53,9 +52,6 @@
 
                 <!-- Right Side Tools -->
                 <div class="flex items-center gap-2">
-                    <button id="theme-toggle" onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center text-white text-lg focus:outline-none hover:text-yellow-400 transition" title="Chuyển theme">
-                        <i class="fas fa-sun"></i>
-                    </button>
                     <button class="hidden sm:block bg-white/5 text-white px-5 py-2 rounded-full text-xs font-bold transition border border-white/10 uppercase">Login</button>
                     <!-- Mobile Toggle Button -->
                     <button id="menu-toggle" class="md:hidden w-10 h-10 flex items-center justify-center text-white text-xl focus:outline-none">
@@ -127,28 +123,6 @@
             });
         });
 
-        // Theme Toggle
-        function updateThemeIcon(theme) {
-            const btn = document.getElementById('theme-toggle');
-            if (!btn) return;
-            const icon = btn.querySelector('i');
-            if (theme === 'light') {
-                icon.className = 'fas fa-moon';
-            } else {
-                icon.className = 'fas fa-sun';
-            }
-        }
-
-        function toggleTheme() {
-            const current = document.documentElement.getAttribute('data-theme') || 'dark';
-            const next = current === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-            updateThemeIcon(next);
-        }
-
-        // Set icon on page load
-        updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
     </script>
     @yield('scripts')
 </body>
