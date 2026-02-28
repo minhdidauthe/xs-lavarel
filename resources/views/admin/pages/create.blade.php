@@ -153,31 +153,53 @@
                 });
             },
             setup: function (editor) {
-                editor.ui.registry.addButton('shortcode', {
+                // Build shortcode menu items from server data
+                var shortcodes = @json($availableShortcodes ?? []);
+
+                editor.ui.registry.addMenuButton('shortcode', {
                     text: 'Shortcode',
                     icon: 'code-sample',
-                    onAction: function () {
-                        editor.windowManager.open({
-                            title: 'Chèn Shortcode',
-                            body: {
-                                type: 'panel',
-                                items: [{
-                                    type: 'input',
-                                    name: 'shortcode',
-                                    label: 'Shortcode',
-                                    placeholder: 'vd: [kqxs region="MB"]'
-                                }]
-                            },
-                            buttons: [
-                                { type: 'cancel', text: 'Hủy' },
-                                { type: 'submit', text: 'Chèn', primary: true }
-                            ],
-                            onSubmit: function (api) {
-                                var data = api.getData();
-                                editor.insertContent(data.shortcode);
-                                api.close();
+                    fetch: function (callback) {
+                        var items = shortcodes.map(function(sc) {
+                            return {
+                                type: 'menuitem',
+                                text: sc.name,
+                                onAction: function () {
+                                    editor.insertContent(sc.usage);
+                                }
+                            };
+                        });
+
+                        // Add separator + manual input option
+                        items.push({
+                            type: 'menuitem',
+                            text: '── Nhập thủ công ──',
+                            onAction: function () {
+                                editor.windowManager.open({
+                                    title: 'Chèn Shortcode',
+                                    body: {
+                                        type: 'panel',
+                                        items: [{
+                                            type: 'input',
+                                            name: 'shortcode',
+                                            label: 'Shortcode',
+                                            placeholder: 'vd: [kqxs_full region="MB"]'
+                                        }]
+                                    },
+                                    buttons: [
+                                        { type: 'cancel', text: 'Hủy' },
+                                        { type: 'submit', text: 'Chèn', primary: true }
+                                    ],
+                                    onSubmit: function (api) {
+                                        var data = api.getData();
+                                        editor.insertContent(data.shortcode);
+                                        api.close();
+                                    }
+                                });
                             }
                         });
+
+                        callback(items);
                     }
                 });
             }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\ShortcodeController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Blog\BlogController;
@@ -44,6 +45,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin:admin,editor,
 
     Route::resource('pages', PageController::class)->middleware('admin:admin,editor');
     Route::resource('shortcodes', ShortcodeController::class)->middleware('admin:admin');
+    Route::patch('shortcodes/{shortcode}/toggle', [ShortcodeController::class, 'toggle'])->name('shortcodes.toggle')->middleware('admin:admin');
+    Route::resource('menus', MenuController::class)->middleware('admin:admin');
+    Route::post('menus/reorder', [MenuController::class, 'reorder'])->name('menus.reorder')->middleware('admin:admin');
     Route::resource('users', UserController::class)->middleware('admin:admin');
 
     Route::post('upload/image', [UploadController::class, 'image'])->name('upload.image');

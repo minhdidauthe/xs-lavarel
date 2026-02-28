@@ -62,6 +62,11 @@
             <i class="fas fa-code w-5 text-center"></i> Shortcodes
         </a>
 
+        <a href="{{ route('admin.menus.index') }}"
+           class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium {{ request()->routeIs('admin.menus.*') ? 'text-white bg-white/10 border-l-4 border-red-500' : 'text-gray-400 hover:text-white hover:bg-white/5 border-l-4 border-transparent' }} transition-colors">
+            <i class="fas fa-bars w-5 text-center"></i> Menu
+        </a>
+
         {{-- SYSTEM (admin only) --}}
         @if(auth()->user()->isAdmin())
         <p class="px-4 pt-4 text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Hệ thống</p>

@@ -96,15 +96,21 @@ class PredictionService
             }
         }
 
+        // Tính median frequency để dùng làm threshold động
+        $sortedFreqs = $freqShort;
+        sort($sortedFreqs);
+        $medianFreq = $sortedFreqs[50]; // median of 100 numbers
+        $highFreqThreshold = max($medianFreq + 3, 15); // top ~15% numbers
+
         for ($n = 0; $n < 100; $n++) {
             $scores[$n] += $this->freqWeightShort * $freqShort[$n];
             $scores[$n] += $this->freqWeightLong * $freqLong[$n];
 
-            if ($freqShort[$n] > 5) {
+            if ($freqShort[$n] > $highFreqThreshold) {
                 $scores[$n] += $this->bonusFreq5;
                 $reasons[$n][] = 'Tần suất cao (45 ngày)';
             }
-            if ($specialFreqShort[$n] > 5) {
+            if ($specialFreqShort[$n] >= 2) {
                 $scores[$n] += $this->specialFreqMultiplier;
                 $reasons[$n][] = 'GĐB xuất hiện nhiều';
             }

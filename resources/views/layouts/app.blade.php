@@ -1,128 +1,147 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'SOICAU7777.CLICK - Xổ Số 3 Miền')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="/css/light-theme.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Lexend', sans-serif; }
-        .glass-nav { background: rgba(10, 10, 11, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s ease; }
-        .gradient-brand { background: linear-gradient(135deg, #FF3D3D 0%, #FF8A00 100%); }
-        .text-gradient { background: linear-gradient(135deg, #FF3D3D 0%, #FF8A00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-link { position: relative; padding: 0.5rem 1rem; transition: color 0.3s; }
-        .nav-link:hover { color: #FF3D3D; }
-        .ball { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 800; font-size: 1rem; position: relative; overflow: hidden; }
-        .ball-red { background: radial-gradient(circle at 30% 30%, #ff5f5f, #C30000); color: white; }
-        .ball-gold { background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b); color: #222; }
-        
-        /* Mobile Menu Animation */
-        #mobile-menu { transition: all 0.3s ease-in-out; transform: translateY(-100%); opacity: 0; pointer-events: none; }
-        #mobile-menu.active { transform: translateY(0); opacity: 1; pointer-events: auto; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="/css/light-theme.css?v={{ filemtime(public_path('css/light-theme.css')) }}" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: { preflight: false, container: false }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @yield('styles')
 </head>
-<body class="bg-[#050505] text-gray-200 antialiased">
-    <nav class="glass-nav sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <!-- Logo -->
-                <a href="/" class="flex items-center gap-2 group cursor-pointer">
-                    <div class="w-10 h-10 gradient-brand rounded-xl flex items-center justify-center shadow-lg shadow-red-600/30 group-hover:rotate-12 transition-transform">
-                        <i class="fas fa-dice text-white text-xl"></i>
-                    </div>
-                    <span class="text-xl font-black tracking-tighter text-white uppercase">SOI<span class="text-red-500">CAU</span>7777</span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-2">
-                    <a href="/" class="nav-link font-bold {{ request()->is('/') ? 'text-red-500' : '' }} text-xs uppercase">TRANG CHỦ</a>
-                    <a href="/lich-su/north" class="nav-link font-semibold {{ request()->is('lich-su*') ? 'text-red-500' : '' }} text-xs uppercase">LỊCH SỬ</a>
-                    <a href="/thong-ke" class="nav-link font-semibold {{ request()->is('thong-ke*') ? 'text-red-500' : '' }} text-xs uppercase">THỐNG KÊ</a>
-                    <a href="/soi-cau" class="nav-link font-semibold {{ request()->is('soi-cau*') ? 'text-red-500' : '' }} text-xs uppercase">SOI CẦU</a>
-                    <a href="/quay-thu" class="nav-link font-semibold {{ request()->is('quay-thu*') ? 'text-red-500' : '' }} text-xs uppercase"><i class="fas fa-dice mr-1"></i> QUAY THỬ</a>
-                    <a href="/blog" class="nav-link font-semibold {{ request()->is('blog*') ? 'text-red-500' : '' }} text-xs uppercase"><i class="fas fa-newspaper mr-1"></i> BLOG</a>
-                    <a href="#" class="nav-link font-semibold text-yellow-500 text-xs uppercase"><i class="fas fa-crown mr-1"></i> VIP</a>
-                </div>
-
-                <!-- Right Side Tools -->
-                <div class="flex items-center gap-2">
-                    <button class="hidden sm:block bg-white/5 text-white px-5 py-2 rounded-full text-xs font-bold transition border border-white/10 uppercase">Login</button>
-                    <!-- Mobile Toggle Button -->
-                    <button id="menu-toggle" class="md:hidden w-10 h-10 flex items-center justify-center text-white text-xl focus:outline-none">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
-            </div>
+<body>
+    {{-- ====== TOP BAR ====== --}}
+    <div class="sc-topbar">
+        <div class="container">
+            <span><i class="fas fa-calendar-alt"></i> {{ now()->timezone('Asia/Ho_Chi_Minh')->locale('vi')->isoFormat('dddd, D/M/Y') }}</span>
+            <span><i class="fas fa-phone"></i> Hotline: 0888.777.777</span>
         </div>
+    </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="fixed inset-x-0 top-20 border-b border-white/10 md:hidden z-40" style="background: var(--bg-mobile-menu, #0A0A0B)">
-            <div class="px-4 pt-2 pb-6 space-y-1 shadow-2xl">
-                <a href="/" class="block px-4 py-4 text-sm font-bold {{ request()->is('/') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-home w-6"></i> Trang Chủ
-                </a>
-                <a href="/lich-su/north" class="block px-4 py-4 text-sm font-bold {{ request()->is('lich-su*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-history w-6"></i> Lịch Sử KQXS
-                </a>
-                <a href="/thong-ke" class="block px-4 py-4 text-sm font-bold {{ request()->is('thong-ke*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-chart-bar w-6"></i> Thống Kê
-                </a>
-                <a href="/soi-cau" class="block px-4 py-4 text-sm font-bold {{ request()->is('soi-cau*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-robot w-6"></i> Soi Cầu AI
-                </a>
-                <a href="/quay-thu" class="block px-4 py-4 text-sm font-bold {{ request()->is('quay-thu*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-dice w-6"></i> Quay Thử XSO
-                </a>
-                <a href="/blog" class="block px-4 py-4 text-sm font-bold {{ request()->is('blog*') ? 'text-red-500 bg-red-500/5' : 'text-gray-300' }} rounded-xl uppercase">
-                    <i class="fas fa-newspaper w-6"></i> Blog
-                </a>
-                <div class="pt-4 px-4">
-                    <button class="w-full gradient-brand text-white py-4 rounded-2xl font-black text-sm uppercase shadow-lg shadow-red-600/20">THAM GIA NGAY 🧧</button>
+    {{-- ====== HEADER ====== --}}
+    <header class="sc-header">
+        <div class="container">
+            <a href="/" class="sc-logo">
+                <div class="sc-logo-icon">
+                    <i class="fas fa-dice"></i>
                 </div>
-            </div>
+                <div class="sc-logo-text">
+                    <span class="sc-logo-brand">SOI<span>CAU</span>7777</span>
+                    <span class="sc-logo-slogan">Soi cầu lô đề miễn phí</span>
+                </div>
+            </a>
+            <button id="menu-toggle" class="sc-menu-toggle" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    {{-- ====== NAVIGATION ====== --}}
+    <nav class="sc-nav">
+        <div class="container">
+            @php
+                $navMenus = \App\Models\Menu::active()->topLevel()->with('children')->orderBy('sort_order')->get();
+            @endphp
+            <ul class="sc-nav-list" id="nav-list">
+                @forelse($navMenus as $menuItem)
+                    <li>
+                        <a href="{{ $menuItem->url }}"
+                           class="{{ $menuItem->css_class ?? '' }} {{ $menuItem->isActive() ? 'active' : '' }}"
+                           target="{{ $menuItem->target }}">
+                            @if($menuItem->icon)<i class="{{ $menuItem->icon }}"></i> @endif
+                            {{ $menuItem->title }}
+                        </a>
+                    </li>
+                @empty
+                    {{-- Fallback hardcoded menu if DB is empty --}}
+                    <li><a href="/" class="{{ request()->is('/') ? 'active' : '' }}"><i class="fas fa-home"></i> Trang Chủ</a></li>
+                    <li><a href="/lich-su/north" class="{{ request()->is('lich-su*') ? 'active' : '' }}"><i class="fas fa-history"></i> Lịch Sử KQ</a></li>
+                    <li><a href="/soi-cau" class="{{ request()->is('soi-cau*') ? 'active' : '' }}"><i class="fas fa-robot"></i> Soi Cầu</a></li>
+                    <li><a href="/thong-ke" class="{{ request()->is('thong-ke*') ? 'active' : '' }}"><i class="fas fa-chart-bar"></i> Thống Kê</a></li>
+                    <li><a href="/quay-thu" class="{{ request()->is('quay-thu*') ? 'active' : '' }}"><i class="fas fa-dice"></i> Quay Thử</a></li>
+                    <li><a href="/blog" class="{{ request()->is('blog*') ? 'active' : '' }}"><i class="fas fa-newspaper"></i> Blog</a></li>
+                    <li><a href="#" class="vip"><i class="fas fa-crown"></i> VIP</a></li>
+                @endforelse
+            </ul>
         </div>
     </nav>
 
-    @yield('content')
+    {{-- ====== MAIN CONTENT ====== --}}
+    <main class="sc-main">
+        @yield('content')
+    </main>
 
-    <footer class="mt-20 border-t border-white/5 py-10 bg-black/80">
-        <div class="max-w-7xl mx-auto px-4 text-center text-gray-600 text-[10px] uppercase font-bold tracking-widest italic">
-            © 2026 SOICAU7777.CLICK - Hệ thống phân tích xổ số tự động
+    {{-- ====== FOOTER ====== --}}
+    <footer class="sc-footer">
+        <div class="container">
+            <div class="sc-footer-grid">
+                <div class="sc-footer-col">
+                    <h4>SOICAU7777.CLICK</h4>
+                    <p>Trang soi cầu lô đề miễn phí chính xác nhất. Cập nhật kết quả xổ số 3 miền hàng ngày, phân tích thống kê AI thông minh.</p>
+                </div>
+                <div class="sc-footer-col">
+                    <h4>Liên Kết Nhanh</h4>
+                    <ul>
+                        <li><a href="/"><i class="fas fa-angle-right"></i> Trang chủ</a></li>
+                        <li><a href="/soi-cau"><i class="fas fa-angle-right"></i> Soi cầu</a></li>
+                        <li><a href="/thong-ke"><i class="fas fa-angle-right"></i> Thống kê</a></li>
+                        <li><a href="/blog"><i class="fas fa-angle-right"></i> Blog</a></li>
+                    </ul>
+                </div>
+                <div class="sc-footer-col">
+                    <h4>Kết Quả Xổ Số</h4>
+                    <ul>
+                        <li><a href="/lich-su/north"><i class="fas fa-angle-right"></i> XSMB</a></li>
+                        <li><a href="/lich-su/central"><i class="fas fa-angle-right"></i> XSMT</a></li>
+                        <li><a href="/lich-su/south"><i class="fas fa-angle-right"></i> XSMN</a></li>
+                        <li><a href="/quay-thu"><i class="fas fa-angle-right"></i> Quay thử</a></li>
+                    </ul>
+                </div>
+                <div class="sc-footer-col">
+                    <h4>Thông Tin</h4>
+                    <p>Kết quả xổ số được cập nhật trực tiếp từ các công ty xổ số kiến thiết 3 miền.</p>
+                    <div class="sc-footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="sc-footer-bottom">
+                &copy; 2026 SOICAU7777.CLICK - Hệ thống phân tích xổ số tự động. Mọi thông tin chỉ mang tính tham khảo.
+            </div>
         </div>
     </footer>
 
     <script>
         // Mobile Menu Logic
         const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const menuIcon = menuToggle.querySelector('i');
+        const navList = document.getElementById('nav-list');
 
         menuToggle.addEventListener('click', () => {
-            const isActive = mobileMenu.classList.toggle('active');
+            const isActive = navList.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
             if (isActive) {
-                menuIcon.classList.replace('fa-bars', 'fa-times');
-                document.body.style.overflow = 'hidden'; // Ngăn cuộn trang khi mở menu
+                icon.classList.replace('fa-bars', 'fa-times');
             } else {
-                menuIcon.classList.replace('fa-times', 'fa-bars');
-                document.body.style.overflow = '';
+                icon.classList.replace('fa-times', 'fa-bars');
             }
         });
 
-        // Đóng menu khi bấm vào link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
+        // Close menu on link click
+        document.querySelectorAll('.sc-nav-list a').forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                menuIcon.classList.replace('fa-times', 'fa-bars');
-                document.body.style.overflow = '';
+                navList.classList.remove('active');
+                menuToggle.querySelector('i').classList.replace('fa-times', 'fa-bars');
             });
         });
-
     </script>
     @yield('scripts')
 </body>

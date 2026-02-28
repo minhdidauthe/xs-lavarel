@@ -8,19 +8,11 @@ use Illuminate\Http\Request;
 
 class ShortcodeController extends Controller
 {
-    private array $builtins = [
-        ['code' => 'kqxs', 'name' => 'Kết Quả Xổ Số', 'usage' => '[kqxs region="MB"]', 'description' => 'Hiển thị bảng KQXS. Params: region (MB/MN/MT)'],
-        ['code' => 'soi_cau', 'name' => 'Soi Cầu AI', 'usage' => '[soi_cau]', 'description' => 'Hiển thị bảng dự đoán AI top 10'],
-        ['code' => 'thong_ke', 'name' => 'Thống Kê Tần Suất', 'usage' => '[thong_ke days="30"]', 'description' => 'Hiển thị bảng thống kê tần suất. Params: days, region'],
-        ['code' => 'lo_gan', 'name' => 'Lô Gan', 'usage' => '[lo_gan limit="10"]', 'description' => 'Hiển thị bảng lô gan. Params: limit, region'],
-    ];
-
     public function index()
     {
-        $builtins = $this->builtins;
-        $shortcodes = Shortcode::latest()->get();
+        $shortcodes = Shortcode::orderByDesc('is_builtin')->orderBy('name')->get();
 
-        return view('admin.shortcodes.index', compact('builtins', 'shortcodes'));
+        return view('admin.shortcodes.index', compact('shortcodes'));
     }
 
     public function create()
@@ -52,23 +44,45 @@ class ShortcodeController extends Controller
 
     public function update(Request $request, Shortcode $shortcode)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:80',
-            'code' => 'required|string|max:60|unique:shortcodes,code,' . $shortcode->id . '|regex:/^[a-z_][a-z0-9_]*$/',
-            'content' => 'required|string',
-            'description' => 'nullable|string|max:500',
-            'is_active' => 'boolean',
-        ]);
-
-        $validated['is_active'] = $request->boolean('is_active', true);
+        if ($shortcode->is_builtin) {
+            // Built-in: only allow name, description, is_active changes
+            $validated = $request->validate([
+                'name' => 'required|string|max:80',
+                'description' => 'nullable|string|max:500',
+                'is_active' => 'boolean',
+            ]);
+            $validated['is_active'] = $request->boolean('is_active', true);
+        } else {
+            // Custom: allow all field changes
+            $validated = $request->validate([
+                'name' => 'required|string|max:80',
+                'code' => 'required|string|max:60|unique:shortcodes,code,' . $shortcode->id . '|regex:/^[a-z_][a-z0-9_]*$/',
+                'content' => 'required|string',
+                'description' => 'nullable|string|max:500',
+                'is_active' => 'boolean',
+            ]);
+            $validated['is_active'] = $request->boolean('is_active', true);
+        }
 
         $shortcode->update($validated);
 
         return redirect()->route('admin.shortcodes.index')->with('success', 'Shortcode đã được cập nhật.');
     }
 
+    public function toggle(Shortcode $shortcode)
+    {
+        $shortcode->update(['is_active' => !$shortcode->is_active]);
+
+        $status = $shortcode->is_active ? 'bật' : 'tắt';
+        return redirect()->route('admin.shortcodes.index')->with('success', "Shortcode [{$shortcode->code}] đã được {$status}.");
+    }
+
     public function destroy(Shortcode $shortcode)
     {
+        if ($shortcode->is_builtin) {
+            return redirect()->route('admin.shortcodes.index')->with('error', 'Không thể xóa shortcode hệ thống.');
+        }
+
         $shortcode->delete();
 
         return redirect()->route('admin.shortcodes.index')->with('success', 'Shortcode đã được xóa.');
