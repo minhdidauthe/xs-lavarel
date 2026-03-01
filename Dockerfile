@@ -40,6 +40,10 @@ COPY . .
 # Copy vendor from vendor stage
 COPY --from=vendor /app/vendor ./vendor
 
+# Copy composer binary and regenerate autoloader with all source files present
+COPY --from=vendor /usr/bin/composer /usr/local/bin/composer
+RUN composer dump-autoload --optimize --no-scripts --no-interaction
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
