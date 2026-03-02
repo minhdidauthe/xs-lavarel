@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Quay Thử Xổ Số Miền Bắc - SOICAU7777.CLICK')
+@section('title', $metaTitle ?? 'Quay Thử Xổ Số - SOICAU7777.CLICK')
 
 @section('styles')
 <style>
@@ -34,6 +34,7 @@
         color: #aaa;
         white-space: nowrap;
     }
+    .day-tab { text-decoration: none; }
     .day-tab:hover { border-color: #FF3D3D; color: #FF3D3D; }
     .day-tab.active { background: linear-gradient(135deg, #C30000, #FF3D3D); color: #fff; border-color: transparent; }
 
@@ -195,10 +196,9 @@
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
         <div>
             <h1 class="text-xl font-black uppercase tracking-tight">
-                <span class="text-gradient">Quay Thử</span>
-                <span class="text-white"> Xổ Số</span>
+                <span class="text-gradient">{{ $pageTitle ?? 'Quay Thử Xổ Số Miền Bắc' }}</span>
             </h1>
-            <p class="text-gray-500 text-xs mt-1">Mô phỏng kết quả xổ số miền Bắc ngẫu nhiên</p>
+            <p class="text-gray-500 text-xs mt-1">Mô phỏng kết quả xổ số {{ ($region ?? 'MB') === 'MB' ? 'miền Bắc' : (($region ?? 'MB') === 'MN' ? 'miền Nam' : 'miền Trung') }} ngẫu nhiên</p>
         </div>
         <div class="qt-datetime" id="datetime"></div>
     </div>
@@ -208,22 +208,28 @@
         {{-- ═══ MAIN CARD ═══ --}}
         <div class="flex-1 min-w-0">
             <div class="qt-card">
-                <div class="qt-card-header">Quay Thử Xổ Số Miền Bắc Hôm Nay</div>
+                <div class="qt-card-header">{{ $pageTitle ?? 'Quay Thử Xổ Số Miền Bắc' }} Hôm Nay</div>
 
                 {{-- Controls --}}
                 <div class="p-5 text-center space-y-4">
                     <button id="btnQuay" onclick="startSpin()">Bắt Đầu Quay</button>
 
+                    {{-- Region tabs --}}
+                    <div class="flex flex-wrap gap-2 justify-center pt-1">
+                        <a href="/quay-thu" class="day-tab {{ ($region ?? 'MB') === 'MB' ? 'active' : '' }}">Miền Bắc</a>
+                        <a href="/quay-thu/mn" class="day-tab {{ ($region ?? 'MB') === 'MN' ? 'active' : '' }}">Miền Nam</a>
+                        <a href="/quay-thu/mt" class="day-tab {{ ($region ?? 'MB') === 'MT' ? 'active' : '' }}">Miền Trung</a>
+                    </div>
                     {{-- Day tabs --}}
                     <div class="flex flex-wrap gap-2 justify-center pt-1">
-                        <div class="day-tab active" onclick="selectDay(this,'mb')">Miền Bắc</div>
-                        <div class="day-tab" onclick="selectDay(this,'t2')">Thứ 2</div>
-                        <div class="day-tab" onclick="selectDay(this,'t3')">Thứ 3</div>
-                        <div class="day-tab" onclick="selectDay(this,'t4')">Thứ 4</div>
-                        <div class="day-tab" onclick="selectDay(this,'t5')">Thứ 5</div>
-                        <div class="day-tab" onclick="selectDay(this,'t6')">Thứ 6</div>
-                        <div class="day-tab" onclick="selectDay(this,'t7')">Thứ 7</div>
-                        <div class="day-tab" onclick="selectDay(this,'cn')">Chủ Nhật</div>
+                        <div class="day-tab active" onclick="selectDay(this)">Hôm Nay</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 2</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 3</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 4</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 5</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 6</div>
+                        <div class="day-tab" onclick="selectDay(this)">Thứ 7</div>
+                        <div class="day-tab" onclick="selectDay(this)">Chủ Nhật</div>
                     </div>
                 </div>
 
@@ -231,6 +237,8 @@
                 <div class="overflow-x-auto">
                     <table class="result-table" id="resultTable">
                         <tbody>
+                        @if(($region ?? 'MB') === 'MB')
+                            {{-- ═══ MIỀN BẮC PRIZE TABLE ═══ --}}
                             {{-- ĐB --}}
                             <tr class="result-row-white">
                                 <td class="prize-label">ĐB</td>
@@ -251,7 +259,7 @@
                                 <td colspan="3"><span class="cell-content" data-prize="g2a"><span class="spinner"></span></span></td>
                                 <td colspan="3"><span class="cell-content" data-prize="g2b"><span class="spinner"></span></span></td>
                             </tr>
-                            {{-- G3 row 1 --}}
+                            {{-- G3 --}}
                             <tr class="result-row-alt">
                                 <td class="prize-label" rowspan="2">G3</td>
                                 <td><span class="cell-content" data-prize="g3a"><span class="spinner"></span></span></td>
@@ -270,7 +278,7 @@
                                 <td><span class="cell-content" data-prize="g4c"><span class="spinner"></span></span></td>
                                 <td colspan="3"><span class="cell-content" data-prize="g4d"><span class="spinner"></span></span></td>
                             </tr>
-                            {{-- G5 row 1 --}}
+                            {{-- G5 --}}
                             <tr class="result-row-alt">
                                 <td class="prize-label" rowspan="2">G5</td>
                                 <td><span class="cell-content" data-prize="g5a"><span class="spinner"></span></span></td>
@@ -296,6 +304,80 @@
                                 <td><span class="cell-content" data-prize="g7c"><span class="spinner"></span></span></td>
                                 <td colspan="3"><span class="cell-content" data-prize="g7d"><span class="spinner"></span></span></td>
                             </tr>
+                        @else
+                            {{-- ═══ MIỀN NAM / MIỀN TRUNG PRIZE TABLE ═══ --}}
+                            {{-- ĐB --}}
+                            <tr class="result-row-white">
+                                <td class="prize-label">ĐB</td>
+                                <td class="db-cell" colspan="6">
+                                    <span class="cell-content" data-prize="db"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                            {{-- G1 --}}
+                            <tr class="result-row-alt">
+                                <td class="prize-label">G1</td>
+                                <td colspan="6">
+                                    <span class="cell-content" data-prize="g1"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                            {{-- G2 --}}
+                            <tr class="result-row-white">
+                                <td class="prize-label">G2</td>
+                                <td colspan="6">
+                                    <span class="cell-content" data-prize="g2"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                            {{-- G3 --}}
+                            <tr class="result-row-alt">
+                                <td class="prize-label">G3</td>
+                                <td colspan="3"><span class="cell-content" data-prize="g3a"><span class="spinner"></span></span></td>
+                                <td colspan="3"><span class="cell-content" data-prize="g3b"><span class="spinner"></span></span></td>
+                            </tr>
+                            {{-- G4 --}}
+                            <tr class="result-row-white">
+                                <td class="prize-label" rowspan="2">G4</td>
+                                <td colspan="2"><span class="cell-content" data-prize="g4a"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g4b"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g4c"><span class="spinner"></span></span></td>
+                            </tr>
+                            <tr class="result-row-white">
+                                <td colspan="2"><span class="cell-content" data-prize="g4d"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g4e"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g4f"><span class="spinner"></span></span></td>
+                            </tr>
+                            <tr class="result-row-white">
+                                <td class="prize-label"></td>
+                                <td colspan="6"><span class="cell-content" data-prize="g4g"><span class="spinner"></span></span></td>
+                            </tr>
+                            {{-- G5 --}}
+                            <tr class="result-row-alt">
+                                <td class="prize-label">G5</td>
+                                <td colspan="6">
+                                    <span class="cell-content" data-prize="g5"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                            {{-- G6 --}}
+                            <tr class="result-row-white">
+                                <td class="prize-label">G6</td>
+                                <td colspan="2"><span class="cell-content" data-prize="g6a"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g6b"><span class="spinner"></span></span></td>
+                                <td colspan="2"><span class="cell-content" data-prize="g6c"><span class="spinner"></span></span></td>
+                            </tr>
+                            {{-- G7 --}}
+                            <tr class="result-row-alt">
+                                <td class="prize-label">G7</td>
+                                <td colspan="6">
+                                    <span class="cell-content" data-prize="g7"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                            {{-- G8 --}}
+                            <tr class="result-row-white">
+                                <td class="prize-label">G8</td>
+                                <td colspan="6">
+                                    <span class="cell-content" data-prize="g8"><span class="spinner"></span></span>
+                                </td>
+                            </tr>
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -324,29 +406,71 @@
 
         {{-- ═══ SIDEBAR ═══ --}}
         <div class="w-full lg:w-64 flex-shrink-0">
+            {{-- Quay Thử Theo Vùng --}}
             <div class="sidebar-box qt-card">
-                <div class="qt-card-header">Quay Thử Theo Thứ</div>
+                <div class="qt-card-header">Quay Thử Theo Vùng</div>
                 <ul>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 2</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 3</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 4</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 5</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 6</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Thứ 7</a></li>
-                    <li><a href="#">Quay Thử Miền Bắc Chủ Nhật</a></li>
+                    <li><a href="/quay-thu/mb">Quay Thử Xổ Số Miền Bắc</a></li>
+                    <li><a href="/quay-thu/mn">Quay Thử Xổ Số Miền Nam</a></li>
+                    <li><a href="/quay-thu/mt">Quay Thử Xổ Số Miền Trung</a></li>
                 </ul>
             </div>
+            {{-- Miền Bắc --}}
             <div class="sidebar-box qt-card">
-                <div class="qt-card-header">Quay Thử Theo Tỉnh</div>
+                <div class="qt-card-header">Quay Thử Miền Bắc</div>
                 <ul>
-                    <li><a href="#">Quay Thử Xổ Số Hà Nội</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Bắc Ninh</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Thái Bình</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Hải Phòng</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Nam Định</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Quảng Ninh</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Hải Dương</a></li>
-                    <li><a href="#">Quay Thử Xổ Số Tuyên Quang</a></li>
+                    <li><a href="/quay-thu/ha-noi">Quay Thử Xổ Số Hà Nội</a></li>
+                    <li><a href="/quay-thu/bac-ninh">Quay Thử Xổ Số Bắc Ninh</a></li>
+                    <li><a href="/quay-thu/thai-binh">Quay Thử Xổ Số Thái Bình</a></li>
+                    <li><a href="/quay-thu/hai-phong">Quay Thử Xổ Số Hải Phòng</a></li>
+                    <li><a href="/quay-thu/nam-dinh">Quay Thử Xổ Số Nam Định</a></li>
+                    <li><a href="/quay-thu/quang-ninh">Quay Thử Xổ Số Quảng Ninh</a></li>
+                </ul>
+            </div>
+            {{-- Miền Trung --}}
+            <div class="sidebar-box qt-card">
+                <div class="qt-card-header">Quay Thử Miền Trung</div>
+                <ul>
+                    <li><a href="/quay-thu/hue">Quay Thử Xổ Số Huế</a></li>
+                    <li><a href="/quay-thu/da-nang">Quay Thử Xổ Số Đà Nẵng</a></li>
+                    <li><a href="/quay-thu/khanh-hoa">Quay Thử Xổ Số Khánh Hòa</a></li>
+                    <li><a href="/quay-thu/binh-dinh">Quay Thử Xổ Số Bình Định</a></li>
+                    <li><a href="/quay-thu/quang-nam">Quay Thử Xổ Số Quảng Nam</a></li>
+                    <li><a href="/quay-thu/quang-ngai">Quay Thử Xổ Số Quảng Ngãi</a></li>
+                    <li><a href="/quay-thu/quang-tri">Quay Thử Xổ Số Quảng Trị</a></li>
+                    <li><a href="/quay-thu/gia-lai">Quay Thử Xổ Số Gia Lai</a></li>
+                    <li><a href="/quay-thu/ninh-thuan">Quay Thử Xổ Số Ninh Thuận</a></li>
+                    <li><a href="/quay-thu/dak-lak">Quay Thử Xổ Số Đắk Lắk</a></li>
+                    <li><a href="/quay-thu/dak-nong">Quay Thử Xổ Số Đắk Nông</a></li>
+                    <li><a href="/quay-thu/phu-yen">Quay Thử Xổ Số Phú Yên</a></li>
+                    <li><a href="/quay-thu/kon-tum">Quay Thử Xổ Số Kon Tum</a></li>
+                </ul>
+            </div>
+            {{-- Miền Nam --}}
+            <div class="sidebar-box qt-card">
+                <div class="qt-card-header">Quay Thử Miền Nam</div>
+                <ul>
+                    <li><a href="/quay-thu/ho-chi-minh">Quay Thử Xổ Số TP HCM</a></li>
+                    <li><a href="/quay-thu/dong-nai">Quay Thử Xổ Số Đồng Nai</a></li>
+                    <li><a href="/quay-thu/can-tho">Quay Thử Xổ Số Cần Thơ</a></li>
+                    <li><a href="/quay-thu/dong-thap">Quay Thử Xổ Số Đồng Tháp</a></li>
+                    <li><a href="/quay-thu/ca-mau">Quay Thử Xổ Số Cà Mau</a></li>
+                    <li><a href="/quay-thu/ben-tre">Quay Thử Xổ Số Bến Tre</a></li>
+                    <li><a href="/quay-thu/vung-tau">Quay Thử Xổ Số Vũng Tàu</a></li>
+                    <li><a href="/quay-thu/bac-lieu">Quay Thử Xổ Số Bạc Liêu</a></li>
+                    <li><a href="/quay-thu/soc-trang">Quay Thử Xổ Số Sóc Trăng</a></li>
+                    <li><a href="/quay-thu/an-giang">Quay Thử Xổ Số An Giang</a></li>
+                    <li><a href="/quay-thu/binh-thuan">Quay Thử Xổ Số Bình Thuận</a></li>
+                    <li><a href="/quay-thu/vinh-long">Quay Thử Xổ Số Vĩnh Long</a></li>
+                    <li><a href="/quay-thu/binh-duong">Quay Thử Xổ Số Bình Dương</a></li>
+                    <li><a href="/quay-thu/tra-vinh">Quay Thử Xổ Số Trà Vinh</a></li>
+                    <li><a href="/quay-thu/long-an">Quay Thử Xổ Số Long An</a></li>
+                    <li><a href="/quay-thu/binh-phuoc">Quay Thử Xổ Số Bình Phước</a></li>
+                    <li><a href="/quay-thu/hau-giang">Quay Thử Xổ Số Hậu Giang</a></li>
+                    <li><a href="/quay-thu/tien-giang">Quay Thử Xổ Số Tiền Giang</a></li>
+                    <li><a href="/quay-thu/kien-giang">Quay Thử Xổ Số Kiên Giang</a></li>
+                    <li><a href="/quay-thu/tay-ninh">Quay Thử Xổ Số Tây Ninh</a></li>
+                    <li><a href="/quay-thu/lam-dong">Quay Thử Xổ Số Lâm Đồng</a></li>
                 </ul>
             </div>
         </div>
@@ -380,6 +504,11 @@ function rndPad(digits) {
 }
 
 /* ═══════════════════════════════════ PRIZES ═══ */
+@php
+$region = $region ?? 'MB';
+@endphp
+
+@if($region === 'MB')
 const PRIZES = [
     {prize:'g7a',digits:2},{prize:'g7b',digits:2},{prize:'g7c',digits:2},{prize:'g7d',digits:2},
     {prize:'g6a',digits:3},{prize:'g6b',digits:3},{prize:'g6c',digits:3},
@@ -392,6 +521,20 @@ const PRIZES = [
     {prize:'g1', digits:5},
     {prize:'db', digits:5},
 ];
+@else
+const PRIZES = [
+    {prize:'g8', digits:2},
+    {prize:'g7', digits:3},
+    {prize:'g6a',digits:4},{prize:'g6b',digits:4},{prize:'g6c',digits:4},
+    {prize:'g5', digits:4},
+    {prize:'g4a',digits:5},{prize:'g4b',digits:5},{prize:'g4c',digits:5},
+    {prize:'g4d',digits:5},{prize:'g4e',digits:5},{prize:'g4f',digits:5},{prize:'g4g',digits:5},
+    {prize:'g3a',digits:5},{prize:'g3b',digits:5},
+    {prize:'g2', digits:5},
+    {prize:'g1', digits:5},
+    {prize:'db', digits:6},
+];
+@endif
 
 let results = {}, currentViewMode = 'full', isSpinning = false, spinTimers = [];
 

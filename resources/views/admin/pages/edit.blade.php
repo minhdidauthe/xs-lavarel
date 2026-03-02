@@ -29,14 +29,26 @@
             {{-- Left Column - Main Content --}}
             <div class="lg:col-span-2 space-y-6">
                 {{-- Title --}}
-                <div class="bg-white rounded-xl shadow-sm p-6">
-                    <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề <span class="text-red-500">*</span></label>
-                    <input type="text" name="title" id="title" value="{{ old('title', $page->title) }}" required
-                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-                           placeholder="Nhập tiêu đề trang">
-                    @error('title')
-                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                    @enderror
+                <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" id="title" value="{{ old('title', $page->title) }}" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                               placeholder="Nhập tiêu đề trang">
+                        @error('title')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="slug" class="block text-sm font-medium text-gray-700 mb-1">Slug (URL)</label>
+                        <input type="text" name="slug" id="slug" value="{{ old('slug', $page->slug) }}"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 font-mono text-sm"
+                               placeholder="tu-dong-tao-tu-tieu-de">
+                        <p class="mt-1 text-xs text-gray-400">Bỏ trống để tự động tạo từ tiêu đề</p>
+                        @error('slug')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 {{-- Content --}}

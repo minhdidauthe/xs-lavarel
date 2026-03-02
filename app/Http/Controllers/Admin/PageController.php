@@ -65,7 +65,7 @@ class PageController extends Controller
         ]);
 
         $validated['author_id'] = auth()->id();
-        $validated['slug'] = $validated['slug'] ?: Str::slug($validated['title']);
+        $validated['slug'] = ($validated['slug'] ?? null) ?: Str::slug($validated['title']);
 
         Page::create($validated);
 
@@ -91,7 +91,7 @@ class PageController extends Controller
             'sort_order' => 'integer',
         ]);
 
-        $validated['slug'] = $validated['slug'] ?: Str::slug($validated['title']);
+        $validated['slug'] = ($validated['slug'] ?? null) ?: Str::slug($validated['title']);
 
         $page->update($validated);
 

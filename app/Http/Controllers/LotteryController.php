@@ -345,9 +345,79 @@ class LotteryController extends Controller
         return "Số {$item['number']} (điểm: {$item['score']}) — " . implode(', ', $reasons) . '.';
     }
 
-    public function quayThu()
+    public function quayThu(string $slug = null)
     {
-        return view('quay-thu');
+        // Region mapping
+        $regionMap = [
+            null => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Miền Bắc'],
+            'mb' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Miền Bắc'],
+            'mn' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Miền Nam'],
+            'mt' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Miền Trung'],
+        ];
+
+        // Province mapping (all map to their region)
+        $provinceMap = [
+            // Miền Bắc
+            'ha-noi' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Hà Nội'],
+            'bac-ninh' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Bắc Ninh'],
+            'thai-binh' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Thái Bình'],
+            'hai-phong' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Hải Phòng'],
+            'nam-dinh' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Nam Định'],
+            'quang-ninh' => ['region' => 'MB', 'title' => 'Quay Thử Xổ Số Quảng Ninh'],
+            // Miền Trung
+            'hue' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Huế'],
+            'khanh-hoa' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Khánh Hòa'],
+            'da-nang' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Đà Nẵng'],
+            'binh-dinh' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Bình Định'],
+            'quang-nam' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Quảng Nam'],
+            'quang-ngai' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Quảng Ngãi'],
+            'quang-tri' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Quảng Trị'],
+            'gia-lai' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Gia Lai'],
+            'ninh-thuan' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Ninh Thuận'],
+            'dak-lak' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Đắk Lắk'],
+            'dak-nong' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Đắk Nông'],
+            'phu-yen' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Phú Yên'],
+            'kon-tum' => ['region' => 'MT', 'title' => 'Quay Thử Xổ Số Kon Tum'],
+            // Miền Nam
+            'ho-chi-minh' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số TP Hồ Chí Minh'],
+            'dong-nai' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Đồng Nai'],
+            'can-tho' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Cần Thơ'],
+            'dong-thap' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Đồng Tháp'],
+            'ca-mau' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Cà Mau'],
+            'ben-tre' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Bến Tre'],
+            'vung-tau' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Vũng Tàu'],
+            'bac-lieu' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Bạc Liêu'],
+            'soc-trang' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Sóc Trăng'],
+            'an-giang' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số An Giang'],
+            'binh-thuan' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Bình Thuận'],
+            'vinh-long' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Vĩnh Long'],
+            'binh-duong' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Bình Dương'],
+            'tra-vinh' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Trà Vinh'],
+            'long-an' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Long An'],
+            'binh-phuoc' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Bình Phước'],
+            'hau-giang' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Hậu Giang'],
+            'tien-giang' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Tiền Giang'],
+            'kien-giang' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Kiên Giang'],
+            'tay-ninh' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Tây Ninh'],
+            'lam-dong' => ['region' => 'MN', 'title' => 'Quay Thử Xổ Số Lâm Đồng'],
+        ];
+
+        $info = $regionMap[$slug] ?? $provinceMap[$slug] ?? null;
+        if (!$info) {
+            abort(404);
+        }
+
+        // Check if admin has a custom Page in DB for meta/SEO
+        $page = \App\Models\Page::where('slug', 'quay-thu' . ($slug ? '-' . $slug : ''))->published()->first();
+
+        return view('quay-thu', [
+            'region' => $info['region'],
+            'pageTitle' => $page->title ?? $info['title'],
+            'metaTitle' => $page->meta_title ?? $info['title'] . ' - SOICAU7777.CLICK',
+            'metaDescription' => $page->meta_description ?? $info['title'] . ' - Mô phỏng kết quả xổ số ngẫu nhiên',
+            'slug' => $slug,
+            'pageData' => $page,
+        ]);
     }
 
     public function statistics()

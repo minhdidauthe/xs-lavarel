@@ -22,6 +22,7 @@ Route::get('/soi-cau', [LotteryController::class, 'prediction']);
 Route::get('/thong-ke', [LotteryController::class, 'statistics']);
 Route::get('/lich-su/{region?}', [LotteryController::class, 'history']);
 Route::get('/quay-thu', [LotteryController::class, 'quayThu']);
+Route::get('/quay-thu/{slug}', [LotteryController::class, 'quayThu'])->where('slug', '[a-z0-9\-]+');
 Route::get('/bridge', [LotteryController::class, 'bridge']);
 Route::get('/backend/bridge', [LotteryController::class, 'bridge']);
 
