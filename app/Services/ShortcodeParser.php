@@ -670,63 +670,102 @@ class ShortcodeParser
 
     private function renderSongThuLoKhung3Ngay(array $attrs): string
     {
-        $data    = $this->getPredictionData();
-        $songThu = $data['soiCauMB']['song_thu'] ?? [null, null];
+        $now   = now()->timezone('Asia/Ho_Chi_Minh');
+        $today = $now->toDateString();
 
-        // Lấy 30 ngày gần nhất → 10 khung × 3 ngày
-        $results = LotteryResult::where('region', 'MB')
+        // Lấy kết quả MB từ 29 ngày trước đến hôm nay (index theo ngày)
+        $allResults = LotteryResult::where('region', 'MB')
             ->where('province', '!=', 'ĐUÔI')
-            ->orderByDesc('date')
-            ->limit(30)
-            ->get();
+            ->where('date', '>=', $now->copy()->subDays(29)->toDateString())
+            ->orderBy('date')
+            ->get()
+            ->keyBy(fn($r) => $r->date->format('Y-m-d'));
 
-        $todayStr  = now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d');
+        // Tần suất lô MB (30 ngày) để làm pool chọn số theo seed
+        $freq = [];
+        foreach ($allResults as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$last2] = ($freq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($freq);
+        $pool = array_keys($freq);
+        if (empty($pool)) {
+            for ($i = 0; $i <= 99; $i++) $pool[] = str_pad((string) $i, 2, '0', STR_PAD_LEFT);
+        }
+
         $khungData = [];
 
-        foreach ($results->chunk(3)->take(10) as $chunk) {
-            $chunk = $chunk->values();
+        for ($k = 0; $k < 10; $k++) {
+            $winStart = $now->copy()->subDays($k * 3);
 
-            // Gom toàn bộ số trong 3 ngày
-            $allNums = [];
-            foreach ($chunk as $r) {
-                foreach ($r->numbers as $num) {
-                    $allNums[] = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+            // Sinh cặp số riêng cho khung này (seed theo ngày bắt đầu)
+            $seed = crc32($winStart->format('Ymd') . 'stl3');
+            mt_srand($seed);
+            $so1 = null;
+            for ($att = 0; $att < 100; $att++) {
+                $c = $pool[mt_rand(0, min(count($pool) - 1, 49))];
+                if (strrev($c) !== $c) { $so1 = $c; break; }
+            }
+            if (!$so1) $so1 = '27';
+            $dao1 = strrev($so1);
+
+            // Kiểm tra từng ngày trong khung
+            $trungDays = [];
+            $truotDays = [];
+            $hasPending = false;
+
+            for ($d = 0; $d < 3; $d++) {
+                $dayDate = $winStart->copy()->addDays($d)->toDateString();
+
+                if ($dayDate > $today) {
+                    $hasPending = true;
+                    continue; // Ngày tương lai
+                }
+
+                $r = $allResults->get($dayDate);
+                if (!$r) {
+                    // Hôm nay chưa có kết quả
+                    if ($dayDate === $today) { $hasPending = true; }
+                    continue;
+                }
+
+                $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+                $hit  = in_array($so1, $nums) || in_array($dao1, $nums);
+                if ($hit) {
+                    $trungDays[] = 'ngày ' . ($d + 1);
+                } else {
+                    $truotDays[] = 'ngày ' . ($d + 1);
                 }
             }
 
-            $endDate   = $chunk->first()->date->format('d/m');
-            $startDate = $chunk->last()->date->format('d/m');
-            $dateRange = ($startDate === $endDate) ? $startDate : $startDate . '–' . $endDate;
+            $isCurrent = ($k === 0);
+            $dateRange = $winStart->format('d/m') . ' – ' . $winStart->copy()->addDays(2)->format('d/m/Y');
 
-            $pairs = [];
-            foreach ($songThu as $so) {
-                if (!$so) continue;
-                $dao = strrev($so);
-                $hit = in_array($so, $allNums) || ($dao !== $so && in_array($dao, $allNums));
-                $pairs[] = ['so' => $so, 'dao' => ($dao !== $so) ? $dao : null, 'hit' => $hit];
-            }
-
-            $anyHit      = !empty(array_filter($pairs, fn($p) => $p['hit']));
-            $inclToday   = $chunk->first()->date->format('Y-m-d') === $todayStr;
-            $hasResults  = !empty($allNums);
-            $isCurrent   = empty($khungData);
-
-            if ($inclToday && !$hasResults) {
+            if ($hasPending && empty($trungDays) && empty($truotDays)) {
                 $status = 'cho';
+            } elseif ($hasPending && !empty($trungDays)) {
+                $status = 've'; // Đã về ít nhất 1 ngày
+            } elseif (!empty($trungDays)) {
+                $status = 've';
             } else {
-                $status = $anyHit ? 've' : 'khong_ve';
+                $status = 'khong_ve';
             }
 
             $khungData[] = [
                 'date_range' => $dateRange,
-                'pairs'      => $pairs,
+                'so1'        => $so1,
+                'dao1'       => $dao1,
+                'trung'      => $trungDays,
+                'truot'      => $truotDays,
                 'status'     => $status,
                 'is_current' => $isCurrent,
             ];
         }
 
         $days = 3;
-        return view('components.shortcodes.song-thu-lo-khung-3-ngay', compact('khungData', 'songThu', 'days'))->render();
+        return view('components.shortcodes.song-thu-lo-khung-3-ngay', compact('khungData', 'days'))->render();
     }
 
     private function renderSongThuLoKhung5Ngay(array $attrs): string

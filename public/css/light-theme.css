@@ -1195,8 +1195,16 @@ button.bg-white\/5:hover { background-color: #eee !important; }
 @media (max-width: 768px) { .sc-d3m-wrap { grid-template-columns: 1fr; } }
 
 /* ── Song thủ khung 3 ngày (10 hàng) ── */
-.sc-row-current { outline: 2px solid #e67e22; outline-offset: -2px; }
+.sc-row-current { outline: 2px dashed #e67e22; outline-offset: -2px; }
 .sc-khung-now   { display: inline-block; background: #e67e22; color: #fff; font-size: 9px; font-weight: 700; border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
+.sc-stl3-table  { width: 100%; }
+.sc-stl3-th-date { width: 140px; }
+.sc-stl3-th-nums { text-align: center; }
+.sc-stl3-th-kq   { min-width: 140px; }
+.sc-stl3-td-date { font-size: 12px; white-space: nowrap; }
+.sc-stl3-td-nums { text-align: center; padding: 6px 8px; }
+.sc-stl3-badge   { display: inline-block; background: #ed1c25; color: #fff; font-size: 16px; font-weight: 900; border-radius: 20px; padding: 4px 22px; letter-spacing: 2px; white-space: nowrap; }
+.sc-stl3-td-kq   { font-size: 12px; line-height: 1.7; }
 
 /* ── LRD shortcodes ── */
 .sc-lrd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
