@@ -24,6 +24,14 @@ class BuiltinShortcodeSeeder extends Seeder
             ['code' => 'soi_cau', 'name' => 'Soi Cầu AI (Compact)', 'description' => 'Bảng dự đoán AI top 10 cho bài viết'],
             ['code' => 'thong_ke', 'name' => 'Thống Kê Tần Suất (Compact)', 'description' => 'Bảng thống kê tần suất compact. Params: days, region'],
             ['code' => 'lo_gan', 'name' => 'Lô Gan (Compact)', 'description' => 'Bảng lô gan compact. Params: limit, region'],
+            // Bạch thủ / Song thủ
+            ['code' => 'bach_thu_lo_vip', 'name' => 'Bạch Thủ Lô VIP', 'description' => 'Bạch Thủ Lô Hôm Nay - hiển thị 1 số dự đoán cao nhất + số đảo'],
+            ['code' => 'bach_thu_lo_kep', 'name' => 'Bạch Thủ Lô Kép', 'description' => 'Bạch Thủ Lô Kép Hôm Nay - số kép (00 11 22...99) dự đoán cao nhất'],
+            ['code' => 'bach_thu_lo_nuoi_khung_3_ngay', 'name' => 'Bạch Thủ Lô Nuôi Khung 3 Ngày', 'description' => 'Bảng theo dõi bạch thủ lô 3 ngày - kết quả về/không về/đang chờ'],
+            ['code' => 'bach_thu_lo_nuoi_khung_5_ngay', 'name' => 'Bạch Thủ Lô Nuôi Khung 5 Ngày', 'description' => 'Bảng theo dõi bạch thủ lô 5 ngày - kết quả về/không về/đang chờ'],
+            ['code' => 'song_thu_lo_vip', 'name' => 'Song Thủ Lô VIP', 'description' => 'Song Thủ Lô Hôm Nay - 2 số dự đoán + số đảo (dạng 27-72)'],
+            ['code' => 'song_thu_lo_kep', 'name' => 'Song Thủ Lô Kép', 'description' => 'Song Thủ Lô Kép Hôm Nay - 2 số kép (00 11 22...99) dự đoán cao nhất'],
+            ['code' => 'song_thu_lo_khung_2_ngay', 'name' => 'Song Thủ Lô Nuôi Khung 2 Ngày', 'description' => 'Bảng theo dõi song thủ lô 2 ngày - responsive, cột ngày nhỏ đậm, mirror pairs'],
         ];
 
         foreach ($builtins as $item) {

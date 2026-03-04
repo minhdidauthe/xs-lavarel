@@ -23,6 +23,14 @@ class ShortcodeParser
         'kqxs_mt_mn' => 'renderKqxsMtMn',
         'thong_ke_lo' => 'renderThongKeLo',
         'blog_moi' => 'renderBlogMoi',
+        // Bạch thủ / Song thủ shortcodes
+        'bach_thu_lo_vip' => 'renderBachThuLoVip',
+        'bach_thu_lo_kep' => 'renderBachThuLoKep',
+        'bach_thu_lo_nuoi_khung_3_ngay' => 'renderBachThuLoNuoiKhung3Ngay',
+        'bach_thu_lo_nuoi_khung_5_ngay' => 'renderBachThuLoNuoiKhung5Ngay',
+        'song_thu_lo_vip' => 'renderSongThuLoVip',
+        'song_thu_lo_kep' => 'renderSongThuLoKep',
+        'song_thu_lo_khung_2_ngay' => 'renderSongThuLoKhung2Ngay',
     ];
 
     /** Cache prediction data (shared by soi_cau_mb, cau_dep, lo_top, du_doan_cards) */
@@ -516,6 +524,137 @@ class ShortcodeParser
             ->get();
 
         return view('components.shortcodes.blog-moi', compact('posts'))->render();
+    }
+
+    // ─────────────────────────────────────────────
+    // Bạch thủ / Song thủ shortcodes
+    // ─────────────────────────────────────────────
+
+    private function renderBachThuLoVip(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        $bachThu = $data['soiCauMB']['bach_thu'] ?? null;
+        $mirror  = $bachThu ? strrev($bachThu) : null;
+
+        return view('components.shortcodes.bach-thu-lo-vip', compact('bachThu', 'mirror'))->render();
+    }
+
+    private function renderBachThuLoKep(array $attrs): string
+    {
+        $data   = $this->getPredictionData();
+        $loKep  = $data['soiCauMB']['lo_kep'] ?? [];
+        $bachKep = $loKep[0] ?? null;
+
+        return view('components.shortcodes.bach-thu-lo-kep', compact('bachKep', 'loKep'))->render();
+    }
+
+    private function renderBachThuLoNuoiKhung3Ngay(array $attrs): string
+    {
+        return $this->renderNuoiKhung(3, 'single');
+    }
+
+    private function renderBachThuLoNuoiKhung5Ngay(array $attrs): string
+    {
+        return $this->renderNuoiKhung(5, 'single');
+    }
+
+    private function renderSongThuLoVip(array $attrs): string
+    {
+        $data    = $this->getPredictionData();
+        $songThu = $data['soiCauMB']['song_thu'] ?? [null, null];
+        $pairs   = array_map(function ($n) {
+            if (!$n) return ['so' => null, 'dao' => null];
+            $dao = strrev($n);
+            return ['so' => $n, 'dao' => ($dao !== $n) ? $dao : null];
+        }, $songThu);
+
+        return view('components.shortcodes.song-thu-lo-vip', compact('pairs'))->render();
+    }
+
+    private function renderSongThuLoKep(array $attrs): string
+    {
+        $data    = $this->getPredictionData();
+        $loKep   = $data['soiCauMB']['lo_kep'] ?? [];
+        $songKep = array_slice($loKep, 0, 2);
+
+        return view('components.shortcodes.song-thu-lo-kep', compact('songKep', 'loKep'))->render();
+    }
+
+    private function renderSongThuLoKhung2Ngay(array $attrs): string
+    {
+        return $this->renderNuoiKhung(2, 'double');
+    }
+
+    /**
+     * Shared helper: render bảng nuôi khung N ngày
+     * mode: 'single' = bạch thủ, 'double' = song thủ (với mirror pairs)
+     */
+    private function renderNuoiKhung(int $days, string $mode): string
+    {
+        $data    = $this->getPredictionData();
+        $songThu = $data['soiCauMB']['song_thu'] ?? [null, null];
+        $bachThu = $data['soiCauMB']['bach_thu'] ?? null;
+
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->limit($days)
+            ->get();
+
+        $todayStr = now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d');
+        $khungData = [];
+
+        foreach ($results as $r) {
+            $dateStr = $r->date->format('Y-m-d');
+            $nums    = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+            $hasResults = count($nums) > 0;
+            $isToday = ($dateStr === $todayStr);
+
+            if ($mode === 'single') {
+                $status = (!$hasResults || $isToday && !$hasResults)
+                    ? 'cho'
+                    : (in_array($bachThu, $nums) ? 've' : 'khong_ve');
+                // Nếu hôm nay nhưng đã có kết quả → hiện kết quả thật
+                if ($isToday && $hasResults) {
+                    $status = in_array($bachThu, $nums) ? 've' : 'khong_ve';
+                }
+
+                $khungData[] = [
+                    'date'    => $r->date->format('d/m/Y'),
+                    'so_nuoi' => $bachThu,
+                    'status'  => $status,
+                ];
+            } else {
+                // double mode: song thủ với mirror pairs
+                $pairs = [];
+                foreach ($songThu as $so) {
+                    if (!$so) continue;
+                    $dao = strrev($so);
+                    $hit = in_array($so, $nums) || ($dao !== $so && in_array($dao, $nums));
+                    $pairs[] = ['so' => $so, 'dao' => ($dao !== $so) ? $dao : null, 'hit' => $hit];
+                }
+
+                $allHit = count(array_filter($pairs, fn($p) => $p['hit'])) > 0;
+                $status = (!$hasResults || ($isToday && !$hasResults)) ? 'cho'
+                    : ($allHit ? 've' : 'khong_ve');
+                if ($isToday && $hasResults) {
+                    $status = $allHit ? 've' : 'khong_ve';
+                }
+
+                $khungData[] = [
+                    'date'   => $r->date->format('d/m/Y'),
+                    'pairs'  => $pairs,
+                    'status' => $status,
+                ];
+            }
+        }
+
+        $template = match ($mode) {
+            'double' => 'components.shortcodes.song-thu-lo-khung-2-ngay',
+            default  => 'components.shortcodes.bach-thu-lo-nuoi-khung',
+        };
+
+        return view($template, compact('khungData', 'days', 'bachThu', 'songThu'))->render();
     }
 
     // ─────────────────────────────────────────────

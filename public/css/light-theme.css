@@ -1053,6 +1053,121 @@ button.bg-white\/5:hover { background-color: #eee !important; }
     }
 }
 
+/* ─── Bạch Thủ / Song Thủ Lô shortcodes ─── */
+.sc-btl-highlight {
+    text-align: center;
+    padding: 20px 10px 10px;
+}
+.sc-btl-num-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.sc-btl-num {
+    display: inline-block;
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1;
+    min-width: 80px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+.sc-btl-num.green { color: #2e8b57; }
+.sc-btl-num.blue  { color: #3366cc; }
+.sc-btl-num.red   { color: #ed1c25; }
+.sc-btl-mirror    { display: flex; align-items: center; gap: 8px; color: #999; }
+.sc-btl-label {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: #666;
+    font-style: italic;
+}
+/* Song Thủ Lô VIP */
+.sc-stl-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 10px;
+}
+.sc-stl-pair {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px 16px;
+    border: 1px solid #e0e0e0;
+}
+.sc-stl-num {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1;
+}
+.sc-stl-num.green { color: #2e8b57; }
+.sc-stl-num.blue  { color: #3366cc; }
+.sc-stl-arrow { font-size: 16px; color: #aaa; }
+.sc-stl-sep   { font-size: 24px; color: #ccc; font-weight: 300; }
+.sc-stl-desc  { font-size: 12px; color: #888; padding: 4px 12px 12px; font-style: italic; }
+/* Lô kép */
+.sc-kep-list {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.sc-kep-label { font-size: 12px; color: #888; }
+.sc-kep-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #eee;
+    color: #555;
+    font-weight: 700;
+    font-size: 13px;
+}
+.sc-kep-badge.active { background: #ed1c25; color: #fff; }
+.sc-kep-all { text-align: center; padding: 10px; }
+.sc-kep-grid { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 6px; }
+/* Nuôi khung table */
+.sc-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sc-table-responsive { max-width: 100%; }
+.sc-khung-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.sc-khung-table th, .sc-khung-table td {
+    padding: 8px 10px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+.sc-khung-table thead { background: #f0f0f0; }
+.sc-khung-th-date { width: 90px; font-size: 11px; font-weight: 700; }
+.sc-khung-td-date { font-size: 11px; font-weight: 700; white-space: nowrap; }
+.sc-khung-td-so   { font-weight: 700; }
+.sc-khung-td-kq   { min-width: 130px; }
+.sc-row-ve        { background: #f0fff4; }
+.sc-row-khongve   { background: #fff5f5; }
+.sc-row-cho       { background: #fffbf0; }
+.sc-kq-ve    { color: #2e8b57; font-weight: 700; font-size: 12px; }
+.sc-kq-khongve { color: #ed1c25; font-weight: 700; font-size: 12px; }
+.sc-kq-cho   { color: #e67e22; font-weight: 600; font-size: 12px; }
+.sc-kq-ve i, .sc-kq-khongve i, .sc-kq-cho i { margin-right: 3px; }
+.sc-khung-intro { font-size: 13px; color: #555; margin: 6px 12px 10px; }
+.sc-khung-intro .green { color: #2e8b57; }
+/* Song thủ khung small nums */
+.sc-stl-num-sm { font-size: 16px; font-weight: 700; }
+.sc-stl-num-sm.green { color: #2e8b57; }
+.sc-stl-num-sm.blue  { color: #3366cc; }
+.sc-stl-sep-sm { font-size: 11px; color: #aaa; margin: 0 2px; }
+.sc-no-data { text-align: center; color: #999; font-style: italic; padding: 16px; font-size: 13px; }
+
 @media (max-width: 480px) {
     .sc-footer-grid {
         grid-template-columns: 1fr;
