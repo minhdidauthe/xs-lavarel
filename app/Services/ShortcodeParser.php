@@ -828,46 +828,74 @@ class ShortcodeParser
 
     private function renderLrdDanLo6So(array $attrs): string
     {
+        $now   = now()->timezone('Asia/Ho_Chi_Minh');
+        $today = $now->toDateString();
+
+        // Get DB results for last 7 days
+        $dbResults = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', $now->copy()->subDays(7)->toDateString())
+            ->orderByDesc('date')
+            ->get()
+            ->keyBy(fn($r) => $r->date->format('Y-m-d'));
+
+        // AI prediction for today (used only for today's row if available)
         $data = $this->getPredictionData();
         $predictionAI = $data['predictionAI'] ?? [];
 
-        if (count($predictionAI) >= 6) {
-            $danLo = array_map(
-                fn($item) => str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT),
-                array_slice($predictionAI, 0, 6)
-            );
-        } else {
-            $seed = crc32(date('Ymd') . 'dan_lo_6');
-            mt_srand($seed);
-            $danLo = [];
-            $seen = [];
-            while (count($danLo) < 6) {
-                $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
-                if (!in_array($n, $seen)) {
-                    $seen[] = $n;
-                    $danLo[] = $n;
+        $history = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date    = $now->copy()->subDays($i);
+            $dateKey = $date->format('Y-m-d');
+
+            // Generate day-specific 6 numbers (seeded by date for consistency)
+            if ($i === 0 && count($predictionAI) >= 6) {
+                // Today: use AI prediction if available
+                $danLo = array_map(
+                    fn($item) => str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT),
+                    array_slice($predictionAI, 0, 6)
+                );
+            } else {
+                $seed = crc32($dateKey . 'dan_lo_6');
+                mt_srand($seed);
+                $danLo = [];
+                $seen  = [];
+                while (count($danLo) < 6) {
+                    $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+                    if (!in_array($n, $seen)) {
+                        $seen[]  = $n;
+                        $danLo[] = $n;
+                    }
                 }
+            }
+            sort($danLo);
+
+            if (isset($dbResults[$dateKey])) {
+                $r    = $dbResults[$dateKey];
+                $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+                $ve   = array_values(array_filter($danLo, fn($n) => in_array($n, $nums)));
+                $history[] = [
+                    'date'     => $date->format('d/m'),
+                    'danLo'    => $danLo,
+                    'hits'     => count($ve),
+                    've'       => $ve,
+                    'status'   => count($ve) > 0 ? 've' : 'khong_ve',
+                    'is_today' => $i === 0,
+                ];
+            } else {
+                // No result yet (today before 19h or future)
+                $history[] = [
+                    'date'     => $date->format('d/m'),
+                    'danLo'    => $danLo,
+                    'hits'     => 0,
+                    've'       => [],
+                    'status'   => 'cho',
+                    'is_today' => $i === 0,
+                ];
             }
         }
 
-        $results = LotteryResult::where('region', 'MB')
-            ->where('province', '!=', 'ĐUÔI')
-            ->orderByDesc('date')
-            ->limit(7)
-            ->get();
-
-        $history = [];
-        foreach ($results as $r) {
-            $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
-            $ve = array_values(array_filter($danLo, fn($n) => in_array($n, $nums)));
-            $history[] = [
-                'date' => $r->date->format('d/m'),
-                'hits' => count($ve),
-                've'   => $ve,
-            ];
-        }
-
-        return view('components.shortcodes.lrd-dan-lo-6-so', compact('danLo', 'history'))->render();
+        return view('components.shortcodes.lrd-dan-lo-6-so', compact('history'))->render();
     }
 
     private function renderLrdDan3CangLo(array $attrs): string

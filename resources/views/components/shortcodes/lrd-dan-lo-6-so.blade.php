@@ -15,15 +15,17 @@
                 </thead>
                 <tbody>
                     @forelse($history as $row)
-                    <tr class="{{ $row['hits'] > 0 ? 'sc-row-ve' : 'sc-row-khongve' }}">
+                    <tr class="{{ $row['status'] === 've' ? 'sc-row-ve' : ($row['status'] === 'khong_ve' ? 'sc-row-khongve' : 'sc-row-cho') }}{{ $row['is_today'] ? ' sc-row-current' : '' }}">
                         <td class="sc-khung-td-date"><strong>{{ $row['date'] }}</strong></td>
                         <td class="sc-lrd-td-nums">
-                            @foreach($danLo as $n)
+                            @foreach($row['danLo'] as $n)
                             <span class="sc-kep-badge {{ in_array($n, $row['ve']) ? 'active' : '' }}">{{ $n }}</span>
                             @endforeach
                         </td>
                         <td>
-                            @if($row['hits'] > 0)
+                            @if($row['status'] === 'cho')
+                                <span class="sc-kq-cho"><i class="fas fa-clock"></i> Đang chờ kết quả</span>
+                            @elseif($row['hits'] > 0)
                                 <span class="sc-kq-ve"><i class="fas fa-check-circle"></i> Trúng {{ $row['hits'] }} số</span>
                             @else
                                 <span class="sc-kq-khongve"><i class="fas fa-xmark-circle"></i> Không về</span>
