@@ -31,6 +31,15 @@ class ShortcodeParser
         'song_thu_lo_vip' => 'renderSongThuLoVip',
         'song_thu_lo_kep' => 'renderSongThuLoKep',
         'song_thu_lo_khung_2_ngay' => 'renderSongThuLoKhung2Ngay',
+        'song_thu_lo_khung_3_ngay' => 'renderSongThuLoKhung3Ngay',
+        'song_thu_lo_khung_5_ngay' => 'renderSongThuLoKhung5Ngay',
+        // LRD shortcodes
+        'lrd_du_doan_3_cang' => 'renderLrdDuDoan3Cang',
+        'lrd_dan_lo_6_so' => 'renderLrdDanLo6So',
+        'lrd_dan_3_cang_lo' => 'renderLrdDan3CangLo',
+        'lrd_dan_de_3_cang' => 'renderLrdDanDe3Cang',
+        // Cầu đẹp hằng ngày
+        'caudephangngay_mb' => 'renderCauDepHangNgayMB',
     ];
 
     /** Cache prediction data (shared by soi_cau_mb, cau_dep, lo_top, du_doan_cards) */
@@ -655,6 +664,245 @@ class ShortcodeParser
         };
 
         return view($template, compact('khungData', 'days', 'bachThu', 'songThu'))->render();
+    }
+
+    private function renderSongThuLoKhung3Ngay(array $attrs): string
+    {
+        return $this->renderNuoiKhung(3, 'double');
+    }
+
+    private function renderSongThuLoKhung5Ngay(array $attrs): string
+    {
+        return $this->renderNuoiKhung(5, 'double');
+    }
+
+    private function renderLrdDuDoan3Cang(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        $predictionAI = $data['predictionAI'] ?? [];
+
+        // Tần suất đầu số (hàng trăm) từ giải đặc biệt 30 ngày
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(30)->toDateString())
+            ->orderByDesc('date')
+            ->get();
+
+        $headFreq = [];
+        foreach ($results as $r) {
+            $special = $r->prizes['special'] ?? null;
+            if (!$special) continue;
+            $spStr = is_array($special) ? ($special[0] ?? '') : $special;
+            if (strlen($spStr) >= 3) {
+                $h = substr($spStr, -3, 1);
+                $headFreq[$h] = ($headFreq[$h] ?? 0) + 1;
+            }
+        }
+        arsort($headFreq);
+        $topHeads = array_keys(array_slice($headFreq, 0, 5, true));
+
+        $seed = crc32(date('Ymd') . 'du_doan_3_cang');
+        mt_srand($seed);
+
+        $predictions = [];
+        if (count($predictionAI) >= 5) {
+            foreach ($topHeads as $h) {
+                foreach (array_slice($predictionAI, 0, 4) as $item) {
+                    $n = str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
+                    $num3 = $h . $n;
+                    $prob = max(15, min(45, 20 + mt_rand(-5, 25)));
+                    $predictions[] = ['number' => $num3, 'prob' => $prob];
+                    if (count($predictions) >= 10) break 2;
+                }
+            }
+        } else {
+            $seen = [];
+            while (count($predictions) < 10) {
+                $n = str_pad((string) mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
+                if (!in_array($n, $seen)) {
+                    $seen[] = $n;
+                    $predictions[] = ['number' => $n, 'prob' => mt_rand(15, 45)];
+                }
+            }
+        }
+
+        return view('components.shortcodes.lrd-du-doan-3-cang', compact('predictions'))->render();
+    }
+
+    private function renderLrdDanLo6So(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        $predictionAI = $data['predictionAI'] ?? [];
+
+        if (count($predictionAI) >= 6) {
+            $danLo = array_map(
+                fn($item) => str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT),
+                array_slice($predictionAI, 0, 6)
+            );
+        } else {
+            $seed = crc32(date('Ymd') . 'dan_lo_6');
+            mt_srand($seed);
+            $danLo = [];
+            $seen = [];
+            while (count($danLo) < 6) {
+                $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+                if (!in_array($n, $seen)) {
+                    $seen[] = $n;
+                    $danLo[] = $n;
+                }
+            }
+        }
+
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->limit(7)
+            ->get();
+
+        $history = [];
+        foreach ($results as $r) {
+            $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+            $ve = array_values(array_filter($danLo, fn($n) => in_array($n, $nums)));
+            $history[] = [
+                'date' => $r->date->format('d/m'),
+                'hits' => count($ve),
+                've'   => $ve,
+            ];
+        }
+
+        return view('components.shortcodes.lrd-dan-lo-6-so', compact('danLo', 'history'))->render();
+    }
+
+    private function renderLrdDan3CangLo(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        $predictionAI = $data['predictionAI'] ?? [];
+
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(30)->toDateString())
+            ->orderByDesc('date')
+            ->get();
+
+        $headFreq = [];
+        foreach ($results as $r) {
+            $special = $r->prizes['special'] ?? null;
+            if (!$special) continue;
+            $spStr = is_array($special) ? ($special[0] ?? '') : $special;
+            if (strlen($spStr) >= 3) {
+                $h = substr($spStr, -3, 1);
+                $headFreq[$h] = ($headFreq[$h] ?? 0) + 1;
+            }
+        }
+        arsort($headFreq);
+        $topHeads = array_keys(array_slice($headFreq, 0, 3, true));
+
+        $dan3Cang = [];
+        if (count($predictionAI) >= 5) {
+            foreach ($topHeads as $h) {
+                foreach (array_slice($predictionAI, 0, 5) as $item) {
+                    $n = $h . str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
+                    if (!in_array($n, $dan3Cang)) $dan3Cang[] = $n;
+                }
+            }
+        } else {
+            $seed = crc32(date('Ymd') . 'dan_3_cang');
+            mt_srand($seed);
+            while (count($dan3Cang) < 15) {
+                $n = str_pad((string) mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
+                if (!in_array($n, $dan3Cang)) $dan3Cang[] = $n;
+            }
+        }
+
+        $dan3Cang = array_slice($dan3Cang, 0, 15);
+
+        return view('components.shortcodes.lrd-dan-3-cang-lo', compact('dan3Cang'))->render();
+    }
+
+    private function renderLrdDanDe3Cang(array $attrs): string
+    {
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(60)->toDateString())
+            ->orderByDesc('date')
+            ->get();
+
+        $danDe = [];
+        foreach ($results as $r) {
+            $special = $r->prizes['special'] ?? null;
+            if (!$special) continue;
+            $spStr = is_array($special) ? ($special[0] ?? '') : $special;
+            if (strlen($spStr) >= 3) {
+                $last3 = substr($spStr, -3);
+                if (!in_array($last3, $danDe)) $danDe[] = $last3;
+            }
+        }
+
+        // Điền đủ 50 số với seeded random
+        $seed = crc32(date('Ymd') . 'dan_de_3_cang');
+        mt_srand($seed);
+        while (count($danDe) < 50) {
+            $n = str_pad((string) mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
+            if (!in_array($n, $danDe)) $danDe[] = $n;
+        }
+
+        $danDe = array_slice($danDe, 0, 50);
+        sort($danDe);
+
+        return view('components.shortcodes.lrd-dan-de-3-cang', compact('danDe'))->render();
+    }
+
+    private function renderCauDepHangNgayMB(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        $predictionAI = $data['predictionAI'] ?? [];
+
+        $dayOfYear = (int) date('z'); // 0–365, xoay vòng theo ngày
+
+        if (count($predictionAI) >= 10) {
+            $topNums = array_slice($predictionAI, 0, 10);
+
+            // Nhóm 1: Cầu lô đẹp (top 5 + mirror)
+            $cauLoto = [];
+            foreach (array_slice($topNums, 0, 5) as $item) {
+                $n = str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
+                $mirror = strrev($n);
+                $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+            }
+
+            // Nhóm 2: Cầu kép xoay theo ngày
+            $kepAll = ['00','11','22','33','44','55','66','77','88','99'];
+            $cauKep = [
+                $kepAll[$dayOfYear % 10],
+                $kepAll[($dayOfYear + 3) % 10],
+                $kepAll[($dayOfYear + 7) % 10],
+            ];
+
+            // Nhóm 3: Tổng đặc biệt
+            $cauTong = array_unique([
+                $dayOfYear % 10,
+                ($dayOfYear + 4) % 10,
+                ($dayOfYear + 7) % 10,
+            ]);
+        } else {
+            // Fallback: seeded random
+            $seed = crc32(date('Ymd') . 'cau_dep_mb');
+            mt_srand($seed);
+            $cauLoto = [];
+            $seen = [];
+            while (count($cauLoto) < 5) {
+                $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+                if (!in_array($n, $seen)) {
+                    $seen[] = $n;
+                    $mirror = strrev($n);
+                    $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+                }
+            }
+            $cauKep = ['11', '22', '33'];
+            $cauTong = [1, 5, 8];
+        }
+
+        return view('components.shortcodes.caudephangngay-mb', compact('cauLoto', 'cauKep', 'cauTong'))->render();
     }
 
     // ─────────────────────────────────────────────

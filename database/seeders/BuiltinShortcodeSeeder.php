@@ -32,6 +32,15 @@ class BuiltinShortcodeSeeder extends Seeder
             ['code' => 'song_thu_lo_vip', 'name' => 'Song Thủ Lô VIP', 'description' => 'Song Thủ Lô Hôm Nay - 2 số dự đoán + số đảo (dạng 27-72)'],
             ['code' => 'song_thu_lo_kep', 'name' => 'Song Thủ Lô Kép', 'description' => 'Song Thủ Lô Kép Hôm Nay - 2 số kép (00 11 22...99) dự đoán cao nhất'],
             ['code' => 'song_thu_lo_khung_2_ngay', 'name' => 'Song Thủ Lô Nuôi Khung 2 Ngày', 'description' => 'Bảng theo dõi song thủ lô 2 ngày - responsive, cột ngày nhỏ đậm, mirror pairs'],
+            ['code' => 'song_thu_lo_khung_3_ngay', 'name' => 'Song Thủ Lô Nuôi Khung 3 Ngày', 'description' => 'Bảng theo dõi song thủ lô 3 ngày - cột ngày nhỏ đậm, mirror pairs'],
+            ['code' => 'song_thu_lo_khung_5_ngay', 'name' => 'Song Thủ Lô Nuôi Khung 5 Ngày', 'description' => 'Bảng theo dõi song thủ lô 5 ngày - cột ngày nhỏ đậm, mirror pairs'],
+            // LRD shortcodes
+            ['code' => 'lrd_du_doan_3_cang', 'name' => 'Dự Đoán 3 Cang', 'description' => 'Bảng dự đoán 3 cang hôm nay - xác suất 15-45%, layout compact'],
+            ['code' => 'lrd_dan_lo_6_so', 'name' => 'Dàn Lô 6 Số', 'description' => 'Dàn lô 6 số hôm nay + lịch sử 7 ngày về/không về'],
+            ['code' => 'lrd_dan_3_cang_lo', 'name' => 'Dàn 3 Cang Lô', 'description' => 'Dàn 3 cang lô hôm nay - 15 số theo phân tích'],
+            ['code' => 'lrd_dan_de_3_cang', 'name' => 'Dàn Đề 3 Cang 50 Số', 'description' => 'Dàn đề 3 cang hôm nay - giới hạn 50 số'],
+            // Cầu đẹp hằng ngày
+            ['code' => 'caudephangngay_mb', 'name' => 'Cầu Đẹp Hằng Ngày MB', 'description' => 'Cầu lô đẹp, kép, tổng đặc biệt hằng ngày XSMB - xoay vòng theo ngày'],
         ];
 
         foreach ($builtins as $item) {
