@@ -1194,6 +1194,10 @@ button.bg-white\/5:hover { background-color: #eee !important; }
 .sc-d3m-badge { background: #f0f0f0; border-radius: 3px; padding: 2px 7px; font-size: 12px; font-weight: 700; color: #333; }
 @media (max-width: 768px) { .sc-d3m-wrap { grid-template-columns: 1fr; } }
 
+/* ── Song thủ khung 3 ngày (10 hàng) ── */
+.sc-row-current { outline: 2px solid #e67e22; outline-offset: -2px; }
+.sc-khung-now   { display: inline-block; background: #e67e22; color: #fff; font-size: 9px; font-weight: 700; border-radius: 3px; padding: 1px 4px; margin-left: 4px; vertical-align: middle; }
+
 /* ── LRD shortcodes ── */
 .sc-lrd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .sc-lrd-th-idx  { width: 36px; text-align: center; }

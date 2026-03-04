@@ -670,7 +670,63 @@ class ShortcodeParser
 
     private function renderSongThuLoKhung3Ngay(array $attrs): string
     {
-        return $this->renderNuoiKhung(3, 'double');
+        $data    = $this->getPredictionData();
+        $songThu = $data['soiCauMB']['song_thu'] ?? [null, null];
+
+        // Lấy 30 ngày gần nhất → 10 khung × 3 ngày
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->limit(30)
+            ->get();
+
+        $todayStr  = now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d');
+        $khungData = [];
+
+        foreach ($results->chunk(3)->take(10) as $chunk) {
+            $chunk = $chunk->values();
+
+            // Gom toàn bộ số trong 3 ngày
+            $allNums = [];
+            foreach ($chunk as $r) {
+                foreach ($r->numbers as $num) {
+                    $allNums[] = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                }
+            }
+
+            $endDate   = $chunk->first()->date->format('d/m');
+            $startDate = $chunk->last()->date->format('d/m');
+            $dateRange = ($startDate === $endDate) ? $startDate : $startDate . '–' . $endDate;
+
+            $pairs = [];
+            foreach ($songThu as $so) {
+                if (!$so) continue;
+                $dao = strrev($so);
+                $hit = in_array($so, $allNums) || ($dao !== $so && in_array($dao, $allNums));
+                $pairs[] = ['so' => $so, 'dao' => ($dao !== $so) ? $dao : null, 'hit' => $hit];
+            }
+
+            $anyHit      = !empty(array_filter($pairs, fn($p) => $p['hit']));
+            $inclToday   = $chunk->first()->date->format('Y-m-d') === $todayStr;
+            $hasResults  = !empty($allNums);
+            $isCurrent   = empty($khungData);
+
+            if ($inclToday && !$hasResults) {
+                $status = 'cho';
+            } else {
+                $status = $anyHit ? 've' : 'khong_ve';
+            }
+
+            $khungData[] = [
+                'date_range' => $dateRange,
+                'pairs'      => $pairs,
+                'status'     => $status,
+                'is_current' => $isCurrent,
+            ];
+        }
+
+        $days = 3;
+        return view('components.shortcodes.song-thu-lo-khung-3-ngay', compact('khungData', 'songThu', 'days'))->render();
     }
 
     private function renderSongThuLoKhung5Ngay(array $attrs): string
