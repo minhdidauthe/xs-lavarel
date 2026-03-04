@@ -40,6 +40,8 @@ class ShortcodeParser
         'lrd_dan_de_3_cang' => 'renderLrdDanDe3Cang',
         // Cầu đẹp hằng ngày
         'caudephangngay_mb' => 'renderCauDepHangNgayMB',
+        // Dự đoán 3 miền
+        'du_doan_3_mien' => 'renderDuDoan3Mien',
     ];
 
     /** Cache prediction data (shared by soi_cau_mb, cau_dep, lo_top, du_doan_cards) */
@@ -903,6 +905,120 @@ class ShortcodeParser
         }
 
         return view('components.shortcodes.caudephangngay-mb', compact('cauLoto', 'cauKep', 'cauTong'))->render();
+    }
+
+    // ─────────────────────────────────────────────
+    // Dự đoán 3 miền
+    // ─────────────────────────────────────────────
+
+    /**
+     * Sinh dự đoán cho một miền dựa trên tần suất lịch sử + seed theo ngày/giờ.
+     */
+    private function getRegionPrediction(string $region, int $seed): array
+    {
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->limit(20)
+            ->get();
+
+        $freq = [];
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$last2] = ($freq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($freq);
+
+        $pool = array_keys(array_slice($freq, 0, 30, true));
+        if (empty($pool)) {
+            for ($i = 0; $i <= 99; $i++) {
+                $pool[] = str_pad((string) $i, 2, '0', STR_PAD_LEFT);
+            }
+        }
+
+        mt_srand($seed);
+        $selected = [];
+        $seen = [];
+        $attempts = 0;
+        while (count($selected) < 5 && $attempts < 300) {
+            $n = $pool[mt_rand(0, count($pool) - 1)];
+            if (!in_array($n, $seen)) {
+                $seen[] = $n;
+                $selected[] = $n;
+            }
+            $attempts++;
+        }
+        // Đảm bảo đủ 5 số
+        while (count($selected) < 5) {
+            $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+            if (!in_array($n, $seen)) {
+                $seen[] = $n;
+                $selected[] = $n;
+            }
+        }
+
+        $mirror = strrev($selected[0]);
+
+        return [
+            'bach_thu'    => $selected[0],
+            'bach_mirror' => ($mirror !== $selected[0]) ? $mirror : null,
+            'song_thu'    => [$selected[0], $selected[1]],
+            'de'          => $selected[2],
+            'dan'         => $selected,
+        ];
+    }
+
+    private function renderDuDoan3Mien(array $attrs): string
+    {
+        $now  = now()->timezone('Asia/Ho_Chi_Minh');
+        $hour = (int) $now->format('H');
+        $date = $now->format('Ymd');
+
+        // Seed thay đổi theo giờ cập nhật: MT 17h, MN 18h, MB 19h
+        $seeds = [
+            'MB' => crc32($date . 'MB' . ($hour >= 19 ? '1' : '0')),
+            'MT' => crc32($date . 'MT' . ($hour >= 17 ? '1' : '0')),
+            'MN' => crc32($date . 'MN' . ($hour >= 18 ? '1' : '0')),
+        ];
+
+        $data   = $this->getPredictionData();
+        $predAI = $data['predictionAI'] ?? [];
+
+        $regionsMeta = [
+            'MB' => ['name' => 'Miền Bắc',  'draw' => '18:10', 'update_hour' => 19, 'color' => 'red',   'updated' => $hour >= 19],
+            'MT' => ['name' => 'Miền Trung', 'draw' => '17:15', 'update_hour' => 17, 'color' => 'blue',  'updated' => $hour >= 17],
+            'MN' => ['name' => 'Miền Nam',   'draw' => '16:30', 'update_hour' => 18, 'color' => 'green', 'updated' => $hour >= 18],
+        ];
+
+        $predictions = [];
+        foreach ($regionsMeta as $code => $meta) {
+            if ($code === 'MB' && count($predAI) >= 5) {
+                mt_srand($seeds[$code]);
+                $bach   = str_pad((string) $predAI[0]['number'], 2, '0', STR_PAD_LEFT);
+                $mirror = strrev($bach);
+                $pred = [
+                    'bach_thu'    => $bach,
+                    'bach_mirror' => ($mirror !== $bach) ? $mirror : null,
+                    'song_thu'    => [
+                        str_pad((string) $predAI[0]['number'], 2, '0', STR_PAD_LEFT),
+                        str_pad((string) $predAI[1]['number'], 2, '0', STR_PAD_LEFT),
+                    ],
+                    'de'  => str_pad((string) $predAI[2]['number'], 2, '0', STR_PAD_LEFT),
+                    'dan' => array_map(
+                        fn($x) => str_pad((string) $x['number'], 2, '0', STR_PAD_LEFT),
+                        array_slice($predAI, 0, 5)
+                    ),
+                ];
+            } else {
+                $pred = $this->getRegionPrediction($code, $seeds[$code]);
+            }
+
+            $predictions[$code] = array_merge($meta, $pred);
+        }
+
+        return view('components.shortcodes.du-doan-3-mien', compact('predictions'))->render();
     }
 
     // ─────────────────────────────────────────────

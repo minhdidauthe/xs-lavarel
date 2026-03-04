@@ -1168,6 +1168,32 @@ button.bg-white\/5:hover { background-color: #eee !important; }
 .sc-stl-sep-sm { font-size: 11px; color: #aaa; margin: 0 2px; }
 .sc-no-data { text-align: center; color: #999; font-style: italic; padding: 16px; font-size: 13px; }
 
+/* ── du_doan_3_mien ── */
+.sc-d3m-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 8px 0; }
+.sc-d3m-card { border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+.sc-d3m-header { padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; }
+.sc-d3m-red   { background: #ed1c25; color: #fff; }
+.sc-d3m-blue  { background: #1a4fa0; color: #fff; }
+.sc-d3m-green { background: #2a7d4f; color: #fff; }
+.sc-d3m-region { font-weight: 700; font-size: 13px; }
+.sc-d3m-time   { font-size: 10px; opacity: 0.9; display: flex; align-items: center; gap: 3px; flex-wrap: wrap; justify-content: flex-end; }
+.sc-d3m-tag    { background: rgba(255,255,255,0.3); border-radius: 3px; padding: 1px 4px; font-weight: 700; }
+.sc-d3m-body   { padding: 6px 10px; }
+.sc-d3m-row    { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #f2f2f2; gap: 6px; }
+.sc-d3m-row-last { border-bottom: none; flex-wrap: wrap; }
+.sc-d3m-label  { font-size: 10px; color: #888; font-weight: 700; white-space: nowrap; min-width: 52px; }
+.sc-d3m-nums   { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.sc-d3m-main   { font-size: 24px; font-weight: 900; line-height: 1; }
+.sc-d3m-main.sc-d3m-red   { color: #ed1c25; }
+.sc-d3m-main.sc-d3m-blue  { color: #1a4fa0; }
+.sc-d3m-main.sc-d3m-green { color: #2a7d4f; }
+.sc-d3m-sub  { font-size: 18px; font-weight: 700; color: #aaa; }
+.sc-d3m-sep  { color: #ccc; font-size: 11px; }
+.sc-d3m-num  { font-size: 15px; font-weight: 700; color: #333; }
+.sc-d3m-dan  { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.sc-d3m-badge { background: #f0f0f0; border-radius: 3px; padding: 2px 7px; font-size: 12px; font-weight: 700; color: #333; }
+@media (max-width: 768px) { .sc-d3m-wrap { grid-template-columns: 1fr; } }
+
 /* ── LRD shortcodes ── */
 .sc-lrd-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .sc-lrd-th-idx  { width: 36px; text-align: center; }

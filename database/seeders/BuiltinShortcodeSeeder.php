@@ -41,6 +41,8 @@ class BuiltinShortcodeSeeder extends Seeder
             ['code' => 'lrd_dan_de_3_cang', 'name' => 'Dàn Đề 3 Cang 50 Số', 'description' => 'Dàn đề 3 cang hôm nay - giới hạn 50 số'],
             // Cầu đẹp hằng ngày
             ['code' => 'caudephangngay_mb', 'name' => 'Cầu Đẹp Hằng Ngày MB', 'description' => 'Cầu lô đẹp, kép, tổng đặc biệt hằng ngày XSMB - xoay vòng theo ngày'],
+            // Dự đoán 3 miền
+            ['code' => 'du_doan_3_mien', 'name' => 'Dự Đoán 3 Miền', 'description' => 'Bảng dự đoán bạch thủ, song thủ, đề, dàn lô cho MB/MT/MN - số thay đổi theo giờ quay'],
         ];
 
         foreach ($builtins as $item) {
