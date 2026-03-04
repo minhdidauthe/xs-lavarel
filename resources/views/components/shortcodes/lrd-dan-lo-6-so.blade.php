@@ -4,11 +4,6 @@
             <i class="fas fa-list-ol"></i>
             Dàn Lô 6 Số Hôm Nay - {{ now()->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y') }}
         </div>
-        <div class="sc-dan6-nums">
-            @foreach($danLo as $n)
-            <span class="sc-btl-num">{{ $n }}</span>
-            @endforeach
-        </div>
         <div class="sc-table-wrap sc-table-responsive">
             <table class="sc-khung-table sc-lrd-table">
                 <thead>
@@ -29,7 +24,7 @@
                         </td>
                         <td>
                             @if($row['hits'] > 0)
-                                <span class="sc-kq-ve"><i class="fas fa-check-circle"></i> {{ $row['hits'] }} số về</span>
+                                <span class="sc-kq-ve"><i class="fas fa-check-circle"></i> Trúng {{ $row['hits'] }} số</span>
                             @else
                                 <span class="sc-kq-khongve"><i class="fas fa-xmark-circle"></i> Không về</span>
                             @endif
