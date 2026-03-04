@@ -801,24 +801,40 @@ class ShortcodeParser
         $seed = crc32(date('Ymd') . 'du_doan_3_cang');
         mt_srand($seed);
 
+        // Tần suất đuôi 2 chữ số từ lô thực tế (dùng cho cả AI lẫn fallback)
+        $tailFreq = [];
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $tailFreq[$last2] = ($tailFreq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($tailFreq);
+        $topTails = array_keys(array_slice($tailFreq, 0, 5, true));
+        $totalTail = array_sum($tailFreq) ?: 1;
+
         $predictions = [];
         if (count($predictionAI) >= 5) {
             foreach ($topHeads as $h) {
                 foreach (array_slice($predictionAI, 0, 4) as $item) {
-                    $n = str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
-                    $num3 = $h . $n;
-                    $prob = max(15, min(45, 20 + mt_rand(-5, 25)));
+                    $tail  = str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
+                    $num3  = $h . $tail;
+                    // Tỉ lệ dựa trên tần suất đuôi thực tế
+                    $prob  = isset($tailFreq[$tail])
+                        ? max(15, min(45, (int) round($tailFreq[$tail] / $totalTail * 1000)))
+                        : mt_rand(15, 30);
                     $predictions[] = ['number' => $num3, 'prob' => $prob];
                     if (count($predictions) >= 10) break 2;
                 }
             }
         } else {
-            $seen = [];
-            while (count($predictions) < 10) {
-                $n = str_pad((string) mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
-                if (!in_array($n, $seen)) {
-                    $seen[] = $n;
-                    $predictions[] = ['number' => $n, 'prob' => mt_rand(15, 45)];
+            // Fallback: kết hợp top heads với top tails từ tần suất thực
+            foreach ($topHeads as $h) {
+                foreach ($topTails as $t) {
+                    $num3 = $h . $t;
+                    $prob = max(15, min(45, (int) round($tailFreq[$t] / $totalTail * 1000)));
+                    $predictions[] = ['number' => $num3, 'prob' => $prob];
+                    if (count($predictions) >= 10) break 2;
                 }
             }
         }
@@ -831,15 +847,30 @@ class ShortcodeParser
         $now   = now()->timezone('Asia/Ho_Chi_Minh');
         $today = $now->toDateString();
 
-        // Get DB results for last 7 days
-        $dbResults = LotteryResult::where('region', 'MB')
+        // Lấy kết quả MB 30 ngày để xây frequency pool
+        $allResults = LotteryResult::where('region', 'MB')
             ->where('province', '!=', 'ĐUÔI')
-            ->where('date', '>=', $now->copy()->subDays(7)->toDateString())
+            ->where('date', '>=', $now->copy()->subDays(30)->toDateString())
             ->orderByDesc('date')
-            ->get()
-            ->keyBy(fn($r) => $r->date->format('Y-m-d'));
+            ->get();
 
-        // AI prediction for today (used only for today's row if available)
+        $freq = [];
+        foreach ($allResults as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$last2] = ($freq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($freq);
+        // Top 30 số xuất hiện nhiều nhất làm pool chọn số
+        $freqPool = array_keys(array_slice($freq, 0, 30, true));
+        if (empty($freqPool)) {
+            for ($i = 0; $i <= 99; $i++) $freqPool[] = str_pad((string) $i, 2, '0', STR_PAD_LEFT);
+        }
+
+        $dbResults = $allResults->keyBy(fn($r) => $r->date->format('Y-m-d'));
+
+        // AI prediction cho hôm nay
         $data = $this->getPredictionData();
         $predictionAI = $data['predictionAI'] ?? [];
 
@@ -848,20 +879,20 @@ class ShortcodeParser
             $date    = $now->copy()->subDays($i);
             $dateKey = $date->format('Y-m-d');
 
-            // Generate day-specific 6 numbers (seeded by date for consistency)
             if ($i === 0 && count($predictionAI) >= 6) {
-                // Today: use AI prediction if available
+                // Hôm nay: dùng AI prediction nếu có
                 $danLo = array_map(
                     fn($item) => str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT),
                     array_slice($predictionAI, 0, 6)
                 );
             } else {
+                // Các ngày khác: chọn từ frequency pool bằng seed theo ngày
                 $seed = crc32($dateKey . 'dan_lo_6');
                 mt_srand($seed);
                 $danLo = [];
                 $seen  = [];
                 while (count($danLo) < 6) {
-                    $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
+                    $n = $freqPool[mt_rand(0, count($freqPool) - 1)];
                     if (!in_array($n, $seen)) {
                         $seen[]  = $n;
                         $danLo[] = $n;
@@ -922,6 +953,17 @@ class ShortcodeParser
         arsort($headFreq);
         $topHeads = array_keys(array_slice($headFreq, 0, 3, true));
 
+        // Tần suất đuôi 2 chữ số từ lô thực tế
+        $tailFreq = [];
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $tailFreq[$last2] = ($tailFreq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($tailFreq);
+        $topTails = array_keys(array_slice($tailFreq, 0, 5, true));
+
         $dan3Cang = [];
         if (count($predictionAI) >= 5) {
             foreach ($topHeads as $h) {
@@ -931,11 +973,21 @@ class ShortcodeParser
                 }
             }
         } else {
-            $seed = crc32(date('Ymd') . 'dan_3_cang');
-            mt_srand($seed);
-            while (count($dan3Cang) < 15) {
-                $n = str_pad((string) mt_rand(0, 999), 3, '0', STR_PAD_LEFT);
-                if (!in_array($n, $dan3Cang)) $dan3Cang[] = $n;
+            // Fallback: kết hợp top heads với top tails từ tần suất thực
+            foreach ($topHeads as $h) {
+                foreach ($topTails as $t) {
+                    $n = $h . $t;
+                    if (!in_array($n, $dan3Cang)) $dan3Cang[] = $n;
+                }
+            }
+            // Nếu chưa đủ 15, bổ sung bằng top tails + heads còn lại
+            $allHeads = array_keys($headFreq);
+            foreach ($allHeads as $h) {
+                foreach ($topTails as $t) {
+                    if (count($dan3Cang) >= 15) break 2;
+                    $n = $h . $t;
+                    if (!in_array($n, $dan3Cang)) $dan3Cang[] = $n;
+                }
             }
         }
 
@@ -982,49 +1034,73 @@ class ShortcodeParser
         $data = $this->getPredictionData();
         $predictionAI = $data['predictionAI'] ?? [];
 
-        $dayOfYear = (int) date('z'); // 0–365, xoay vòng theo ngày
+        // Lấy kết quả MB 30 ngày cho phân tích lô gan và tần suất tổng
+        $results30 = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(30)->toDateString())
+            ->orderByDesc('date')
+            ->get();
 
-        if (count($predictionAI) >= 10) {
-            $topNums = array_slice($predictionAI, 0, 10);
+        // ── Cầu kép: tìm kép lô gan (lâu không về nhất) ──────────────
+        $kepAll = ['00','11','22','33','44','55','66','77','88','99'];
+        $kepLastSeen = array_fill_keys($kepAll, null); // null = chưa về lần nào
+        foreach ($results30 as $r) {
+            $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+            $dateStr = $r->date->format('Y-m-d');
+            foreach ($kepAll as $k) {
+                if ($kepLastSeen[$k] === null && in_array($k, $nums)) {
+                    $kepLastSeen[$k] = $dateStr;
+                }
+            }
+        }
+        // Sắp xếp: null (chưa về) trước, rồi đến ngày về cũ nhất
+        uasort($kepLastSeen, fn($a, $b) => match(true) {
+            $a === null && $b === null => 0,
+            $a === null => -1,
+            $b === null => 1,
+            default => strcmp($a, $b),
+        });
+        $cauKep = array_slice(array_keys($kepLastSeen), 0, 3);
 
-            // Nhóm 1: Cầu lô đẹp (top 5 + mirror)
+        // ── Tổng ĐB: tần suất tổng 2 chữ số cuối giải đặc biệt ────────
+        $tongFreq = [];
+        foreach ($results30 as $r) {
+            $special = $r->prizes['special'] ?? null;
+            if (!$special) continue;
+            $spStr = is_array($special) ? ($special[0] ?? '') : $special;
+            if (strlen($spStr) >= 2) {
+                $last2 = substr($spStr, -2);
+                $tong  = (int)$last2[0] + (int)$last2[1];
+                $tongFreq[$tong] = ($tongFreq[$tong] ?? 0) + 1;
+            }
+        }
+        arsort($tongFreq);
+        $cauTong = array_keys(array_slice($tongFreq, 0, 3, true));
+        if (empty($cauTong)) $cauTong = [3, 7, 8]; // fallback tĩnh nếu không có data
+
+        // ── Cầu lô đẹp: AI prediction hoặc frequency pool ─────────────
+        if (count($predictionAI) >= 5) {
             $cauLoto = [];
-            foreach (array_slice($topNums, 0, 5) as $item) {
+            foreach (array_slice($predictionAI, 0, 5) as $item) {
                 $n = str_pad((string) $item['number'], 2, '0', STR_PAD_LEFT);
                 $mirror = strrev($n);
                 $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
             }
-
-            // Nhóm 2: Cầu kép xoay theo ngày
-            $kepAll = ['00','11','22','33','44','55','66','77','88','99'];
-            $cauKep = [
-                $kepAll[$dayOfYear % 10],
-                $kepAll[($dayOfYear + 3) % 10],
-                $kepAll[($dayOfYear + 7) % 10],
-            ];
-
-            // Nhóm 3: Tổng đặc biệt
-            $cauTong = array_unique([
-                $dayOfYear % 10,
-                ($dayOfYear + 4) % 10,
-                ($dayOfYear + 7) % 10,
-            ]);
         } else {
-            // Fallback: seeded random
-            $seed = crc32(date('Ymd') . 'cau_dep_mb');
-            mt_srand($seed);
-            $cauLoto = [];
-            $seen = [];
-            while (count($cauLoto) < 5) {
-                $n = str_pad((string) mt_rand(0, 99), 2, '0', STR_PAD_LEFT);
-                if (!in_array($n, $seen)) {
-                    $seen[] = $n;
-                    $mirror = strrev($n);
-                    $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+            // Fallback: top 5 số xuất hiện nhiều nhất 30 ngày gần đây
+            $loFreq = [];
+            foreach ($results30 as $r) {
+                foreach ($r->numbers as $num) {
+                    $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                    $loFreq[$last2] = ($loFreq[$last2] ?? 0) + 1;
                 }
             }
-            $cauKep = ['11', '22', '33'];
-            $cauTong = [1, 5, 8];
+            arsort($loFreq);
+            $cauLoto = [];
+            foreach (array_keys(array_slice($loFreq, 0, 5, true)) as $n) {
+                $mirror = strrev($n);
+                $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+            }
         }
 
         return view('components.shortcodes.caudephangngay-mb', compact('cauLoto', 'cauKep', 'cauTong'))->render();
