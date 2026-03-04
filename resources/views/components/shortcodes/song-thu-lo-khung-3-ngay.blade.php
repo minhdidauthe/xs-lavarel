@@ -1,9 +1,5 @@
 <section class="container sc-section">
     <div class="sc-soicau-box">
-        <div class="sc-soicau-header">
-            <i class="fas fa-table-list"></i>
-            Song Thủ Lô Nuôi Khung 3 Ngày - Cập nhật {{ now()->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y') }}
-        </div>
         <div class="sc-table-wrap sc-table-responsive">
             <table class="sc-khung-table sc-stl3-table">
                 <thead>
