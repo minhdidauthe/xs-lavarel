@@ -39,9 +39,81 @@ class ShortcodeParser
         'lrd_dan_3_cang_lo' => 'renderLrdDan3CangLo',
         'lrd_dan_de_3_cang' => 'renderLrdDanDe3Cang',
         // Cầu đẹp hằng ngày
-        'caudephangngay_mb' => 'renderCauDepHangNgayMB',
+        'caudephangngay_mb'              => 'renderCauDepHangNgayMB',
+        'caudephangngay_mn'              => 'renderCauDepHangNgayMN',
+        'caudephangngay_mt'              => 'renderCauDepHangNgayMT',
+        'caudephangngay1_mn'             => 'renderCauDepHangNgay1MN',
+        'caudephangngay1_mt'             => 'renderCauDepHangNgay1MT',
+        'caudephangngay'                 => 'renderCauDepHangNgayTinh',
         // Dự đoán 3 miền
-        'du_doan_3_mien' => 'renderDuDoan3Mien',
+        'du_doan_3_mien'                 => 'renderDuDoan3Mien',
+        // KQXS mở rộng
+        'ket_qua_xo_so'                  => 'renderKetQuaXoSo',
+        'lrd_results'                    => 'renderLrdResults',
+        'lrd_region_results'             => 'renderLrdRegionResults',
+        'thong_ke_general'               => 'renderThongKeGeneral',
+        // Lô gan mở rộng
+        'lrd_logan'                      => 'renderLrdLoGan',
+        'lrd_logan_full'                 => 'renderLrdLoGanFull',
+        // Bảng đặc biệt
+        'lrd_bang_dac_biet_nam'          => 'renderLrdBangDacBietNam',
+        'lrd_bang_dac_biet_thang'        => 'renderLrdBangDacBietThang',
+        'lrd_bang_dac_biet_tuan'         => 'renderLrdBangDacBietTuan',
+        // Thống kê chuyên sâu
+        'lrd_thong_ke_dau_duoi_loto'     => 'renderLrdThongKeDauDuoiLoto',
+        'lrd_thong_ke_lo_kep'            => 'renderLrdThongKeLoKep',
+        'lrd_thong_ke_lo_roi'            => 'renderLrdThongKeLoRoi',
+        'lrd_thong_ke_tan_suat_loto'     => 'renderLrdThongKeTanSuatLoto',
+        'lrd_thong_ke_theo_tong'         => 'renderLrdThongKeTheoTong',
+        'lrd_thong_ke_chu_ky_dac_biet'   => 'renderLrdThongKeChuKyDacBiet',
+        'lrd_thong_ke_giai_dac_biet_gan' => 'renderLrdThongKeGiaiDacBietGan',
+        'lrd_thong_ke_quan_trong'        => 'renderLrdThongKeQuanTrong',
+        'lrd_thong_ke_tan_suat_cap_loto' => 'renderLrdThongKeTanSuatCapLoto',
+        'lrd_thong_ke_tong_hop'          => 'renderLrdThongKeTongHop',
+        'lrd_soi_cau_pascal'             => 'renderLrdSoiCauPascal',
+        // Kết quả nhiều ngày & theo thứ
+        'lrd_xsmb_nhieu_ngay'            => 'renderLrdXsmbNhieuNgay',
+        'lrd_xsmn_theo_thu'              => 'renderLrdXsmnTheoThu',
+        'lrd_xsmt_theo_thu'              => 'renderLrdXsmtTheoThu',
+        // Soi cầu MB aliases
+        'chotsoxsmb'                     => 'renderChotSoXsMB',
+        'soicauxsmb'                     => 'renderSoiCauXsMB',
+        'du_doan_xsmb'                   => 'renderDuDoanXsMB',
+        'so_cau_xsmb'                    => 'renderSoCauXsMB',
+        // Cao thủ / top lô
+        'cao_thu_mo_bat'                 => 'renderCaoThuMoBat',
+        'lo_de_bac_nho'                  => 'renderLoDeBacNho',
+        'lrd_top_lo_dep_nhat'            => 'renderLrdTopLoDepNhat',
+        // Dàn đề / công cụ
+        'dandehangngay'                  => 'renderDanDeHangNgay',
+        'taodande'                       => 'renderTaoDande',
+        'lrd_ghep_lo_xien_tu_dong'       => 'renderGhepLoXienTuDong',
+        // VIP đọc thủ (aliases + new)
+        'bach_thu_lo_kep_vip'            => 'renderBachThuLoKep',
+        'song_thu_lo_kep_vip'            => 'renderSongThuLoKep',
+        'doc_thu_lo_vip'                 => 'renderDocThuLoVip',
+        'doc_thu_de_vip'                 => 'renderDocThuDeVip',
+        'doc_thu_lo_kep_vip'             => 'renderDocThuLoKepVip',
+        'doc_thu_de_kep_vip'             => 'renderDocThuDeKepVip',
+        // Lô kép nuôi khung
+        'lo_kep_khung_2_ngay'            => 'renderLoKepKhung2Ngay',
+        'lo_kep_khung_3_ngay'            => 'renderLoKepKhung3Ngay',
+        'lo_kep_khung_5_ngay'            => 'renderLoKepKhung5Ngay',
+        // Vietlott & Keno
+        'lrd_keno'                       => 'renderLrdKeno',
+        'lrd_xsmega645'                  => 'renderLrdXsMega645',
+        'lrd_power655'                   => 'renderLrdPower655',
+        'lrd_max3d'                      => 'renderLrdMax3d',
+        'lrd_max3dpro'                   => 'renderLrdMax3dPro',
+        'lrd_lotto_535'                  => 'renderLrdLotto535',
+        'lrd_bingo18'                    => 'renderLrdBingo18',
+        'dudoanvietlott_power'           => 'renderDuDoanVietlottPower',
+        'dudoanvietlott_mega'            => 'renderDuDoanVietlottMega',
+        // Quay thử & số mơ
+        'lrd_page_quay_thu'              => 'renderLrdPageQuayThu',
+        'quay_thu'                       => 'renderQuayThu',
+        'lrd_so_mo'                      => 'renderLrdSoMo',
+        'lrd_sosanh_tansuat'             => 'renderLrdSoSanhTanSuat',
     ];
 
     /** Cache prediction data (shared by soi_cau_mb, cau_dep, lo_top, du_doan_cards) */
@@ -1218,6 +1290,1061 @@ class ShortcodeParser
         }
 
         return view('components.shortcodes.du-doan-3-mien', compact('predictions'))->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: KQXS & Thống kê mở rộng
+    // ═══════════════════════════════════════════════
+
+    private function renderKetQuaXoSo(array $attrs): string
+    {
+        $domainMap = ['1' => 'MB', '2' => 'MT', '3' => 'MN'];
+        $region    = $domainMap[$attrs['domain'] ?? '1'] ?? 'MB';
+        $province  = $attrs['province'] ?? null;
+        $ngay      = $attrs['ngay'] ?? null;
+
+        $query = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI');
+        if ($province) $query->where('province', $province);
+        if ($ngay)     $query->whereDate('date', \Carbon\Carbon::createFromFormat('d-m-Y', $ngay));
+        $result = $query->orderByDesc('date')->first();
+
+        return view('components.shortcodes.kqxs', compact('result', 'region'))->render();
+    }
+
+    private function renderLrdResults(array $attrs): string
+    {
+        $region = 'MB';
+        $limit  = (int) ($attrs['limit'] ?? 10);
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->limit($limit)->get();
+        return view('components.shortcodes.lrd-results', compact('results'))->render();
+    }
+
+    private function renderLrdRegionResults(array $attrs): string
+    {
+        $regionMap = ['bac' => 'MB', 'nam' => 'MN', 'trung' => 'MT'];
+        $region    = $regionMap[$attrs['region'] ?? 'nam'] ?? 'MN';
+        $limit     = (int) ($attrs['limit'] ?? 10);
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->limit($limit)->get();
+
+        return view('components.shortcodes.lrd-region-results', compact('results', 'region', 'limit'))->render();
+    }
+
+    private function renderThongKeGeneral(array $attrs): string
+    {
+        $domainMap = ['1' => 'MB', '2' => 'MT', '3' => 'MN'];
+        $region    = $domainMap[$attrs['domain'] ?? '1'] ?? 'MB';
+        $days      = 30;
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $dau = array_fill(0, 10, 0);
+        $duoi = array_fill(0, 10, 0);
+        $freq = [];
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $dau[(int)$last2[0]]++;
+                $duoi[(int)$last2[1]]++;
+                $freq[$last2] = ($freq[$last2] ?? 0) + 1;
+            }
+        }
+        arsort($freq);
+        $loTop = array_slice($freq, 0, 20, true);
+
+        return view('components.shortcodes.thong-ke-general', compact('dau', 'duoi', 'loTop', 'region', 'days'))->render();
+    }
+
+    private function renderLrdLoGan(array $attrs): string
+    {
+        $mienMap = ['1' => 'MB', '2' => 'MN', '3' => 'MT'];
+        $region  = $mienMap[$attrs['mien'] ?? '1'] ?? 'MB';
+        $type    = $attrs['type'] ?? 'normal';
+        $dai     = $attrs['dai'] ?? null;
+        $limit   = 20;
+
+        $query = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI');
+        if ($dai) $query->where('province', $dai);
+        $results = $query->orderByDesc('date')->limit(60)->get();
+
+        $today    = now()->startOfDay();
+        $lastSeen = [];
+        foreach ($results as $r) {
+            $daysAgo = (int) $r->date->startOfDay()->diffInDays($today);
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                if (!isset($lastSeen[$last2])) $lastSeen[$last2] = $daysAgo;
+            }
+        }
+        arsort($lastSeen);
+        $loGan = array_slice($lastSeen, 0, $limit, true);
+
+        // Danh sách tỉnh cho dropdown
+        $provinces = $type === 'dropdown'
+            ? LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+                ->distinct()->pluck('province')->toArray()
+            : [];
+
+        return view('components.shortcodes.lrd-logan', compact('loGan', 'region', 'mienMap', 'type', 'dai', 'provinces'))->render();
+    }
+
+    private function renderLrdLoGanFull(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'mb';
+        $regionMap = ['mb' => 'MB', 'mn' => 'MN', 'mt' => 'MT'];
+        $reg = $regionMap[$region] ?? 'MB';
+
+        $results = LotteryResult::where('region', $reg)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->limit(90)->get();
+
+        $today = now()->startOfDay();
+        $loGanAll = [];
+        foreach ($results as $r) {
+            $daysAgo = (int) $r->date->startOfDay()->diffInDays($today);
+            foreach ($r->numbers as $num) {
+                $last2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                if (!isset($loGanAll[$last2])) $loGanAll[$last2] = $daysAgo;
+            }
+        }
+        // Điền những số chưa về
+        for ($i = 0; $i <= 99; $i++) {
+            $n = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+            if (!isset($loGanAll[$n])) $loGanAll[$n] = 90;
+        }
+        arsort($loGanAll);
+
+        return view('components.shortcodes.lrd-logan-full', compact('loGanAll', 'region', 'reg'))->render();
+    }
+
+    // ── Bảng đặc biệt ───────────────────────────────────────────────────
+
+    private function renderLrdBangDacBietNam(array $attrs): string
+    {
+        $year   = (int) ($attrs['year'] ?? date('Y'));
+        $region = $attrs['region'] ?? 'MB';
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->whereYear('date', $year)
+            ->orderByDesc('date')->get();
+
+        $bangDB = [];
+        foreach ($results as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if ($sp) {
+                $bangDB[] = [
+                    'date'     => $r->date->format('d/m'),
+                    'province' => $r->province,
+                    'so'       => is_array($sp) ? ($sp[0] ?? '') : $sp,
+                ];
+            }
+        }
+
+        return view('components.shortcodes.lrd-bang-db', compact('bangDB', 'year', 'region', 'title'))->with('title', "Giải ĐB Năm $year")->render();
+    }
+
+    private function renderLrdBangDacBietThang(array $attrs): string
+    {
+        $month  = (int) ($attrs['month'] ?? date('m'));
+        $year   = (int) ($attrs['year'] ?? date('Y'));
+        $region = $attrs['region'] ?? 'MB';
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->whereYear('date', $year)->whereMonth('date', $month)
+            ->orderByDesc('date')->get();
+
+        $bangDB = [];
+        foreach ($results as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if ($sp) {
+                $bangDB[] = [
+                    'date'     => $r->date->format('d/m'),
+                    'province' => $r->province,
+                    'so'       => is_array($sp) ? ($sp[0] ?? '') : $sp,
+                ];
+            }
+        }
+
+        return view('components.shortcodes.lrd-bang-db', compact('bangDB', 'year', 'region'))
+            ->with('title', "Giải ĐB Tháng $month/$year")->render();
+    }
+
+    private function renderLrdBangDacBietTuan(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'MB';
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(7)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $bangDB = [];
+        foreach ($results as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if ($sp) {
+                $bangDB[] = [
+                    'date'     => $r->date->format('d/m'),
+                    'province' => $r->province,
+                    'so'       => is_array($sp) ? ($sp[0] ?? '') : $sp,
+                ];
+            }
+        }
+
+        $year = date('Y');
+        return view('components.shortcodes.lrd-bang-db', compact('bangDB', 'year', 'region'))
+            ->with('title', '7 Ngày Gần Nhất')->render();
+    }
+
+    // ── Thống kê chuyên sâu ────────────────────────────────────────────
+
+    private function renderLrdThongKeDauDuoiLoto(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $dau = array_fill(0, 10, 0);
+        $duoi = array_fill(0, 10, 0);
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $dau[(int)$l2[0]]++;
+                $duoi[(int)$l2[1]]++;
+            }
+        }
+
+        return view('components.shortcodes.lrd-thong-ke-dau-duoi', compact('dau', 'duoi', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeLoKep(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())
+            ->get();
+
+        $kepFreq = [];
+        $kepAll  = ['00','11','22','33','44','55','66','77','88','99'];
+        foreach ($kepAll as $k) $kepFreq[$k] = 0;
+
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                if (in_array($l2, $kepAll)) $kepFreq[$l2]++;
+            }
+        }
+        arsort($kepFreq);
+
+        return view('components.shortcodes.lrd-thong-ke-lo-kep', compact('kepFreq', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeLoRoi(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $today   = now()->startOfDay();
+        $lastSeen = [];
+        foreach ($results as $r) {
+            $daysAgo = (int) $r->date->startOfDay()->diffInDays($today);
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                if (!isset($lastSeen[$l2])) $lastSeen[$l2] = $daysAgo;
+            }
+        }
+        // Số chưa về → gan tối đa
+        for ($i = 0; $i <= 99; $i++) {
+            $n = str_pad((string)$i, 2, '0', STR_PAD_LEFT);
+            if (!isset($lastSeen[$n])) $lastSeen[$n] = $days + 1;
+        }
+        arsort($lastSeen);
+        $loRoi = array_slice($lastSeen, 0, 20, true);
+
+        return view('components.shortcodes.lrd-thong-ke-lo-roi', compact('loRoi', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeTanSuatLoto(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())->get();
+
+        $freq = [];
+        for ($i = 0; $i <= 99; $i++) $freq[str_pad((string)$i, 2, '0', STR_PAD_LEFT)] = 0;
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$l2]++;
+            }
+        }
+        arsort($freq);
+
+        return view('components.shortcodes.lrd-thong-ke-tan-suat-loto', compact('freq', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeTheoTong(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())->get();
+
+        $tongFreq = array_fill(0, 19, 0); // tổng 2 chữ số: 0..18
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2   = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $tong = (int)$l2[0] + (int)$l2[1];
+                $tongFreq[$tong]++;
+            }
+        }
+
+        return view('components.shortcodes.lrd-thong-ke-theo-tong', compact('tongFreq', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeChuKyDacBiet(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->limit(60)->get();
+
+        $spNums = [];
+        foreach ($results as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if ($sp) {
+                $spStr = is_array($sp) ? ($sp[0] ?? '') : $sp;
+                $last2 = substr($spStr, -2);
+                if (strlen($last2) === 2 && ctype_digit($last2)) {
+                    $spNums[] = ['date' => $r->date->format('d/m'), 'so' => $last2, 'full' => $spStr];
+                }
+            }
+        }
+
+        // Tính chu kỳ lặp lại
+        $chuKy = [];
+        $seen  = [];
+        foreach ($spNums as $idx => $item) {
+            $n = $item['so'];
+            if (isset($seen[$n])) {
+                $gap = $idx - $seen[$n];
+                $chuKy[$n] = ($chuKy[$n] ?? []);
+                $chuKy[$n][] = $gap;
+            }
+            $seen[$n] = $idx;
+        }
+
+        return view('components.shortcodes.lrd-thong-ke-chu-ky-db', compact('spNums', 'chuKy', 'region'))->render();
+    }
+
+    private function renderLrdThongKeGiaiDacBietGan(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'MB';
+        $days   = (int) ($attrs['days'] ?? 30);
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->limit($days)->get();
+
+        $today    = now()->startOfDay();
+        $dbLastSeen = [];
+        foreach ($results as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if (!$sp) continue;
+            $spStr = is_array($sp) ? ($sp[0] ?? '') : $sp;
+            $l2 = substr($spStr, -2);
+            if (strlen($l2) === 2 && ctype_digit($l2)) {
+                $daysAgo = (int) $r->date->startOfDay()->diffInDays($today);
+                if (!isset($dbLastSeen[$l2])) $dbLastSeen[$l2] = $daysAgo;
+            }
+        }
+        arsort($dbLastSeen);
+        $dbGan = array_slice($dbLastSeen, 0, 15, true);
+
+        return view('components.shortcodes.lrd-thong-ke-db-gan', compact('dbGan', 'region', 'days'))->render();
+    }
+
+    private function renderLrdThongKeQuanTrong(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'MB';
+        $data   = $this->getStatsData();
+        $pred   = $this->getPredictionData();
+
+        return view('components.shortcodes.lrd-thong-ke-quan-trong', [
+            'frequency'   => $data['frequency'],
+            'waiting'     => $data['waiting'],
+            'ganHead'     => $data['ganHead'],
+            'ganTail'     => $data['ganTail'],
+            'predictionAI' => $pred['predictionAI'],
+            'region'      => $region,
+        ])->render();
+    }
+
+    private function renderLrdThongKeTanSuatCapLoto(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())->get();
+
+        // Tần suất cặp lô (2 số xuất hiện cùng ngày)
+        $capFreq = [];
+        foreach ($results as $r) {
+            $nums = array_unique(array_map(
+                fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT),
+                $r->numbers
+            ));
+            sort($nums);
+            for ($i = 0; $i < count($nums); $i++) {
+                for ($j = $i + 1; $j < count($nums); $j++) {
+                    $key = $nums[$i] . '-' . $nums[$j];
+                    $capFreq[$key] = ($capFreq[$key] ?? 0) + 1;
+                }
+            }
+        }
+        arsort($capFreq);
+        $topCap = array_slice($capFreq, 0, 20, true);
+
+        return view('components.shortcodes.lrd-thong-ke-cap-loto', compact('topCap', 'days', 'region'))->render();
+    }
+
+    private function renderLrdThongKeTongHop(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $stats  = $this->getStatsData($days);
+        $pred   = $this->getPredictionData();
+
+        return view('components.shortcodes.lrd-thong-ke-tong-hop', array_merge($stats, [
+            'days'        => $days,
+            'region'      => $region,
+            'predictionAI' => $pred['predictionAI'],
+        ]))->render();
+    }
+
+    private function renderLrdSoiCauPascal(array $attrs): string
+    {
+        $region = $attrs['region'] ?? 'MB';
+        $rows   = (int) ($attrs['rows'] ?? 6);
+
+        // Lấy giải ĐB gần nhất làm seed Pascal
+        $latest = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')->first();
+
+        $spStr  = '';
+        if ($latest) {
+            $sp     = $latest->prizes['special'] ?? null;
+            $spStr  = is_array($sp) ? ($sp[0] ?? '') : $sp;
+        }
+
+        // Xây tam giác Pascal từ số ĐB
+        $digits  = array_map('intval', str_split(preg_replace('/\D/', '', $spStr)));
+        $pascal  = [$digits];
+        for ($r = 1; $r < $rows; $r++) {
+            $prev = $pascal[$r - 1];
+            $row  = [];
+            for ($c = 0; $c < count($prev) - 1; $c++) {
+                $row[] = ($prev[$c] + $prev[$c + 1]) % 10;
+            }
+            if (empty($row)) break;
+            $pascal[] = $row;
+        }
+
+        // Rút ra số dự đoán từ hàng cuối
+        $lastRow = end($pascal);
+        $duDoan  = [];
+        for ($i = 0; $i < count($lastRow) - 1; $i++) {
+            $n = str_pad($lastRow[$i] . $lastRow[$i + 1], 2, '0', STR_PAD_LEFT);
+            if (!in_array($n, $duDoan)) $duDoan[] = $n;
+        }
+
+        return view('components.shortcodes.lrd-soi-cau-pascal', compact('pascal', 'duDoan', 'region', 'spStr'))->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Kết quả nhiều ngày & theo thứ
+    // ═══════════════════════════════════════════════
+
+    private function renderLrdXsmbNhieuNgay(array $attrs): string
+    {
+        $limit = min((int) ($attrs['limit'] ?? 30), 200);
+
+        $results = LotteryResult::where('region', 'MB')
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->limit($limit)
+            ->get();
+
+        return view('components.shortcodes.lrd-xsmb-nhieu-ngay', compact('results', 'limit'))->render();
+    }
+
+    private function renderLrdXsmnTheoThu(array $attrs): string
+    {
+        return $this->renderXsTheoThu('MN', $attrs);
+    }
+
+    private function renderLrdXsmtTheoThu(array $attrs): string
+    {
+        return $this->renderXsTheoThu('MT', $attrs);
+    }
+
+    private function renderXsTheoThu(string $region, array $attrs): string
+    {
+        $thuMap  = ['2' => 1, '3' => 2, '4' => 3, '5' => 4, '6' => 5, '7' => 6, 'cn' => 0];
+        $thu     = $attrs['thu'] ?? '3';
+        $dayOfWeek = $thuMap[$thu] ?? 2;
+        $limit   = (int) ($attrs['limit'] ?? 10);
+
+        $results = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->get()
+            ->filter(fn($r) => $r->date->dayOfWeek === $dayOfWeek)
+            ->take($limit)
+            ->values();
+
+        $thuLabel = ['cn' => 'Chủ Nhật', '2' => 'Thứ 2', '3' => 'Thứ 3', '4' => 'Thứ 4',
+                     '5'  => 'Thứ 5',    '6' => 'Thứ 6', '7' => 'Thứ 7'];
+        $label = $thuLabel[$thu] ?? "Thứ $thu";
+
+        return view('components.shortcodes.lrd-xs-theo-thu', compact('results', 'region', 'thu', 'label', 'limit'))->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Soi cầu MB aliases
+    // ═══════════════════════════════════════════════
+
+    private function renderChotSoXsMB(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        return view('components.shortcodes.chotsoxsmb', ['soiCauMB' => $data['soiCauMB'], 'loTop' => $data['loTop']])->render();
+    }
+
+    private function renderSoiCauXsMB(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        return view('components.shortcodes.soicauxsmb', ['soiCauMB' => $data['soiCauMB'], 'cauDep' => $data['cauDep']])->render();
+    }
+
+    private function renderDuDoanXsMB(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        return view('components.shortcodes.du-doan-xsmb', ['predictionAI' => $data['predictionAI'], 'soiCauMB' => $data['soiCauMB']])->render();
+    }
+
+    private function renderSoCauXsMB(array $attrs): string
+    {
+        $data = $this->getPredictionData();
+        return view('components.shortcodes.so-cau-xsmb', ['soiCauMB' => $data['soiCauMB'], 'freq' => $data['freq']])->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Cầu đẹp hằng ngày (MN / MT)
+    // ═══════════════════════════════════════════════
+
+    private function renderCauDepHangNgayRegion(string $region, string $regionLabel): string
+    {
+        $results30 = LotteryResult::where('region', $region)
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(30)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $loFreq = [];
+        foreach ($results30 as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $loFreq[$l2] = ($loFreq[$l2] ?? 0) + 1;
+            }
+        }
+        arsort($loFreq);
+
+        $cauLoto = [];
+        foreach (array_keys(array_slice($loFreq, 0, 5, true)) as $n) {
+            $mirror  = strrev($n);
+            $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+        }
+
+        // Lô kép gan nhất trong miền
+        $kepAll  = ['00','11','22','33','44','55','66','77','88','99'];
+        $kepLast = array_fill_keys($kepAll, null);
+        foreach ($results30 as $r) {
+            $nums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+            foreach ($kepAll as $k) {
+                if ($kepLast[$k] === null && in_array($k, $nums)) $kepLast[$k] = $r->date->format('Y-m-d');
+            }
+        }
+        uasort($kepLast, fn($a, $b) => match(true) {
+            $a === null && $b === null => 0, $a === null => -1, $b === null => 1,
+            default => strcmp($a, $b),
+        });
+        $cauKep = array_slice(array_keys($kepLast), 0, 3);
+
+        // Tổng ĐB hay xuất hiện nhất
+        $tongFreq = [];
+        foreach ($results30 as $r) {
+            $sp = $r->prizes['special'] ?? null;
+            if (!$sp) continue;
+            $spStr = is_array($sp) ? ($sp[0] ?? '') : $sp;
+            if (strlen($spStr) >= 2) {
+                $l2   = substr($spStr, -2);
+                $tong = (int)$l2[0] + (int)$l2[1];
+                $tongFreq[$tong] = ($tongFreq[$tong] ?? 0) + 1;
+            }
+        }
+        arsort($tongFreq);
+        $cauTong = array_keys(array_slice($tongFreq, 0, 3, true));
+        if (empty($cauTong)) $cauTong = [3, 7, 8];
+
+        return view('components.shortcodes.caudephangngay-region',
+            compact('cauLoto', 'cauKep', 'cauTong', 'region', 'regionLabel'))->render();
+    }
+
+    private function renderCauDepHangNgayMN(array $attrs): string
+    {
+        return $this->renderCauDepHangNgayRegion('MN', 'Miền Nam');
+    }
+
+    private function renderCauDepHangNgayMT(array $attrs): string
+    {
+        return $this->renderCauDepHangNgayRegion('MT', 'Miền Trung');
+    }
+
+    private function renderCauDepHangNgay1MN(array $attrs): string
+    {
+        return $this->renderCauDepHangNgayRegion('MN', 'Miền Nam');
+    }
+
+    private function renderCauDepHangNgay1MT(array $attrs): string
+    {
+        return $this->renderCauDepHangNgayRegion('MT', 'Miền Trung');
+    }
+
+    private function renderCauDepHangNgayTinh(array $attrs): string
+    {
+        $matinh = $attrs['matinh'] ?? 'xshcm';
+        // Convert xs prefix → province name
+        $province = strtoupper(str_replace('xs', '', $matinh));
+        $region   = 'MN'; // mặc định MN, có thể mở rộng sau
+
+        $results30 = LotteryResult::where('region', $region)
+            ->where('province', 'LIKE', "%$province%")
+            ->orderByDesc('date')->limit(30)->get();
+
+        if ($results30->isEmpty()) {
+            return $this->renderCauDepHangNgayMN($attrs);
+        }
+
+        $loFreq = [];
+        foreach ($results30 as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $loFreq[$l2] = ($loFreq[$l2] ?? 0) + 1;
+            }
+        }
+        arsort($loFreq);
+        $cauLoto = [];
+        foreach (array_keys(array_slice($loFreq, 0, 5, true)) as $n) {
+            $mirror = strrev($n);
+            $cauLoto[] = ($n === $mirror) ? [$n] : [$n, $mirror];
+        }
+        $cauKep  = [];
+        $cauTong = [3, 7, 8];
+
+        $regionLabel = $results30->first()?->province ?? $province;
+        return view('components.shortcodes.caudephangngay-region',
+            compact('cauLoto', 'cauKep', 'cauTong', 'region', 'regionLabel'))->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Cao thủ / top lô / bạc nhớ
+    // ═══════════════════════════════════════════════
+
+    private function renderCaoThuMoBat(array $attrs): string
+    {
+        $type = $attrs['type'] ?? '1';
+        $data = $this->getPredictionData();
+        $pred = $data['predictionAI'] ?? [];
+        $freq = $data['freq'];
+
+        // Tạo danh sách "cao thủ" dựa trên top prediction/freq
+        $caoThu = [];
+        if ($type === '1') {
+            // Lô + Đề style
+            foreach (array_slice($freq, 0, 8, true) as $n => $c) {
+                $caoThu[] = ['lo' => str_pad($n, 2, '0', STR_PAD_LEFT), 'de' => str_pad($n, 2, '0', STR_PAD_LEFT), 'freq' => $c];
+            }
+        } else {
+            // BTL/STL/Đề chạm style
+            $stats  = $this->getStatsData();
+            $topDau = array_key_first($stats['ganHead']);
+            $topDuoi = array_key_first($stats['ganTail']);
+            foreach (array_slice($freq, 0, 8, true) as $n => $c) {
+                $n = str_pad($n, 2, '0', STR_PAD_LEFT);
+                $caoThu[] = ['lo' => $n, 'btl' => "$topDau$n", 'stl' => "$n$topDuoi", 'freq' => $c];
+            }
+        }
+
+        return view('components.shortcodes.cao-thu-mo-bat', compact('caoThu', 'type'))->render();
+    }
+
+    private function renderLoDeBacNho(array $attrs): string
+    {
+        $type   = $attrs['type'] ?? '1';
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = 'MB';
+
+        $results = LotteryResult::where('region', $region)->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays($days)->toDateString())
+            ->orderByDesc('date')->get();
+
+        $freq = [];
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$l2] = ($freq[$l2] ?? 0) + 1;
+            }
+        }
+
+        if ($type === '1') {
+            arsort($freq);
+            $bacNho = array_slice($freq, 0, 20, true);
+        } else {
+            // type=2: Đề bạc nhớ (dựa trên giải ĐB)
+            $dbFreq = [];
+            foreach ($results as $r) {
+                $sp = $r->prizes['special'] ?? null;
+                if (!$sp) continue;
+                $spStr = is_array($sp) ? ($sp[0] ?? '') : $sp;
+                $l2 = substr($spStr, -2);
+                if (strlen($l2) === 2 && ctype_digit($l2)) {
+                    $dbFreq[$l2] = ($dbFreq[$l2] ?? 0) + 1;
+                }
+            }
+            arsort($dbFreq);
+            $bacNho = array_slice($dbFreq, 0, 20, true);
+        }
+
+        return view('components.shortcodes.lo-de-bac-nho', compact('bacNho', 'type', 'days'))->render();
+    }
+
+    private function renderLrdTopLoDepNhat(array $attrs): string
+    {
+        $attrs['limit'] = $attrs['limit'] ?? 10;
+        return $this->renderLoTop($attrs);
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Dàn đề / Công cụ
+    // ═══════════════════════════════════════════════
+
+    private function renderDanDeHangNgay(array $attrs): string
+    {
+        $dande = $attrs['dande'] ?? 'dd90';
+        $hard  = ($attrs['hard'] ?? 'false') === 'true';
+
+        preg_match('/dd(\d+)/', $dande, $m);
+        $count = min((int) ($m[1] ?? 90), 99);
+
+        // Pool từ tần suất lịch sử
+        $results = LotteryResult::where('region', 'MB')->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', now()->subDays(30)->toDateString())->get();
+        $freq = [];
+        for ($i = 0; $i <= 99; $i++) $freq[str_pad((string)$i, 2, '0', STR_PAD_LEFT)] = 1;
+        foreach ($results as $r) {
+            foreach ($r->numbers as $num) {
+                $l2 = str_pad(substr($num, -2), 2, '0', STR_PAD_LEFT);
+                $freq[$l2] = ($freq[$l2] ?? 0) + 2;
+            }
+        }
+        arsort($freq);
+        $pool = array_keys($freq);
+
+        $seed = crc32(date('Ymd') . 'dandehangngay' . $dande);
+        mt_srand($seed);
+
+        if ($hard) {
+            // Cố định: lấy top-N theo tần suất
+            $numbers = array_slice($pool, 0, $count);
+        } else {
+            // Random từ top 50
+            $subPool = array_slice($pool, 0, 50);
+            $numbers = [];
+            $seen    = [];
+            while (count($numbers) < $count) {
+                $n = $subPool[mt_rand(0, count($subPool) - 1)];
+                if (!in_array($n, $seen)) { $seen[] = $n; $numbers[] = $n; }
+            }
+        }
+        sort($numbers);
+
+        return view('components.shortcodes.dandehangngay', compact('numbers', 'count', 'dande'))->render();
+    }
+
+    private function renderTaoDande(array $attrs): string
+    {
+        return view('components.shortcodes.taodande')->render();
+    }
+
+    private function renderGhepLoXienTuDong(array $attrs): string
+    {
+        return view('components.shortcodes.ghep-lo-xien')->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: VIP Đọc thủ
+    // ═══════════════════════════════════════════════
+
+    private function renderDocThuLoVip(array $attrs): string
+    {
+        $data   = $this->getPredictionData();
+        $freq   = $data['freq'];
+        arsort($freq);
+        $topLo  = array_keys(array_slice($freq, 0, 3, true));
+        $docThu = $topLo[0] ?? '27';
+
+        return view('components.shortcodes.doc-thu-lo-vip', compact('docThu', 'topLo'))->render();
+    }
+
+    private function renderDocThuDeVip(array $attrs): string
+    {
+        $data  = $this->getStatsData();
+        $docDe = $data['frequencyDB'][0]['number'] ?? '27';
+
+        return view('components.shortcodes.doc-thu-de-vip', compact('docDe'))->render();
+    }
+
+    private function renderDocThuLoKepVip(array $attrs): string
+    {
+        $data   = $this->getPredictionData();
+        $loKep  = $data['soiCauMB']['lo_kep'] ?? ['11', '77'];
+        $docKep = $loKep[0] ?? '11';
+
+        return view('components.shortcodes.doc-thu-lo-kep-vip', compact('docKep', 'loKep'))->render();
+    }
+
+    private function renderDocThuDeKepVip(array $attrs): string
+    {
+        $data   = $this->getStatsData();
+        $dbFreq = $data['frequencyDB'];
+        $docDeKep = null;
+        foreach ($dbFreq as $item) {
+            $n = $item['number'];
+            if ($n[0] === $n[1]) { $docDeKep = $n; break; }
+        }
+        if (!$docDeKep) $docDeKep = '77';
+
+        return view('components.shortcodes.doc-thu-de-kep-vip', compact('docDeKep'))->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Lô kép nuôi khung
+    // ═══════════════════════════════════════════════
+
+    private function renderLoKepKhungN(int $days): string
+    {
+        $data    = $this->getPredictionData();
+        $loKep   = $data['soiCauMB']['lo_kep'] ?? ['11', '77'];
+        $now     = now()->timezone('Asia/Ho_Chi_Minh');
+        $today   = $now->toDateString();
+
+        $results = LotteryResult::where('region', 'MB')->where('province', '!=', 'ĐUÔI')
+            ->where('date', '>=', $now->copy()->subDays($days - 1)->toDateString())
+            ->orderBy('date')->get()->keyBy(fn($r) => $r->date->format('Y-m-d'));
+
+        $khungData = [];
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = $now->copy()->subDays($i)->toDateString();
+            $r    = $results->get($date);
+            $isToday = ($date === $today);
+
+            if (!$r || ($isToday && !$r)) {
+                $status = 'cho';
+                $nums   = [];
+            } else {
+                $nums   = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
+                $hit    = !empty(array_intersect($loKep, $nums));
+                $status = $hit ? 've' : 'khong_ve';
+            }
+
+            $khungData[] = [
+                'date'   => \Carbon\Carbon::parse($date)->format('d/m/Y'),
+                'soNuoi' => $loKep,
+                'nums'   => $nums,
+                'status' => $status,
+                'isToday' => $isToday,
+            ];
+        }
+
+        return view('components.shortcodes.lo-kep-khung', compact('khungData', 'days', 'loKep'))->render();
+    }
+
+    private function renderLoKepKhung2Ngay(array $attrs): string { return $this->renderLoKepKhungN(2); }
+    private function renderLoKepKhung3Ngay(array $attrs): string { return $this->renderLoKepKhungN(3); }
+    private function renderLoKepKhung5Ngay(array $attrs): string { return $this->renderLoKepKhungN(5); }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Vietlott & Keno (fetch ngoài + dự đoán)
+    // ═══════════════════════════════════════════════
+
+    private function fetchVietlott(string $type, int $limit = 10): array
+    {
+        try {
+            $url = "https://api.minhchinh.com/vietlott/$type?limit=$limit";
+            $res = \Illuminate\Support\Facades\Http::timeout(5)->get($url);
+            if ($res->ok()) return $res->json('data') ?? [];
+        } catch (\Exception $e) {}
+        return [];
+    }
+
+    private function renderLrdKeno(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('keno', $limit);
+        return view('components.shortcodes.lrd-keno', compact('results', 'limit'))->render();
+    }
+
+    private function renderLrdXsMega645(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('mega645', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Vietlott Mega 6/45')->with('type', 'mega645')->render();
+    }
+
+    private function renderLrdPower655(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('power655', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Vietlott Power 6/55')->with('type', 'power655')->render();
+    }
+
+    private function renderLrdMax3d(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('max3d', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Vietlott Max 3D')->with('type', 'max3d')->render();
+    }
+
+    private function renderLrdMax3dPro(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('max3dpro', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Vietlott Max 3D Pro')->with('type', 'max3dpro')->render();
+    }
+
+    private function renderLrdLotto535(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('lotto535', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Xổ Số Lotto 5/35')->with('type', 'lotto535')->render();
+    }
+
+    private function renderLrdBingo18(array $attrs): string
+    {
+        $limit   = (int) ($attrs['limit'] ?? 10);
+        $results = $this->fetchVietlott('bingo18', $limit);
+        return view('components.shortcodes.lrd-vietlott', compact('results', 'limit'))
+            ->with('title', 'Xổ Số Bingo18')->with('type', 'bingo18')->render();
+    }
+
+    private function renderDuDoanVietlottPower(array $attrs): string
+    {
+        $sets = (int) ($attrs['sets'] ?? 6);
+        $seed = crc32(date('Ymd') . 'power655');
+        mt_srand($seed);
+
+        $predictions = [];
+        for ($i = 0; $i < $sets; $i++) {
+            $nums = []; $seen = [];
+            while (count($nums) < 6) {
+                $n = mt_rand(1, 55);
+                if (!in_array($n, $seen)) { $seen[] = $n; $nums[] = $n; }
+            }
+            sort($nums);
+            $extra = mt_rand(1, 55);
+            while (in_array($extra, $nums)) $extra = mt_rand(1, 55);
+            $predictions[] = ['main' => $nums, 'extra' => $extra];
+        }
+
+        return view('components.shortcodes.dudoan-vietlott', compact('predictions'))
+            ->with('title', 'Dự Đoán Power 6/55')->with('type', 'power')->render();
+    }
+
+    private function renderDuDoanVietlottMega(array $attrs): string
+    {
+        $sets = (int) ($attrs['sets'] ?? 6);
+        $seed = crc32(date('Ymd') . 'mega645');
+        mt_srand($seed);
+
+        $predictions = [];
+        for ($i = 0; $i < $sets; $i++) {
+            $nums = []; $seen = [];
+            while (count($nums) < 6) {
+                $n = mt_rand(1, 45);
+                if (!in_array($n, $seen)) { $seen[] = $n; $nums[] = $n; }
+            }
+            sort($nums);
+            $predictions[] = ['main' => $nums, 'extra' => null];
+        }
+
+        return view('components.shortcodes.dudoan-vietlott', compact('predictions'))
+            ->with('title', 'Dự Đoán Mega 6/45')->with('type', 'mega')->render();
+    }
+
+    // ═══════════════════════════════════════════════
+    // NHÓM: Quay thử & Số mơ
+    // ═══════════════════════════════════════════════
+
+    private function renderLrdPageQuayThu(array $attrs): string
+    {
+        $domainMap = ['1' => 'MB', '2' => 'MT', '3' => 'MN'];
+        $region    = $domainMap[$attrs['domain'] ?? '2'] ?? 'MT';
+        $province  = $attrs['province'] ?? null;
+        $hard      = ($attrs['hard'] ?? 'false') === 'true';
+
+        return view('components.shortcodes.lrd-quay-thu', compact('region', 'province', 'hard'))->render();
+    }
+
+    private function renderQuayThu(array $attrs): string
+    {
+        $domainMap = ['1' => 'MB', '2' => 'MT', '3' => 'MN'];
+        $region    = $domainMap[$attrs['domain'] ?? '1'] ?? 'MB';
+        return view('components.shortcodes.quay-thu', compact('region'))->render();
+    }
+
+    private function renderLrdSoMo(array $attrs): string
+    {
+        return view('components.shortcodes.lrd-so-mo')->render();
+    }
+
+    private function renderLrdSoSanhTanSuat(array $attrs): string
+    {
+        $days   = (int) ($attrs['days'] ?? 30);
+        $region = $attrs['region'] ?? 'MB';
+        $stats  = $this->getStatsData($days);
+
+        return view('components.shortcodes.lrd-sosanh-tansuat', [
+            'frequency' => $stats['frequency'],
+            'waiting'   => $stats['waiting'],
+            'days'      => $days,
+            'region'    => $region,
+        ])->render();
     }
 
     // ─────────────────────────────────────────────
