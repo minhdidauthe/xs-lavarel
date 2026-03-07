@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Shortcode extends Model
 {
-    protected $fillable = ['name', 'code', 'content', 'description', 'is_active', 'is_builtin'];
+    protected $fillable = ['name', 'code', 'content', 'description', 'is_active', 'is_builtin', 'group'];
 
     protected function casts(): array
     {

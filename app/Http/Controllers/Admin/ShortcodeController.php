@@ -10,9 +10,26 @@ class ShortcodeController extends Controller
 {
     public function index()
     {
-        $shortcodes = Shortcode::orderByDesc('is_builtin')->orderBy('name')->get();
+        $groupLabels = [
+            'kqxs'     => ['label' => 'KQXS & Tiện Ích',          'icon' => 'fa-tv',          'color' => 'blue'],
+            'soicau'   => ['label' => 'Soi Cầu & Dự Đoán',        'icon' => 'fa-eye',         'color' => 'purple'],
+            'caudep'   => ['label' => 'Cầu Đẹp Hằng Ngày',        'icon' => 'fa-star',        'color' => 'pink'],
+            'bathu'    => ['label' => 'Bạch Thủ / Song Thủ / Đọc Thủ', 'icon' => 'fa-crown', 'color' => 'yellow'],
+            'lokhung'  => ['label' => 'Lô Kép Nuôi Khung',         'icon' => 'fa-th',          'color' => 'orange'],
+            'thongke'  => ['label' => 'Thống Kê',                  'icon' => 'fa-chart-bar',   'color' => 'green'],
+            'logan'    => ['label' => 'Lô Gan',                    'icon' => 'fa-hourglass-half','color' => 'red'],
+            'bangdb'   => ['label' => 'Bảng Giải Đặc Biệt',        'icon' => 'fa-trophy',      'color' => 'amber'],
+            'lotop'    => ['label' => 'Lô Top & Cao Thủ',          'icon' => 'fa-fire',        'color' => 'rose'],
+            'dande'    => ['label' => 'Dàn Đề & Dàn Lô',          'icon' => 'fa-layer-group', 'color' => 'indigo'],
+            'vietlott' => ['label' => 'Vietlott & Keno',           'icon' => 'fa-ticket-alt',  'color' => 'teal'],
+            'congcu'   => ['label' => 'Quay Thử & Công Cụ',        'icon' => 'fa-tools',       'color' => 'cyan'],
+            'custom'   => ['label' => 'Tùy Chỉnh',                 'icon' => 'fa-code',        'color' => 'gray'],
+        ];
 
-        return view('admin.shortcodes.index', compact('shortcodes'));
+        $shortcodes = Shortcode::orderByDesc('is_builtin')->orderBy('group')->orderBy('name')->get();
+        $grouped    = $shortcodes->groupBy('group');
+
+        return view('admin.shortcodes.index', compact('shortcodes', 'grouped', 'groupLabels'));
     }
 
     public function create()
