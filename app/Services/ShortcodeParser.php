@@ -124,7 +124,7 @@ class ShortcodeParser
 
     public function parse(string $content): string
     {
-        $pattern = '/\[([a-z_][a-z0-9_]*)((?:\s+[a-z_]+="[^"]*")*)\]/i';
+        $pattern = '/\[([a-z_][a-z0-9_]*)((?:\s+[a-z_]+=(?:"[^"]*"|[^\s\]]+))*)\]/i';
 
         return preg_replace_callback($pattern, function ($matches) {
             $tag = strtolower($matches[1]);
@@ -156,9 +156,9 @@ class ShortcodeParser
     private function parseAttributes(string $attrString): array
     {
         $attrs = [];
-        preg_match_all('/([a-z_]+)="([^"]*)"/i', $attrString, $m, PREG_SET_ORDER);
+        preg_match_all('/([a-z_]+)=(?:"([^"]*)"|([^\s\]]+))/i', $attrString, $m, PREG_SET_ORDER);
         foreach ($m as $match) {
-            $attrs[$match[1]] = $match[2];
+            $attrs[$match[1]] = $match[2] !== '' ? $match[2] : ($match[3] ?? '');
         }
         return $attrs;
     }
