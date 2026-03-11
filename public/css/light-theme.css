@@ -660,14 +660,13 @@ img { max-width: 100%; height: auto; }
 
 .sc-num-badge {
     display: inline-block;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
-    border-radius: 50%;
+    padding: 6px 14px;
+    border-radius: 16px;
     text-align: center;
     font-weight: 800;
     font-size: 13px;
     color: #fff;
+    white-space: nowrap;
 }
 .sc-num-badge.red { background: #ed1c25; }
 .sc-num-badge.blue { background: #2980b9; }
