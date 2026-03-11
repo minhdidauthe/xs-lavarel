@@ -13,7 +13,10 @@
                 @forelse($results as $r)
                 <tr>
                     <td style="white-space:nowrap">{{ $r->date->format('d/m/Y') }}</td>
-                    <td><span class="sc-badge sc-badge-hot">{{ $r->prizes['special'] ?? '---' }}</span></td>
+                    <td>
+                        @php $sp = $r->prizes['special'] ?? '---'; $sp = is_array($sp) ? ($sp[0] ?? '---') : $sp; @endphp
+                        <span class="sc-badge sc-badge-hot">{{ $sp }}</span>
+                    </td>
                     <td>
                         <div class="sc-nums" style="flex-wrap:wrap">
                             @foreach(array_slice($r->numbers ?? [], 0, 27) as $num)

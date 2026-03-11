@@ -130,19 +130,23 @@ class ShortcodeParser
             $tag = strtolower($matches[1]);
             $attrs = $this->parseAttributes($matches[2] ?? '');
 
-            if (isset($this->builtins[$tag])) {
-                // Check if this builtin has been deactivated in DB
-                $dbRecord = Shortcode::where('code', $tag)->where('is_builtin', true)->first();
-                if ($dbRecord && !$dbRecord->is_active) {
-                    return ''; // Shortcode disabled by admin
+            try {
+                if (isset($this->builtins[$tag])) {
+                    $dbRecord = Shortcode::where('code', $tag)->where('is_builtin', true)->first();
+                    if ($dbRecord && !$dbRecord->is_active) {
+                        return '';
+                    }
+                    $method = $this->builtins[$tag];
+                    return $this->$method($attrs);
                 }
-                $method = $this->builtins[$tag];
-                return $this->$method($attrs);
-            }
 
-            $custom = Shortcode::where('code', $tag)->where('is_active', true)->first();
-            if ($custom) {
-                return $this->renderCustom($custom, $attrs);
+                $custom = Shortcode::where('code', $tag)->where('is_active', true)->first();
+                if ($custom) {
+                    return $this->renderCustom($custom, $attrs);
+                }
+            } catch (\Throwable $e) {
+                \Log::error("Shortcode [$tag] error: " . $e->getMessage());
+                return "<!-- shortcode [$tag] error -->";
             }
 
             return $matches[0];
