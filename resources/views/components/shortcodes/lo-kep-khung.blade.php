@@ -17,33 +17,58 @@
             <thead>
                 <tr>
                     <th>Ngày</th>
-                    <th>Lô kép về</th>
+                    <th>Lô kép nuôi</th>
+                    <th>Lô kép về trong ngày</th>
                     <th>Kết quả</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($khungData as $item)
-                <tr>
-                    <td>{{ \Carbon\Carbon::parse($item['date'])->format('d/m') }}</td>
+                @php
+                    $kepVe = [];
+                    foreach ($item['nums'] as $n) {
+                        if (strlen($n) == 2 && $n[0] === $n[1]) $kepVe[] = $n;
+                    }
+                @endphp
+                <tr class="{{ $item['status'] === 've' ? 'sc-row-ve' : ($item['status'] === 'khong_ve' ? 'sc-row-khongve' : 'sc-row-cho') }}">
+                    <td style="white-space:nowrap"><strong>{{ $item['date'] }}</strong></td>
                     <td>
-                        <div class="sc-nums" style="flex-wrap:wrap">
-                            @foreach($item['numbers'] as $n)
-                                <span class="sc-badge sc-badge-kep" style="font-size:11px">{{ $n }}</span>
+                        <div class="sc-nums" style="flex-wrap:wrap; justify-content:center">
+                            @foreach($item['soNuoi'] as $n)
+                                <span class="sc-badge sc-badge-kep" style="font-size:12px">{{ $n }}</span>
                             @endforeach
                         </div>
                     </td>
                     <td>
-                        @if($item['hit'])
-                            <span class="sc-kq-ve">✓ Về</span>
+                        @if($item['status'] === 'cho')
+                            <span style="color:#999">—</span>
+                        @elseif(!empty($kepVe))
+                            <div class="sc-nums" style="flex-wrap:wrap; justify-content:center">
+                                @foreach($kepVe as $n)
+                                    <span class="sc-badge sc-badge-hot" style="font-size:12px">{{ $n }}</span>
+                                @endforeach
+                            </div>
                         @else
-                            <span class="sc-kq-khongve">✗ Không về</span>
+                            <span style="color:#999">Không có kép</span>
+                        @endif
+                    </td>
+                    <td>
+                        @if($item['status'] === 've')
+                            <span class="sc-kq-ve"><i class="fas fa-check-circle"></i> Về rồi ✓</span>
+                        @elseif($item['status'] === 'khong_ve')
+                            <span class="sc-kq-khongve"><i class="fas fa-times-circle"></i> Không về ✗</span>
+                        @else
+                            <span class="sc-kq-cho"><i class="fas fa-clock"></i> Đang chờ...</span>
                         @endif
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="3" class="sc-no-data">Chưa có dữ liệu.</td></tr>
+                <tr><td colspan="4" class="sc-no-data">Chưa có dữ liệu.</td></tr>
                 @endforelse
             </tbody>
         </table>
+        <div class="sc-soicau-note">
+            <i class="fas fa-info-circle"></i> <em>Lưu ý: Con số chỉ dùng cho mục đích tham khảo. Chúc bạn may mắn!</em>
+        </div>
     </div>
 </section>
