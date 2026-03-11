@@ -22,13 +22,13 @@
             .qt-sc .qt-views label{cursor:pointer;display:flex;align-items:center;gap:4px}
             .qt-sc .qt-views input[type=radio]{accent-color:#c62828}
             .qt-sc .qt-loto-head{display:flex}
-            .qt-sc .qt-loto-head div{flex:1;background:#fffde7;border:1px solid #e8e8e8;padding:6px;font-size:12px;text-align:center;font-weight:700;color:#888}
-            .qt-sc .qt-loto-title{background:#fff8e1;text-align:center;font-weight:700;color:#888;padding:6px;border:1px solid #e8e8e8;font-size:12px}
+            .qt-sc .qt-loto-head div{flex:1;background:linear-gradient(135deg,#C30000,#FF3D3D);border:1px solid #b71c1c;padding:8px 6px;font-size:14px;text-align:center;font-weight:800;color:#fff}
+            .qt-sc .qt-loto-title{background:linear-gradient(135deg,#ff8f00,#ffb300);text-align:center;font-weight:800;color:#fff;padding:8px;border:1px solid #e8a000;font-size:14px;text-transform:uppercase;letter-spacing:1px}
             .qt-sc .qt-loto-table{width:100%;border-collapse:collapse}
-            .qt-sc .qt-loto-table td{border:1px solid #e8e8e8;padding:5px 8px;font-size:12px;text-align:center;vertical-align:top}
-            .qt-sc .qt-loto-pfx{font-weight:700;background:#f5f5f5;color:#888;width:28px}
-            .qt-sc .qt-loto-nums{text-align:left;color:#333;font-weight:600}
-            .qt-sc .qt-loto-nums span{display:inline-block;margin:1px 3px}
+            .qt-sc .qt-loto-table td{border:1px solid #e0e0e0;padding:7px 10px;font-size:14px;text-align:center;vertical-align:top}
+            .qt-sc .qt-loto-pfx{font-weight:800;background:#fff3e0;color:#e65100;width:32px;font-size:15px}
+            .qt-sc .qt-loto-nums{text-align:left;color:#c62828;font-weight:700;font-size:15px}
+            .qt-sc .qt-loto-nums span{display:inline-block;margin:2px 4px;background:#fff8e1;padding:1px 5px;border-radius:4px;border:1px solid #ffe082}
             .qt-sc .qt-rtab{display:inline-block;border:1px solid #ddd;background:#f5f5f5;padding:4px 14px;font-size:12px;border-radius:20px;cursor:pointer;color:#888;text-decoration:none;transition:all .15s;margin:2px}
             .qt-sc .qt-rtab:hover{border-color:#c62828;color:#c62828}
             .qt-sc .qt-rtab.active{background:linear-gradient(135deg,#C30000,#FF3D3D);color:#fff;border-color:transparent}
