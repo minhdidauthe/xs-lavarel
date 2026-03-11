@@ -667,9 +667,11 @@ img { max-width: 100%; height: auto; }
     font-size: 13px;
     color: #fff;
     white-space: nowrap;
+    background: #e67e22;
 }
 .sc-num-badge.red { background: #ed1c25; }
 .sc-num-badge.blue { background: #2980b9; }
+.sc-num-badge.green { background: #27ae60; }
 
 .sc-btn-more {
     display: inline-block;
