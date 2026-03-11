@@ -130,39 +130,49 @@
     .loto-head-row { display: flex; }
     .loto-head-cell {
         flex: 1;
-        background: rgba(255,248,220,0.05);
-        border: 1px solid rgba(255,255,255,0.06);
-        padding: 7px;
-        font-size: 12px;
+        background: linear-gradient(135deg, #C30000, #FF3D3D);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 9px 7px;
+        font-size: 15px;
         text-align: center;
-        font-weight: 700;
-        color: #aaa;
+        font-weight: 800;
+        color: #fff;
     }
     .loto-section-title {
-        background: rgba(255,232,128,0.07);
+        background: linear-gradient(135deg, #ff8f00, #ffb300);
         text-align: center;
-        font-weight: 700;
-        color: #aaa;
-        padding: 7px;
-        border: 1px solid rgba(255,255,255,0.06);
-        font-size: 12px;
+        font-weight: 800;
+        color: #fff;
+        padding: 9px;
+        border: 1px solid rgba(255,255,255,0.1);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     .loto-grid-table { width: 100%; border-collapse: collapse; }
     .loto-grid-table td {
-        border: 1px solid rgba(255,255,255,0.06);
-        padding: 6px 8px;
-        font-size: 12px;
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 8px 10px;
+        font-size: 15px;
         text-align: center;
         vertical-align: top;
     }
     .loto-prefix {
-        font-weight: 700;
-        background: rgba(255,255,255,0.04);
-        color: #888;
-        width: 28px;
+        font-weight: 800;
+        background: rgba(255,152,0,0.12);
+        color: #ffb74d;
+        width: 32px;
+        font-size: 16px;
     }
-    .loto-numbers { text-align: left; color: #ddd; font-weight: 600; }
-    .loto-numbers span { display: inline-block; margin: 1px 4px; }
+    .loto-numbers { text-align: left; color: #ff6e6e; font-weight: 700; font-size: 15px; }
+    .loto-numbers span {
+        display: inline-block;
+        margin: 2px 4px;
+        background: rgba(255,255,255,0.06);
+        padding: 2px 6px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
 
     /* ─── SIDEBAR ─── */
     .sidebar-box { margin-bottom: 14px; }
