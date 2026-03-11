@@ -678,63 +678,102 @@ class ShortcodeParser
      */
     private function renderNuoiKhung(int $days, string $mode): string
     {
-        $data    = $this->getPredictionData();
-        $songThu = $data['soiCauMB']['song_thu'] ?? [null, null];
-        $bachThu = $data['soiCauMB']['bach_thu'] ?? null;
+        $now      = now()->timezone('Asia/Ho_Chi_Minh');
+        $todayStr = $now->toDateString();
+        $service  = new PredictionService();
 
+        // Hôm nay: predict dùng data trước hôm nay (predict cho hôm nay)
+        $todayPred   = $service->predict($todayStr, 'MB');
+        $todayTop    = $todayPred['top10'] ?? [];
+        $bachThuToday = isset($todayTop[0]) ? str_pad($todayTop[0]['number'], 2, '0', STR_PAD_LEFT) : null;
+        $songThuToday = [
+            isset($todayTop[0]) ? str_pad($todayTop[0]['number'], 2, '0', STR_PAD_LEFT) : null,
+            isset($todayTop[1]) ? str_pad($todayTop[1]['number'], 2, '0', STR_PAD_LEFT) : null,
+        ];
+
+        // Lấy kết quả $days ngày gần nhất (không tính hôm nay nếu chưa có KQ)
         $results = LotteryResult::where('region', 'MB')
             ->where('province', '!=', 'ĐUÔI')
             ->orderByDesc('date')
-            ->limit($days)
+            ->limit($days + 1) // lấy thêm 1 để cover hôm nay
             ->get();
 
-        $todayStr = now()->timezone('Asia/Ho_Chi_Minh')->format('Y-m-d');
         $khungData = [];
 
-        foreach ($results as $r) {
+        // Row 1: Hôm nay (dự đoán cho hôm nay, chờ KQ hoặc đã có)
+        $todayResult = $results->first(fn($r) => $r->date->format('Y-m-d') === $todayStr);
+        if ($todayResult) {
+            $todayNums = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $todayResult->numbers);
+        }
+        $hasTodayResults = $todayResult && count($todayResult->numbers) > 0;
+
+        if ($mode === 'single') {
+            $khungData[] = [
+                'date'    => $now->format('d/m/Y'),
+                'so_nuoi' => $bachThuToday,
+                'status'  => $hasTodayResults
+                    ? (in_array($bachThuToday, $todayNums) ? 've' : 'khong_ve')
+                    : 'cho',
+            ];
+        } else {
+            $pairs = [];
+            foreach ($songThuToday as $so) {
+                if (!$so) continue;
+                $dao = strrev($so);
+                $hit = $hasTodayResults && (in_array($so, $todayNums) || ($dao !== $so && in_array($dao, $todayNums)));
+                $pairs[] = ['so' => $so, 'dao' => ($dao !== $so) ? $dao : null, 'hit' => $hit];
+            }
+            $anyHit = count(array_filter($pairs, fn($p) => $p['hit'])) > 0;
+            $khungData[] = [
+                'date'   => $now->format('d/m/Y'),
+                'pairs'  => $pairs,
+                'status' => $hasTodayResults ? ($anyHit ? 've' : 'khong_ve') : 'cho',
+            ];
+        }
+
+        // Rows 2..N: Các ngày trước (predict cho ngày đó bằng data trước ngày đó → check KQ thực tế)
+        $pastResults = $results->filter(fn($r) => $r->date->format('Y-m-d') !== $todayStr)
+            ->take($days - 1)->values();
+
+        foreach ($pastResults as $r) {
             $dateStr = $r->date->format('Y-m-d');
             $nums    = array_map(fn($n) => str_pad(substr($n, -2), 2, '0', STR_PAD_LEFT), $r->numbers);
-            $hasResults = count($nums) > 0;
-            $isToday = ($dateStr === $todayStr);
+
+            // Chạy predict cho ngày $dateStr (dùng data trước ngày đó)
+            $pred = $service->predict($dateStr, 'MB');
+            $top  = $pred['top10'] ?? [];
 
             if ($mode === 'single') {
-                $status = (!$hasResults || $isToday && !$hasResults)
-                    ? 'cho'
-                    : (in_array($bachThu, $nums) ? 've' : 'khong_ve');
-                // Nếu hôm nay nhưng đã có kết quả → hiện kết quả thật
-                if ($isToday && $hasResults) {
-                    $status = in_array($bachThu, $nums) ? 've' : 'khong_ve';
-                }
-
+                $bachThuDay = isset($top[0]) ? str_pad($top[0]['number'], 2, '0', STR_PAD_LEFT) : '--';
                 $khungData[] = [
                     'date'    => $r->date->format('d/m/Y'),
-                    'so_nuoi' => $bachThu,
-                    'status'  => $status,
+                    'so_nuoi' => $bachThuDay,
+                    'status'  => in_array($bachThuDay, $nums) ? 've' : 'khong_ve',
                 ];
             } else {
-                // double mode: song thủ với mirror pairs
+                $songDay = [
+                    isset($top[0]) ? str_pad($top[0]['number'], 2, '0', STR_PAD_LEFT) : null,
+                    isset($top[1]) ? str_pad($top[1]['number'], 2, '0', STR_PAD_LEFT) : null,
+                ];
                 $pairs = [];
-                foreach ($songThu as $so) {
+                foreach ($songDay as $so) {
                     if (!$so) continue;
                     $dao = strrev($so);
                     $hit = in_array($so, $nums) || ($dao !== $so && in_array($dao, $nums));
                     $pairs[] = ['so' => $so, 'dao' => ($dao !== $so) ? $dao : null, 'hit' => $hit];
                 }
-
-                $allHit = count(array_filter($pairs, fn($p) => $p['hit'])) > 0;
-                $status = (!$hasResults || ($isToday && !$hasResults)) ? 'cho'
-                    : ($allHit ? 've' : 'khong_ve');
-                if ($isToday && $hasResults) {
-                    $status = $allHit ? 've' : 'khong_ve';
-                }
-
+                $anyHit = count(array_filter($pairs, fn($p) => $p['hit'])) > 0;
                 $khungData[] = [
                     'date'   => $r->date->format('d/m/Y'),
                     'pairs'  => $pairs,
-                    'status' => $status,
+                    'status' => $anyHit ? 've' : 'khong_ve',
                 ];
             }
         }
+
+        // Lấy bach/song thủ hôm nay cho header display
+        $bachThu = $bachThuToday;
+        $songThu = $songThuToday;
 
         $template = match ($mode) {
             'double' => 'components.shortcodes.song-thu-lo-khung-2-ngay',
