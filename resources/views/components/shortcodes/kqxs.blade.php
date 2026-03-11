@@ -1,22 +1,27 @@
-<div class="shortcode-kqxs glass-card rounded-2xl overflow-hidden my-6">
-    <div class="p-4 bg-white/5 border-b border-white/10 flex justify-between items-center">
-        <h3 class="font-black text-white text-sm uppercase tracking-widest">
-            <i class="fas fa-trophy text-yellow-500 mr-2"></i>
-            KQXS {{ $region === 'MB' ? 'Miền Bắc' : ($region === 'MN' ? 'Miền Nam' : 'Miền Trung') }}
-        </h3>
-        <span class="text-[10px] text-gray-400">{{ $result->date->format('d/m/Y') }} &middot; {{ $result->province }}</span>
-    </div>
-    <div class="p-4 overflow-x-auto">
-        <table class="w-full text-sm">
+<section class="container sc-section">
+    <div class="sc-kqxs-box">
+        <div class="sc-kqxs-header">
+            <div>
+                <i class="fas fa-trophy"></i>
+                <strong>KQXS {{ $region === 'MB' ? 'Miền Bắc' : ($region === 'MN' ? 'Miền Nam' : 'Miền Trung') }}</strong>
+            </div>
+            <span>{{ $result->date->format('d/m/Y') }} &middot; {{ $result->province }}</span>
+        </div>
+        <table class="sc-kqxs-table compact">
             <tbody>
                 @foreach(['special' => 'Giải ĐB', 'first' => 'Giải nhất', 'second' => 'Giải nhì', 'third' => 'Giải ba', 'fourth' => 'Giải tư', 'fifth' => 'Giải năm', 'sixth' => 'Giải sáu', 'seventh' => 'Giải bảy', 'eighth' => 'Giải tám'] as $key => $label)
                     @if(!empty($result->prizes[$key]))
-                    <tr class="border-b border-white/5">
-                        <td class="py-2 px-3 text-xs text-gray-500 font-bold w-24 {{ $key === 'special' ? 'text-red-500' : '' }}">{{ $label }}</td>
-                        <td class="py-2 px-3 text-center">
-                            @foreach($result->prizes[$key] as $num)
-                                <span class="inline-block px-2 py-0.5 font-bold {{ $key === 'special' ? 'text-red-500 text-lg' : 'text-white' }}">{{ $num }}</span>
-                            @endforeach
+                    <tr class="{{ $key === 'special' ? 'sc-row-db' : '' }}">
+                        <td class="sc-prize-label">{{ $label }}</td>
+                        <td class="sc-prize-value {{ $key === 'special' ? 'sc-db' : ($key === 'first' ? 'sc-g1' : ($key === 'seventh' ? 'sc-g7' : '')) }}">
+                            @php $prizes = is_array($result->prizes[$key]) ? $result->prizes[$key] : [$result->prizes[$key]]; @endphp
+                            @if(count($prizes) > 2)
+                            <div class="sc-nums-grid {{ count($prizes) >= 6 ? 'g6' : (count($prizes) >= 4 ? 'g4' : 'g3') }}">
+                                @foreach($prizes as $num)<span>{{ $num }}</span>@endforeach
+                            </div>
+                            @else
+                                @foreach($prizes as $num){{ $num }}@if(!$loop->last)&nbsp;&nbsp;&nbsp;&nbsp;@endif @endforeach
+                            @endif
                         </td>
                     </tr>
                     @endif
@@ -24,4 +29,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</section>

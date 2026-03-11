@@ -2018,7 +2018,7 @@ class ShortcodeParser
         }
 
         if ($type === '1') {
-            arsort($freq);
+            asort($freq);
             $bacNho = array_slice($freq, 0, 20, true);
         } else {
             // type=2: Đề bạc nhớ (dựa trên giải ĐB)
@@ -2032,7 +2032,7 @@ class ShortcodeParser
                     $dbFreq[$l2] = ($dbFreq[$l2] ?? 0) + 1;
                 }
             }
-            arsort($dbFreq);
+            asort($dbFreq);
             $bacNho = array_slice($dbFreq, 0, 20, true);
         }
 

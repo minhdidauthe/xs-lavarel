@@ -1,39 +1,37 @@
-<div class="shortcode-soicau glass-card rounded-2xl overflow-hidden my-6">
-    <div class="p-4 bg-yellow-500/10 border-b border-yellow-500/10">
-        <h3 class="font-black text-yellow-500 text-sm uppercase tracking-widest">
-            <i class="fas fa-brain mr-2"></i> SOI CẦU AI — TOP 10
-        </h3>
-        <p class="text-[10px] text-gray-500 mt-1">{{ $prediction['details']['predict_date'] ?? date('d/m/Y') }}</p>
-    </div>
-    <div class="p-4">
-        <div class="flex flex-wrap gap-3 mb-4 justify-center">
+<section class="container sc-section">
+    <div class="sc-soicau-box">
+        <div class="sc-soicau-header">
+            <i class="fas fa-brain"></i> Soi Cầu AI — Top 10
+            <span style="font-size:11px; font-weight:400; margin-left:10px">{{ $prediction['details']['predict_date'] ?? date('d/m/Y') }}</span>
+        </div>
+        {{-- Top 3 highlight --}}
+        <div style="display:flex; flex-wrap:wrap; gap:12px; justify-content:center; padding:16px 10px 8px">
             @foreach(array_slice($prediction['top10'], 0, 3) as $idx => $item)
-                <div class="text-center">
-                    <span class="inline-flex items-center justify-center w-14 h-14 rounded-full font-black text-lg bg-yellow-500/20 text-yellow-400 border-2 border-yellow-500/30">
-                        {{ $item['number'] }}
-                    </span>
-                    <p class="text-[10px] text-green-400 mt-1 font-bold">{{ $item['score'] }}</p>
-                </div>
+            <div style="text-align:center">
+                <span class="sc-num-ball {{ ['red','green','orange'][$idx] ?? 'red' }}" style="width:52px; height:52px; font-size:18px; line-height:52px">{{ $item['number'] }}</span>
+                <p style="font-size:10px; color:#2e8b57; font-weight:700; margin-top:4px">{{ $item['score'] }}</p>
+            </div>
             @endforeach
         </div>
-        <table class="w-full text-xs">
+        {{-- Full table --}}
+        <table class="sc-stats-table" style="margin-top:4px">
             <thead>
-                <tr class="text-gray-500 border-b border-white/5">
-                    <th class="py-2 text-left">#</th>
-                    <th class="py-2 text-center">Số</th>
-                    <th class="py-2 text-right">Điểm</th>
-                    <th class="py-2 text-left pl-4">Lý do</th>
+                <tr>
+                    <th style="width:30px">#</th>
+                    <th style="width:50px">Số</th>
+                    <th style="width:60px">Điểm</th>
+                    <th style="text-align:left; padding-left:12px">Lý do</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($prediction['top10'] as $idx => $item)
-                <tr class="border-b border-white/5 {{ $idx < 3 ? 'bg-yellow-500/5' : '' }}">
-                    <td class="py-2 font-bold {{ $idx < 3 ? 'text-yellow-500' : 'text-gray-500' }}">{{ $idx + 1 }}</td>
-                    <td class="py-2 text-center font-black {{ $idx < 3 ? 'text-yellow-400' : 'text-white' }}">{{ $item['number'] }}</td>
-                    <td class="py-2 text-right font-bold {{ $idx < 3 ? 'text-yellow-400' : 'text-gray-300' }}">{{ $item['score'] }}</td>
-                    <td class="py-2 pl-4">
+                <tr style="{{ $idx < 3 ? 'background:#fffef0' : '' }}">
+                    <td style="font-weight:700; {{ $idx < 3 ? 'color:#e67e22' : 'color:#999' }}">{{ $idx + 1 }}</td>
+                    <td><span class="sc-badge {{ $idx < 3 ? 'sc-badge-hot' : '' }}">{{ $item['number'] }}</span></td>
+                    <td style="font-weight:700; {{ $idx < 3 ? 'color:#e67e22' : '' }}">{{ $item['score'] }}</td>
+                    <td style="text-align:left; padding-left:12px">
                         @foreach($item['reasons'] as $reason)
-                            <span class="inline-block px-2 py-0.5 bg-white/5 rounded text-[10px] text-gray-400 mr-1 mb-1">{{ $reason }}</span>
+                            <span style="display:inline-block; padding:1px 6px; background:#f0f0f0; border-radius:3px; font-size:10px; color:#666; margin:1px 2px">{{ $reason }}</span>
                         @endforeach
                     </td>
                 </tr>
@@ -41,4 +39,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</section>
