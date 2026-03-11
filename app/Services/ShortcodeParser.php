@@ -1491,7 +1491,8 @@ class ShortcodeParser
             }
         }
 
-        return view('components.shortcodes.lrd-bang-db', compact('bangDB', 'year', 'region', 'title'))->with('title', "Giải ĐB Năm $year")->render();
+        $title = "Giải ĐB Năm $year";
+        return view('components.shortcodes.lrd-bang-db', compact('bangDB', 'year', 'region', 'title'))->render();
     }
 
     private function renderLrdBangDacBietThang(array $attrs): string
