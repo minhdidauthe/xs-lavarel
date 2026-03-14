@@ -18,6 +18,10 @@
                 <a href="{{ route('admin.pages.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium">
                     <i class="fas fa-arrow-left mr-1"></i>Quay lại
                 </a>
+                <a href="{{ route('admin.pages.show', $page) }}" target="_blank"
+                   class="bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-600 hover:shadow-lg transition text-sm">
+                    <i class="fas fa-eye mr-1"></i>Preview
+                </a>
                 <button type="submit"
                         class="bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold py-2 px-6 rounded-lg hover:shadow-lg transition">
                     <i class="fas fa-save mr-2"></i>Cập nhật trang

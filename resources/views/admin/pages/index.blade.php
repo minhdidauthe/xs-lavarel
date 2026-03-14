@@ -56,15 +56,20 @@
                         </td>
                         <td class="px-6 py-4 text-right">
                             <div class="flex items-center justify-end gap-2">
+                                <a href="{{ route('admin.pages.show', $page) }}"
+                                   class="text-amber-500 hover:text-amber-700 text-sm font-medium" title="Preview"
+                                   target="_blank">
+                                    <i class="fas fa-eye"></i>
+                                </a>
                                 <a href="{{ route('admin.pages.edit', $page) }}"
-                                   class="text-blue-500 hover:text-blue-700 text-sm font-medium">
+                                   class="text-blue-500 hover:text-blue-700 text-sm font-medium" title="Sửa">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{ route('admin.pages.destroy', $page) }}" method="POST"
                                       class="inline" onclick="return confirm('Bạn có chắc muốn xóa trang này?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                    <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium" title="Xóa">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>

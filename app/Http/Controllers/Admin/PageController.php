@@ -98,6 +98,13 @@ class PageController extends Controller
         return redirect()->route('admin.pages.index')->with('success', 'Trang đã được cập nhật.');
     }
 
+    public function show(Page $page)
+    {
+        $renderedContent = $page->getRenderedBody();
+
+        return view('admin.pages.preview', compact('page', 'renderedContent'));
+    }
+
     public function destroy(Page $page)
     {
         $page->delete();
