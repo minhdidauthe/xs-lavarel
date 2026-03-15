@@ -144,5 +144,6 @@
         });
     </script>
     @yield('scripts')
+    @include('components.chat-widget')
 </body>
 </html>

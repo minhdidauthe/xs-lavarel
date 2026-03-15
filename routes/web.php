@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UploadController;
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog\PageViewController;
+use App\Http\Controllers\Api\ChatController;
 
 // ─── Frontend (Lottery) ───
 Route::get('/', [LotteryController::class, 'index']);
@@ -61,6 +62,14 @@ Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/tag/{slug}', [BlogController::class, 'tag'])->name('tag');
     Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
     Route::post('/{slug}/comment', [BlogController::class, 'storeComment'])->name('comment.store');
+});
+
+// ─── Chat API ───
+Route::prefix('api/chat')->group(function () {
+    Route::get('/messages', [ChatController::class, 'messages']);
+    Route::post('/message', [ChatController::class, 'store']);
+    Route::post('/like/{id}', [ChatController::class, 'like']);
+    Route::get('/online', [ChatController::class, 'online']);
 });
 
 // ─── Public Pages ───
