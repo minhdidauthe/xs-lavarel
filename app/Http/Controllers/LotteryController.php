@@ -46,6 +46,60 @@ class LotteryController extends Controller
         ];
     }
 
+    /**
+     * Get ALL province results for the latest date of a region
+     */
+    private function getLatestAllProvinces(string $region): array
+    {
+        $code = $this->regionCode($region);
+
+        // Find latest date
+        $latest = LotteryResult::where('region', $code)
+            ->where('province', '!=', 'ĐUÔI')
+            ->orderByDesc('date')
+            ->first();
+
+        if (!$latest) return [];
+
+        // Get all provinces for that date
+        $results = LotteryResult::where('region', $code)
+            ->where('province', '!=', 'ĐUÔI')
+            ->where('date', $latest->date)
+            ->get();
+
+        return $results->map(function ($r) {
+            return [
+                'date' => $r->date->format('d/m/Y'),
+                'province' => $r->province,
+                'prizes' => $r->prizes,
+                'numbers' => $r->numbers,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Build Đầu/Đuôi (head/tail) table from lottery numbers
+     */
+    private function buildDauDuoi(array $numbers): array
+    {
+        $table = [];
+        for ($i = 0; $i <= 9; $i++) {
+            $table[$i] = [];
+        }
+        foreach ($numbers as $num) {
+            $last2 = substr($num, -2);
+            if (strlen($last2) === 2 && ctype_digit($last2)) {
+                $head = (int) $last2[0];
+                $table[$head][] = $last2[1];
+            }
+        }
+        // Sort tails within each head
+        foreach ($table as &$tails) {
+            sort($tails);
+        }
+        return $table;
+    }
+
     public function index()
     {
         // Check for CMS-managed homepage
@@ -253,10 +307,20 @@ class LotteryController extends Controller
             $loTop[] = $n;
         }
 
+        // Get latest MB result for Đầu/Đuôi table
+        $latestMB = $this->getLatest('north');
+        $dauDuoiMB = [];
+        if ($latestMB && !empty($latestMB['numbers'])) {
+            $dauDuoiMB = $this->buildDauDuoi($latestMB['numbers']);
+        }
+
         return view('welcome', [
-            'lotteryMB' => $this->getLatest('north'),
+            'lotteryMB' => $latestMB,
             'lotteryMT' => $this->getLatest('central'),
             'lotteryMN' => $this->getLatest('south'),
+            'allMT' => $this->getLatestAllProvinces('central'),
+            'allMN' => $this->getLatestAllProvinces('south'),
+            'dauDuoiMB' => $dauDuoiMB,
             'predictionAI' => $predictionAI,
             'frequency' => $frequency,
             'waiting' => $waiting,
